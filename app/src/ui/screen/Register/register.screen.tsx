@@ -1,5 +1,4 @@
 import Banner from "../../../assets/image/register/banner.png";
-import { ButtonComponent, InputComponent } from "../../index";
 
 export function Register() {
   return (
@@ -27,7 +26,6 @@ export function Register() {
               Insira os seus dados abaixo e acabe com a procrastinação.
             </p>
 
-            <ButtonComponent classname="w-full">Criar conta</ButtonComponent>
             <div className="text-center mt-3">
               <a
                 href="#/"

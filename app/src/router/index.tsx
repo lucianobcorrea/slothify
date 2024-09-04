@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Login, Register } from "../ui/index.js";
+import { Login, Register } from "../ui/index.ts";
 
 export const router = createBrowserRouter([
   {
