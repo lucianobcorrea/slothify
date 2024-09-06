@@ -29,7 +29,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withIssuer("auth-spring")
+                    .withIssuer("tcc")
                     .withSubject(user.getEmail())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
@@ -40,13 +40,13 @@ public class TokenService {
 
     public String validateToken(String token) {
         if (revokedTokenRepository.findByToken(token).isPresent()) {
-            throw new JWTVerificationException("Your session expired, please, login again.");
+            throw new JWTVerificationException("A sua sessão expirou, por favor, entre novamente.");
         }
 
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("auth-spring")
+                    .withIssuer("tcc")
                     .build()
                     .verify(token)
                     .getSubject();

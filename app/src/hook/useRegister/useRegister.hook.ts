@@ -10,10 +10,12 @@ export function useRegister(){
      const onSubmit: SubmitHandler<FormFields> = async (data) => {
         try {
             await register(data);
-            toast.success("Cadastro realizado com sucesso! Agora você pode entrar e iniciar sua jornada");
+            toast.success("Cadastro realizado com sucesso! Agora você pode entrar e iniciar sua jornada.");
             navigate('/login');
-        } catch (error:any) {
-            toast.error(error.response.data.message);
+        } catch (error: unknown) {
+            if(error instanceof Error) {
+                toast.error(error.message);
+            }
         }
     }
 
