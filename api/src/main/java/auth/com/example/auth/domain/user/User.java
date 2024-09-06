@@ -60,5 +60,3 @@ public class User implements UserDetails {
         return true;
     }
 }
-
-//UserDetails basicamente serve pra identificar um user que vai ser usado como base para auth dentro do sistema

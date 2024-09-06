@@ -1,4 +1,4 @@
-package auth.com.example.auth.validator;
+package auth.com.example.auth.validator.user;
 
 import auth.com.example.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,8 @@ import auth.com.example.auth.domain.user.UserRole;
 import auth.com.example.auth.mapper.UserMapper;
 import auth.com.example.auth.repository.RoleRepository;
 import auth.com.example.auth.repository.UserRepository;
-import auth.com.example.auth.validator.UniqueEmailValidator;
+import auth.com.example.auth.validator.user.PasswordValidator;
+import auth.com.example.auth.validator.user.UniqueEmailValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class CreateUserService {
     private UniqueEmailValidator emailValidator;
 
     @Autowired
+    private PasswordValidator passwordValidator;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -33,6 +37,7 @@ public class CreateUserService {
     public ResponseEntity<Void> create(UserRequest data) {
 
         emailValidator.validate(data.getEmail());
+        passwordValidator.validate(data.getPassword(), data.getRePassword());
 
         User user = UserMapper.toEntity(data);
         user.setPassword(passwordEncoder.encode(data.getPassword()));
