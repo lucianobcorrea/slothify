@@ -20,6 +20,7 @@ module.exports = {
 				'primary-color': '#A855F7',
 				'primary-color-dark': '#6D2B8D',
 				'secondary-color': '#D4B3F7',
+				'neutral-750': '#42424280',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

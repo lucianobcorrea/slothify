@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {user} from "@/api/auth/user.api";
 import { useAuthContext } from "@/hook/useAuthContext/useAuthContext.hook";
+import { getResponseError } from "@/api/error/error.api";
 
 export function useLogin(){
     const navigate = useNavigate();
@@ -21,10 +22,9 @@ export function useLogin(){
             setIsLoggedIn(true);
 
             navigate('/home');
-        } catch (error:unknown) {
-            if(error instanceof Error){
-                toast.error(error.message);
-            }
+        } catch (error) {
+            const message = getResponseError(error);
+            toast.error(message);
             setIsLoggedIn(false);
         }
     }
