@@ -1,6 +1,8 @@
+import { ReactNode } from "react";
+
 interface MessageBoxProps {
   classname?: string;
-  children: string;
+  children: ReactNode;
 }
 
 export const MessageBox = (props: MessageBoxProps) => {

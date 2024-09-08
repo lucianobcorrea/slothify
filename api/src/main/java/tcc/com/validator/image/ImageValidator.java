@@ -11,5 +11,9 @@ public class ImageValidator {
         if(fileName.contains("..")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Imagem inválida, por favor, tente novamente.");
         }
+
+        if (!fileName.endsWith(".jpg") && !fileName.endsWith(".png") && !fileName.endsWith(".jpeg") && !fileName.endsWith(".svg")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Formato de arquivo não suportado.");
+        }
     }
 }

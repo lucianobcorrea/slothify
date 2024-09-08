@@ -22,7 +22,7 @@ public class GetAreaService {
     public List<AreaResponse> getAreas() {
 
         return areaRepository.findAll().stream()
-                .peek(area -> area.setImage(fileStorageConfig.getStoragePath() + area.getImage()))
+                .peek(area -> area.setImage("http://localhost:8080/files/" + area.getImage()))
                 .map(AreaMapper::toResponse)
                 .collect(Collectors.toList());
     }

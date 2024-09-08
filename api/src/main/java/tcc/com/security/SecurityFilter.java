@@ -35,7 +35,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             UserDetails user = userRepository.findByEmail(login);
 
             if(user == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ocorreu um erro, verifque seus dados e tente novamente.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Você foi desconectado, por favor, entre novamente.");
             }
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
