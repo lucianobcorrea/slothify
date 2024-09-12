@@ -19,10 +19,12 @@ export const FormTemplate = (props: FormProps) => {
     <section className="flex flex-col justify-between h-screen">
       <div className="container mt-16">
         <div className="flex gap-6 items-center">
-          <FontAwesomeIcon
-            className="text-neutral-200 text-3xl"
-            icon={faArrowLeft}
-          />
+          <button type="button" onClick={() => navigate('/bem-vindo')}>
+            <FontAwesomeIcon
+              className="text-neutral-200 text-3xl"
+              icon={faArrowLeft}
+            />
+          </button>
           <ProgressComponent progressValue={props.progress} />
         </div>
 

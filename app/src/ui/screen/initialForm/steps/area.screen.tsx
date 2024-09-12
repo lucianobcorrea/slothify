@@ -1,5 +1,5 @@
 import { useGetAreas } from "@/hook/useGetAreas/useGetAreas";
-import { MessageBox, FormTemplate } from "@/ui/index";
+import { MessageBoxSelect, FormTemplate } from "@/ui/index";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -25,12 +25,12 @@ export const Area = (props: AreaProps) => {
         {areas.map((area) => {
           return (
             <div>
-              <MessageBox classname="pt-2 pb-2">
+              <MessageBoxSelect classname="pt-2 pb-2" name="area" slug={area.slug}>
                 <div className="flex items-center gap-5 font-medium text-xl">
                   <img src={area.image} alt="image" />
                   <h2>{area.title}</h2>
                 </div>
-              </MessageBox>
+              </MessageBoxSelect>
             </div>
           );
         })}
