@@ -1,5 +1,6 @@
 package tcc.com.domain.user;
 
+import tcc.com.domain.area.Area;
 import tcc.com.domain.role.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,6 +31,17 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @ManyToMany
+    @JoinTable(name = "user_areas",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "area_id"))
+    private List<Area> areas = new ArrayList<>();
+
+    public void createUserArea(Area area) {
+        this.getAreas().add(area);
+        area.getUserAreas().add(this);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

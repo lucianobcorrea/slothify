@@ -1,8 +1,12 @@
 import { useLocation } from "react-router-dom";
-import { Area } from "@/ui/index";
+import { Area, Reason } from "@/ui/index";
 
 export const Steps = () => {
   const location = useLocation();
-
-  return <>{location.state.step === "area" && <Area progress={10} />}</>;
+  console.log(location);
+  return <>
+  
+  {location.state.step === "area" && <Area progress={10} />}
+  {location.state.step === "reason" && <Reason progress={20} />}
+  </>;
 };

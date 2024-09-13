@@ -27,3 +27,11 @@ CREATE TABLE areas (
     image TEXT NOT NULL,
     active BOOLEAN NOT NULL
 );
+
+CREATE TABLE user_areas (
+    user_id BIGINT NOT NULL,
+    area_id BIGINT NOT NULL,
+    CONSTRAINT fk_user_areas_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_areas_area FOREIGN KEY(area_id) REFERENCES areas(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, area_id)
+);

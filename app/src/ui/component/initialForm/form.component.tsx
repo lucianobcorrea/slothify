@@ -10,6 +10,11 @@ interface FormProps {
   message: string;
   buttonTxt: string;
   children: ReactNode;
+  
+  routeBack: string;
+  routeBackState?: object;
+  routeStep: string;
+  routeStepState?: object;
 }
 
 export const FormTemplate = (props: FormProps) => {
@@ -19,7 +24,12 @@ export const FormTemplate = (props: FormProps) => {
     <section className="flex flex-col justify-between h-screen">
       <div className="container mt-16">
         <div className="flex gap-6 items-center">
-          <button type="button" onClick={() => navigate('/bem-vindo')}>
+          <button
+            type="button"
+            onClick={() =>
+              navigate(props.routeBack, { state: { ...props.routeBackState } })
+            }
+          >
             <FontAwesomeIcon
               className="text-neutral-200 text-3xl"
               icon={faArrowLeft}
@@ -46,7 +56,7 @@ export const FormTemplate = (props: FormProps) => {
         <div className="flex justify-center items-center mt-11 mb-11">
           <ButtonComponent
             clickEvent={() =>
-              navigate(`/bem-vindo/area`, { state: { step: "area" } })
+              navigate(props.routeStep, { state: { ...props.routeStepState } })
             }
             btnType="button"
             classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
