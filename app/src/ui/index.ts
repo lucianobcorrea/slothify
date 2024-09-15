@@ -1,10 +1,9 @@
 export { Register } from "@/ui/screen/register/register.screen";
 export { Login } from "@/ui/screen/login/login.screen";
 export { Home } from "@/ui/screen/home/home.screen";
-export { Form } from "@/ui/screen/initialForm/form.screen";
-export { Steps } from "@/ui/screen/initialForm/steps.screen";
+export { Form } from "@/ui/screen/initialForm/steps/form.screen";
+export { Steps } from "@/ui/screen/initialForm/steps/steps.screen";
 export { Area } from "@/ui/screen/initialForm/steps/area.screen";
-export { Reason } from "@/ui/screen/initialForm/steps/reason.screen";
 
 export { ProgressComponent } from "@/ui/component/progress/progress.component";
 export { MessageBox } from "@/ui/component/messageBox/messageBox.component";

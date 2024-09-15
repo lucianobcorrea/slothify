@@ -1,10 +1,11 @@
 import { ProgressComponent, MessageBox, ButtonComponent } from "@/ui/index";
 import writingSloth from "@/assets/image/initialForm/writing-sloth.svg";
-import { useNavigate } from "react-router-dom";
 
-export function Form() {
-  const navigate = useNavigate();
+interface FormProps {
+  clickEvent?: () => void
+}
 
+export const Form = (props: FormProps) => {
   return (
     <section>
       <div className="container mt-16">
@@ -29,9 +30,7 @@ export function Form() {
       <hr className="border-neutral-500 mt-24" />
       <div className="flex justify-center items-center mt-11">
         <ButtonComponent
-          clickEvent={() =>
-            navigate(`/bem-vindo/area`, { state: { step: "area" } })
-          }
+          clickEvent={props.clickEvent}
           btnType="button"
           classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
         >

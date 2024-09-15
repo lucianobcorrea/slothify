@@ -1,4 +1,4 @@
-package tcc.com.domain.area;
+package tcc.com.domain.reason;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,19 +10,19 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "areas")
-public class Area {
+@Table(name = "reasons")
+public class Reason {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
-    private String description;
     private String slug;
+    private boolean active;
 
     private String image;
 
-    @ManyToMany(mappedBy = "areas")
-    private List<User> userAreas;
+    @ManyToMany(mappedBy = "reasons")
+    private List<User> userReasons;
 }

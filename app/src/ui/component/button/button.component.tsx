@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { ReactNode, MouseEventHandler } from "react";
+import { ReactNode } from "react";
 
 export interface ButtonProps {
   children: ReactNode;
   classname: string;
   btnType: "button" | "submit" | "reset";
   disabled?: boolean;
-  clickEvent?: MouseEventHandler
+  clickEvent?: () => void
 }
 
 export const ButtonComponent = (props: ButtonProps) => {

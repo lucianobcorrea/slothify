@@ -1,6 +1,7 @@
 package tcc.com.domain.user;
 
 import tcc.com.domain.area.Area;
+import tcc.com.domain.reason.Reason;
 import tcc.com.domain.role.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -38,9 +39,20 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "area_id"))
     private List<Area> areas = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_reasons",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "reason_id"))
+    private List<Reason> reasons = new ArrayList<>();
+
     public void createUserArea(Area area) {
         this.getAreas().add(area);
         area.getUserAreas().add(this);
+    }
+
+    public void createUserReason(Reason reason) {
+        this.getReasons().add(reason);
+        reason.getUserReasons().add(this);
     }
 
     @Override

@@ -1,49 +1,47 @@
 import { useGetAreas } from "@/hook/useGetAreas/useGetAreas";
 import { MessageBoxSelect, FormTemplate } from "@/ui/index";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FormFields } from "./steps.screen";
+import { toast } from "react-toastify";
 
 interface AreaProps {
   progress: number;
+  clickEventNext: () => void;
+  clickEventBack: () => void;
+  register: UseFormRegister<FormFields>;
+  errors: FieldErrors<FormFields>;
 }
 
 export const Area = (props: AreaProps) => {
   const { areas, fetchAreas } = useGetAreas();
-  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value, checked } = event.target;
-
-    setSelectedAreas((prevSelected) => {
-      if (checked) {
-        return [...prevSelected, value];
-      } else {
-        return prevSelected.filter((area) => area !== value);
-      }
-    });
-  }
 
   useEffect(() => {
     fetchAreas();
   }, []);
 
+  useEffect(() => {
+    if (props.errors.checkboxes) {
+      toast.error(props.errors.checkboxes.message);
+    }
+  }, [props.errors.checkboxes]);
+  
   return (
     <FormTemplate
-      routeBack="/bem-vindo"
-      routeStep="/bem-vindo/reason"
-      routeStepState={{ step: "reason" }}
+      clickEventNext={() => props.clickEventNext()}
+      clickEventBack={() => props.clickEventBack()}
       progress={props.progress}
       buttonTxt="Avançar"
       message="Escolha suas missões: o que você quer aprender ou melhorar?"
     >
       <div className="grid grid-cols-2 gap-10 mt-20">
-        {areas.map((area) => {
+        {areas.map((area, index) => {
           return (
-            <div>
+            <div key={index}>
               <MessageBoxSelect
-                handleChange={handleChange}
                 classname="pt-2 pb-2"
-                name="area"
                 value={area.slug}
+                register={props.register("checkboxes")}
               >
                 <div className="flex items-center gap-5 font-medium text-xl">
                   <img src={area.image} alt="image" className="max-w-[90px]" />

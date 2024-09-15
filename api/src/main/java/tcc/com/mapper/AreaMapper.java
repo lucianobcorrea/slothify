@@ -10,7 +10,6 @@ public class AreaMapper {
         Area area = new Area();
         area.setTitle(request.getTitle());
         area.setDescription(request.getDescription());
-        area.setActive(true);
         return area;
     }
 
@@ -21,7 +20,6 @@ public class AreaMapper {
                 .image(area.getImage())
                 .description(area.getDescription())
                 .slug(area.getSlug())
-                .active(area.isActive())
                 .build();
     }
 }
