@@ -1,7 +1,7 @@
 package tcc.com.domain.role;
 
 import tcc.com.domain.user.User;
-import tcc.com.domain.user.UserRole;
+import tcc.com.domain.user.UserRoles;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder @AllArgsConstructor @NoArgsConstructor
-@Table(name = "roles")
+@Table(name = "role")
 public class Role {
 
     @Id
@@ -20,7 +20,7 @@ public class Role {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRoles role;
 
     @OneToMany(mappedBy = "role")
     private List<User> users = new ArrayList<>();

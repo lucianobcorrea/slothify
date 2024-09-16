@@ -3,7 +3,7 @@ package tcc.com.service;
 import tcc.com.controller.request.user.UserRequest;
 import tcc.com.domain.role.Role;
 import tcc.com.domain.user.User;
-import tcc.com.domain.user.UserRole;
+import tcc.com.domain.user.UserRoles;
 import tcc.com.mapper.UserMapper;
 import tcc.com.repository.RoleRepository;
 import tcc.com.repository.UserRepository;
@@ -43,7 +43,7 @@ public class CreateUserService {
         user.setPassword(passwordEncoder.encode(data.getPassword()));
         user.setActive(true);
 
-        Role role = roleRepository.findByRole(UserRole.USER);
+        Role role = roleRepository.findByRole(UserRoles.USER);
 
         user.setRole(role);
 

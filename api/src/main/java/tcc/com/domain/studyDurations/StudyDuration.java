@@ -1,16 +1,14 @@
 package tcc.com.domain.studyDurations;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Builder
-@Table(name = "study_durations")
-public class StudyDurations {
+@Table(name = "study_duration")
+public class StudyDuration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +17,5 @@ public class StudyDurations {
     private String image;
 
     @Enumerated(EnumType.STRING)
-    private Duration duration;
+    private Durations duration;
 }

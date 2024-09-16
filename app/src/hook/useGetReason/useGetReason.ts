@@ -1,23 +1,22 @@
 import { useState } from "react";
-import { getAreas } from "@/api/area/getAreas.api";
+import { getReason } from "@/api/reason/getReason.api";
 import { toast } from "react-toastify";
 import { getResponseError } from "@/api/error/error.api";
 
-interface Area {
+interface Reason {
   id: number;
   image: string;
-  description: string;
   title: string;
   slug: string;
 }
 
-export function useGetAreas() {
-  const [areas, setAreas] = useState<Area[]>([]);
+export function useGetReason() {
+  const [reasons, setReasons] = useState<Reason[]>([]);
 
-  async function fetchAreas() {
+  async function fetchReasons() {
     try {
-      const response = await getAreas();
-      setAreas(response);
+      const response = await getReason();
+      setReasons(response);
     } catch (error) {
       const message = getResponseError(error);
       toast.error(message);
@@ -25,7 +24,7 @@ export function useGetAreas() {
   }
 
   return {
-    areas,
-    fetchAreas,
+    reasons,
+    fetchReasons,
   };
 }

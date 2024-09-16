@@ -29,7 +29,7 @@ public class ReasonController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<ReasonResponse> getAreas() {
+    public List<ReasonResponse> getReasons() {
         return getReasonService.getReasons();
     }
 }

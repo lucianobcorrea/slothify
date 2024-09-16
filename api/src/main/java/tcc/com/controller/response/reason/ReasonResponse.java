@@ -12,5 +12,4 @@ public class ReasonResponse {
     String slug;
     Long id;
     String title;
-    boolean active;
 }

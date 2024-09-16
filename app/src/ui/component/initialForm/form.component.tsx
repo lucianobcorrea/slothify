@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 
 interface FormProps {
   progress: number;
-  message: string;
+  message?: string;
   buttonTxt: string;
   children: ReactNode;
 
@@ -19,10 +19,7 @@ export const FormTemplate = (props: FormProps) => {
     <section className="flex flex-col justify-between h-screen">
       <div className="container mt-16">
         <div className="flex gap-6 items-center">
-          <button
-            type="button"
-            onClick={props.clickEventBack}
-          >
+          <button type="button" onClick={props.clickEventBack}>
             <FontAwesomeIcon
               className="text-neutral-200 text-3xl"
               icon={faArrowLeft}
@@ -31,16 +28,18 @@ export const FormTemplate = (props: FormProps) => {
           <ProgressComponent progressValue={props.progress} />
         </div>
 
-        <div className="mt-16 flex items-center gap-10">
-          <img
-            className="w-full max-w-36"
-            src={writingSloth}
-            alt="Preguiça com o pelo roxo, segurando uma caneta e um papel, olhando para o usuário enquanto escreve"
-          />
-          <MessageBox classname="font-medium text-lg w-full">
-            {props.message}
-          </MessageBox>
-        </div>
+        {props.message && (
+          <div className="mt-16 flex items-center gap-10">
+            <img
+              className="w-full max-w-36"
+              src={writingSloth}
+              alt="Preguiça com o pelo roxo, segurando uma caneta e um papel, olhando para o usuário enquanto escreve"
+            />
+            <MessageBox classname="font-medium text-lg w-full">
+              {props.message}
+            </MessageBox>
+          </div>
+        )}
         {props.children}
       </div>
 

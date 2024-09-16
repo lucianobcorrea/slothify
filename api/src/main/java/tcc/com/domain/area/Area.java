@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "areas")
+@Table(name = "area")
 public class Area {
 
     @Id
@@ -18,7 +18,6 @@ public class Area {
     private Long id;
 
     private String title;
-    private String description;
     private String slug;
 
     private String image;

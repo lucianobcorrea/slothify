@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "reasons")
+@Table(name = "reason")
 public class Reason {
 
     @Id
@@ -19,7 +19,6 @@ public class Reason {
 
     private String title;
     private String slug;
-    private boolean active;
 
     private String image;
 

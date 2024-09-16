@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "revoked_tokens")
+@Table(name = "revoked_token")
 public class RevokedToken {
 
     @Id

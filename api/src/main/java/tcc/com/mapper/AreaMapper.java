@@ -9,7 +9,6 @@ public class AreaMapper {
     public static Area toEntity(AreaRequest request) {
         Area area = new Area();
         area.setTitle(request.getTitle());
-        area.setDescription(request.getDescription());
         return area;
     }
 
@@ -18,7 +17,6 @@ public class AreaMapper {
                 .id(area.getId())
                 .title(area.getTitle())
                 .image(area.getImage())
-                .description(area.getDescription())
                 .slug(area.getSlug())
                 .build();
     }

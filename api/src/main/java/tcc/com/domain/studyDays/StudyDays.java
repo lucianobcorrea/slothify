@@ -1,15 +1,18 @@
 package tcc.com.domain.studyDays;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import tcc.com.domain.user.User;
+
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Builder
-@Table(name = "study_days")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "study_day")
 public class StudyDays {
 
     @Id
@@ -18,4 +21,7 @@ public class StudyDays {
 
     @Enumerated(EnumType.STRING)
     private WeekDays weekDay;
+
+    @ManyToMany(mappedBy = "studyDays")
+    private List<User> userStudyDays;
 }

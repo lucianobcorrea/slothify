@@ -9,7 +9,10 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tcc.com.domain.studyDays.StudyDays;
+import tcc.com.domain.studyDurations.StudyDuration;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,22 +31,38 @@ public class User implements UserDetails {
     private String password;
     private String email;
     private boolean active;
+    private boolean initialForm;
+
+    @ManyToOne
+    @JoinColumn(name = "study_duration_id")
+    private StudyDuration studyDuration;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
     @ManyToMany
-    @JoinTable(name = "user_areas",
+    @JoinTable(name = "user_area",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "area_id"))
     private List<Area> areas = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "user_reasons",
+    @JoinTable(name = "user_reason",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "reason_id"))
     private List<Reason> reasons = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_day",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "week_day_id"))
+    private List<StudyDays> studyDays = new ArrayList<>();
+
+    public void createUserDay(StudyDays studyDays) {
+        this.getStudyDays().add(studyDays);
+        studyDays.getUserStudyDays().add(this);
+    }
 
     public void createUserArea(Area area) {
         this.getAreas().add(area);
@@ -58,7 +77,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        if(role.getRole() == UserRole.ADMIN) {
+        if(role.getRole() == UserRoles.ADMIN) {
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         }else {
             return List.of(new SimpleGrantedAuthority("ROLE_USER"));

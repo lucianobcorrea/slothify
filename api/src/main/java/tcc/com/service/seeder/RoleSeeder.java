@@ -1,7 +1,7 @@
 package tcc.com.service.seeder;
 
 import tcc.com.domain.role.Role;
-import tcc.com.domain.user.UserRole;
+import tcc.com.domain.user.UserRoles;
 import tcc.com.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -15,16 +15,16 @@ public class RoleSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(!roleRepository.existsByRole(UserRole.ADMIN)) {
+        if(!roleRepository.existsByRole(UserRoles.ADMIN)) {
             Role adminRole = Role.builder()
-                    .role(UserRole.ADMIN)
+                    .role(UserRoles.ADMIN)
                     .build();
             roleRepository.save(adminRole);
         }
 
-        if(!roleRepository.existsByRole(UserRole.USER)) {
+        if(!roleRepository.existsByRole(UserRoles.USER)) {
             Role userRole = Role.builder()
-                    .role(UserRole.USER)
+                    .role(UserRoles.USER)
                     .build();
             roleRepository.save(userRole);
         }

@@ -3,7 +3,7 @@ package tcc.com.domain.studyDurations;
 import lombok.Getter;
 
 @Getter
-public enum Duration  {
+public enum Durations {
     FIVE_MINUTES(5),
     TEN_MINUTES(10),
     FIFTEEN_MINUTES(15),
@@ -11,7 +11,7 @@ public enum Duration  {
 
     private final Integer duration;
 
-    Duration(Integer duration) {
+    Durations(Integer duration) {
         this.duration = duration;
     }
 }

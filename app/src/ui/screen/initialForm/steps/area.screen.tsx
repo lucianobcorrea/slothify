@@ -1,31 +1,23 @@
-import { useGetAreas } from "@/hook/useGetAreas/useGetAreas";
+import { useGetArea } from "@/hook/useGetArea/useGetArea";
 import { MessageBoxSelect, FormTemplate } from "@/ui/index";
 import { useEffect } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { FormFields } from "./steps.screen";
-import { toast } from "react-toastify";
+import { UseFormRegister } from "react-hook-form";
+import { FormFields } from "./step.screen";
 
 interface AreaProps {
   progress: number;
   clickEventNext: () => void;
   clickEventBack: () => void;
   register: UseFormRegister<FormFields>;
-  errors: FieldErrors<FormFields>;
 }
 
 export const Area = (props: AreaProps) => {
-  const { areas, fetchAreas } = useGetAreas();
+  const { areas, fetchAreas } = useGetArea();
 
   useEffect(() => {
     fetchAreas();
   }, []);
 
-  useEffect(() => {
-    if (props.errors.checkboxes) {
-      toast.error(props.errors.checkboxes.message);
-    }
-  }, [props.errors.checkboxes]);
-  
   return (
     <FormTemplate
       clickEventNext={() => props.clickEventNext()}
@@ -41,7 +33,7 @@ export const Area = (props: AreaProps) => {
               <MessageBoxSelect
                 classname="pt-2 pb-2"
                 value={area.slug}
-                register={props.register("checkboxes")}
+                register={props.register("areas")}
               >
                 <div className="flex items-center gap-5 font-medium text-xl">
                   <img src={area.image} alt="image" className="max-w-[90px]" />

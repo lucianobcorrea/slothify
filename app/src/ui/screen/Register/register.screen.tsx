@@ -67,7 +67,7 @@ export function Register() {
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               <InputComponent
-                {...register("email")}
+                register={register("email")}
                 classname={errors.email ? "mb-3" : "mb-6"}
                 placeholder="Ex.: joao@feevale.com.br"
                 type="email"
@@ -81,7 +81,7 @@ export function Register() {
                 </div>
               )}
               <InputComponent
-                {...register("username")}
+                register={register("username")}
                 classname={errors.username ? "mb-3" : "mb-6"}
                 placeholder="Ex.: lucianobcorrea"
                 type="text"
@@ -95,7 +95,7 @@ export function Register() {
                 </div>
               )}
               <InputComponent
-                {...register("password")}
+                register={register("password")}
                 classname={errors.password ? "mb-3" : "mb-6"}
                 placeholder="••••••••"
                 type="password"
@@ -109,7 +109,7 @@ export function Register() {
                 </div>
               )}
               <InputComponent
-                {...register("rePassword")}
+                register={register("rePassword")}
                 classname={errors.rePassword ? "mb-3" : "mb-10"}
                 placeholder="••••••••"
                 type="password"
