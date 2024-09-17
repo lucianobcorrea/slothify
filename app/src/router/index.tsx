@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Login, Register, Home, Step } from "../ui/index.ts";
+import ProtectedRoute from "./protectedRoute.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -12,10 +13,18 @@ export const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Home />,
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/bem-vindo",
-    element: <Step />,
+    element: (
+      <ProtectedRoute>
+        <Step />
+      </ProtectedRoute>
+    ),
   },
 ]);
