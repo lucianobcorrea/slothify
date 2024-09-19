@@ -103,7 +103,7 @@ export function Home() {
           Aprender nunca foi tão divertido.
         </h3>
 
-        <ul className="leading-9 pl-12 grid grid-cols-2 text-white text-2xl font-medium mt-12 gap-16 list-disc marker:text-primary-color-dark">
+        <ul className="leading-9 pl-5 grid grid-cols-2 text-white text-2xl font-medium mt-12 gap-16 list-disc marker:text-primary-color-dark">
           <div>
             <li className="mb-10">
               <span className="font-bold text-primary-color-dark">
