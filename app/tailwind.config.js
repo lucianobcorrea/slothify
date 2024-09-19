@@ -19,6 +19,7 @@ module.exports = {
 			colors: {
 				'primary-color': '#A855F7',
 				'primary-color-dark': '#6D2B8D',
+				'primary-color-darker': '#3B0A45',
 				'secondary-color': '#D4B3F7',
 				'neutral-750': '#42424280',
 				border: 'hsl(var(--border))',
