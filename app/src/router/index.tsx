@@ -12,11 +12,9 @@ export const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "/home",
+    path: "/",
     element: (
-      <ProtectedRoute>
-        <Home />
-      </ProtectedRoute>
+      <Home />
     ),
   },
   {
