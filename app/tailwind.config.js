@@ -22,6 +22,7 @@ module.exports = {
 				'primary-color-darker': '#3B0A45',
 				'secondary-color': '#D4B3F7',
 				'neutral-750': '#42424280',
+				'neutral-850': '#1f1f1f',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

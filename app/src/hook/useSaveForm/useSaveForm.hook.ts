@@ -12,7 +12,7 @@ export function useSaveForm() {
     try {
       await saveForm(data);
 
-      navigate("/home");
+      navigate("/menu");
     } catch (error) {
       const message = getResponseError(error);
       toast.error(message);

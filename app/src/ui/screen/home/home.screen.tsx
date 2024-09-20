@@ -7,8 +7,11 @@ import { useNavigate } from "react-router-dom";
 import "aos/dist/aos.css";
 import Aos from "aos";
 import { useEffect } from "react";
+import { useAuthContext } from "@/hook/useAuthContext/useAuthContext.hook";
 
 export function Home() {
+  const { authUser } = useAuthContext();
+
   useEffect(() => {
     Aos.init();
   });
@@ -21,6 +24,10 @@ export function Home() {
 
   const goToRegister = () => {
     navigate("/registrar");
+  };
+
+  const goToMenu = () => {
+    navigate("/menu");
   };
 
   return (
@@ -49,7 +56,9 @@ export function Home() {
             </ButtonComponent>
 
             <ButtonComponent
-              clickEvent={() => goToLogin()}
+              clickEvent={
+                authUser === null ? () => goToLogin() : () => goToMenu()
+              }
               btnType="button"
               classname="mt-4 bg-neutral-200 hover:bg-gray-300 hover:border-white border-neutral-100 text-black"
             >

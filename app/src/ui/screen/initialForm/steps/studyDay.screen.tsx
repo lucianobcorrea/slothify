@@ -48,7 +48,7 @@ export const StudyDay = (props: StudyDaysProps) => {
 
         <MessageBoxRadio
           classname="pt-2 pb-2"
-          value="WEKEEND"
+          value="WEEKEND"
           register={props.register("studyDay")}
         >
           <div className="flex items-center gap-5 font-medium text-xl">

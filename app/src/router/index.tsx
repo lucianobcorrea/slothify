@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Login, Register, Home, Step } from "../ui/index.ts";
+import { Login, Register, Home, Step, Menu, Profile } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 
 export const router = createBrowserRouter([
@@ -13,9 +13,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: (
-      <Home />
-    ),
+    element: <Home />,
   },
   {
     path: "/bem-vindo",
@@ -24,5 +22,13 @@ export const router = createBrowserRouter([
         <Step />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "/menu",
+    element: <Menu />,
+  },
+  {
+    path: "/perfil",
+    element: <Profile />,
   },
 ]);
