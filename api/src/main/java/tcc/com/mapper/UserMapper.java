@@ -18,6 +18,8 @@ public class UserMapper {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .avatar(user.getAvatar())
+                .banner(user.getBanner())
                 .initialForm(user.isInitialForm())
                 .build();
     }

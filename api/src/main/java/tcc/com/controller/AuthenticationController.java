@@ -7,7 +7,7 @@ import tcc.com.controller.response.authentication.LoginResponse;
 import tcc.com.domain.user.User;
 import tcc.com.mapper.LoginMapper;
 import tcc.com.security.TokenService;
-import tcc.com.service.CreateUserService;
+import tcc.com.service.user.CreateUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

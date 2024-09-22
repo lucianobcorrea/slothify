@@ -13,7 +13,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <ProtectedRoute>
+        <Home />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/bem-vindo",
@@ -25,10 +29,18 @@ export const router = createBrowserRouter([
   },
   {
     path: "/menu",
-    element: <Menu />,
+    element: (
+      <ProtectedRoute>
+        <Menu />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/perfil",
-    element: <Profile />,
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
   },
 ]);

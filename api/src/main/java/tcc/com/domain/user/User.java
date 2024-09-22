@@ -32,6 +32,8 @@ public class User implements UserDetails {
     private String email;
     private boolean active;
     private boolean initialForm;
+    private String avatar;
+    private String banner;
 
     @ManyToOne
     @JoinColumn(name = "study_duration_id")

@@ -1,4 +1,4 @@
-package tcc.com.service;
+package tcc.com.service.user;
 
 import tcc.com.controller.request.user.UserRequest;
 import tcc.com.domain.role.Role;

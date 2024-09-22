@@ -1,10 +1,16 @@
 import { createContext, useState, ReactNode } from "react";
 
 interface AuthContextType {
-  authUser: string | null;
-  setAuthUser: (user: string | null) => void;
+  authUser: AuthUser | null; 
+  setAuthUser: (user: AuthUser | null) => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (loggedIn: boolean) => void;
+}
+
+interface AuthUser {
+  username: string;
+  avatar: File;
+  banner: File;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,7 +21,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [authUser, setAuthUser] = useState<string | null>(null);
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
 
   const value = {
     authUser,

@@ -1,4 +1,4 @@
-package tcc.com.service;
+package tcc.com.service.user;
 
 import tcc.com.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

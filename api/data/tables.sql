@@ -73,3 +73,9 @@ CREATE TABLE study_duration (
 
 ALTER TABLE users
 ADD CONSTRAINT fk_user_study_duration FOREIGN KEY(study_duration_id) REFERENCES study_duration(id) ON DELETE CASCADE;
+
+ALTER TABLE users
+ADD avatar TEXT;
+
+ALTER TABLE users
+ADD banner TEXT;

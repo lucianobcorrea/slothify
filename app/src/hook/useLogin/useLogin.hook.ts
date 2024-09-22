@@ -20,11 +20,10 @@ export function useLogin() {
 
       setAuthUser(authUser);
       setIsLoggedIn(true);
-        console.log(authUser.initialForm);
       if (!authUser.initialForm) {
         navigate("/bem-vindo");
       } else {
-        navigate("/home");
+        navigate("/menu");
       }
     } catch (error) {
       const message = getResponseError(error);
