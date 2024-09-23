@@ -23,6 +23,7 @@ import { InputComponent } from "@/ui/component/input/input.component";
 import { useForm } from "react-hook-form";
 import { useEditProfile } from "@/hook/useEditProfile/useEditProfile.hook";
 import { useAuthContext } from "@/hook/useAuthContext/useAuthContext.hook";
+import { useState } from "react";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
@@ -34,6 +35,7 @@ export type FormFields = z.infer<typeof schema>;
 
 export const Profile = () => {
   const { authUser } = useAuthContext();
+  const [open, setOpen] = useState<boolean>(false);
 
   const {
     register,
@@ -46,7 +48,7 @@ export const Profile = () => {
     },
   });
 
-  const onSubmit = useEditProfile();
+  const onSubmit = useEditProfile(setOpen);
 
   return (
     <Main>
@@ -74,7 +76,7 @@ export const Profile = () => {
             </h1>
           </div>
           <div>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger>
                 <ButtonComponent
                   btnType="button"
