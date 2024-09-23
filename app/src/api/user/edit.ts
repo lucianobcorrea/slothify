@@ -9,9 +9,11 @@ interface EditFormData  {
 }
 
 export async function edit(formData: EditFormData) {
-  await axiosInstance.patch(URL_EDIT_USER, formData, {
+  const response = await axiosInstance.patch(URL_EDIT_USER, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+
+  return response.data;
 }

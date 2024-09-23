@@ -29,6 +29,7 @@ const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
   avatar: z.instanceof(FileList).optional(),
   banner: z.instanceof(FileList).optional(),
+  color: z.string(),
 });
 
 export type FormFields = z.infer<typeof schema>;
@@ -45,6 +46,7 @@ export const Profile = () => {
     resolver: zodResolver(schema),
     defaultValues: {
       username: authUser?.username || "",
+      color: authUser?.color || "#424242",
     },
   });
 
@@ -55,24 +57,29 @@ export const Profile = () => {
       <div className="relative">
         <img
           className="w-full h-[600px] object-cover rounded-b-[50px]"
-          src={banner}
+          src={authUser?.banner}
           alt="Banner do usuário"
         />
       </div>
       <div className="container bg-neutral-850 bottom-[-6%] left-0 right-0 rounded-3xl py-10 relative z-10 mt-[-150px]">
         <div className="grid grid-cols-[1.3fr,2fr,0.5fr] px-24">
           <div className="relative">
-            <div className="bg-red-500 rounded-3xl p-6 w-full h-full flex justify-center relative top-[-50%]">
+            <div
+              className="rounded-3xl p-6 w-full h-full flex justify-center relative top-[-50%]"
+              style={{
+                backgroundColor: authUser?.color ? authUser.color : "#424242",
+              }}
+            >
               <img
                 className="w-[300px] h-[300px] object-cover"
-                src={avatar}
+                src={authUser?.avatar}
                 alt="Avatar do usuário"
               />
             </div>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-start ps-10">
             <h1 className="font-bold text-white text-4xl">
-              Luciano Balestrin Corrêa
+              {authUser?.username}
             </h1>
           </div>
           <div>
@@ -95,15 +102,46 @@ export const Profile = () => {
                     </DialogDescription>
                   </DialogHeader>
 
-                  <InputComponent
-                    register={{ ...register("username") }}
-                    classname="mb-6 mt-6"
-                    placeholder="Ex.: Luciano Corrêa"
-                    type="text"
-                    id="username"
-                  >
-                    Nome de Usuário
-                  </InputComponent>
+                  <div className="grid grid-cols-[4fr,1fr] gap-14">
+                    <div>
+                      <InputComponent
+                        register={{ ...register("username") }}
+                        classname={`mt-6 ${errors.username ? "mb-2" : "mb-6"}`}
+                        placeholder="Ex.: Luciano Corrêa"
+                        type="text"
+                        id="username"
+                      >
+                        Nome de Usuário
+                      </InputComponent>
+                      {errors.username && (
+                        <div className="text-red-500 text-sm mb-4">
+                          {errors.username.message}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-6 mb-6 grid w-full gap-4">
+                      <Label
+                        className="text-white text-base font-light"
+                        htmlFor="color"
+                      >
+                        Cor do avatar
+                      </Label>
+                      <Input
+                        {...register("color")}
+                        className={`p-[7px] h-full rounded-2xl text-base text-white border-neutral-500 focus:border-white ${
+                          errors.username ? "mb-2" : "mb-6"
+                        }`}
+                        id="color"
+                        type="color"
+                      />
+                      {errors.color && (
+                        <div className="text-red-500 text-sm mb-4">
+                          {errors.color.message}
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
                   <div className="grid grid-cols-2 mb-10 gap-14">
                     <div className="grid w-full items-center gap-1.5">
