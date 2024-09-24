@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { user } from "@/api/auth/user.api";
+import { getResponseError } from "@/api/error/error.api";
+import { toast } from "react-toastify";
 
 interface AuthContextType {
   authUser: AuthUser | null;
@@ -29,24 +31,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      user()
-        .then((authUserData) => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await user();
+          const authUserData = response;
           setAuthUser(authUserData);
           setIsLoggedIn(true);
-        })
-        .catch(() => {
+        } catch (error) {
+          const message = getResponseError(error);
+          toast.error(message); 
           localStorage.removeItem("token");
           setAuthUser(null);
           setIsLoggedIn(false);
-        })
-        .finally(() => {
+        } finally {
           setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+  
+    fetchUserData();
   }, []);
 
   const value = {
