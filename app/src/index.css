@@ -22,6 +22,10 @@ code {
   box-sizing: border-box;
 }
 
+.sidebar .text-muted-foreground {
+  color: #ffffff;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

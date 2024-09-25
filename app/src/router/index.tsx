@@ -13,9 +13,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: (
-      <Home />
-    ),
+    element: <Home />,
   },
   {
     path: "/bem-vindo",
