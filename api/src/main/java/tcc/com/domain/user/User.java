@@ -9,10 +9,9 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import tcc.com.domain.studyDays.StudyDays;
+import tcc.com.domain.studyDays.StudyDay;
 import tcc.com.domain.studyDurations.StudyDuration;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,11 +58,11 @@ public class User implements UserDetails {
     @JoinTable(name = "user_day",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "week_day_id"))
-    private List<StudyDays> studyDays = new ArrayList<>();
+    private List<StudyDay> studyDays = new ArrayList<>();
 
-    public void createUserDay(StudyDays studyDays) {
-        this.getStudyDays().add(studyDays);
-        studyDays.getUserStudyDays().add(this);
+    public void createUserDay(StudyDay studyDay) {
+        this.getStudyDays().add(studyDay);
+        studyDay.getUserStudyDays().add(this);
     }
 
     public void createUserArea(Area area) {

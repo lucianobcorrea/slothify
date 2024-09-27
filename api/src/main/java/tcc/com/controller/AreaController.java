@@ -12,7 +12,7 @@ import tcc.com.service.area.GetAreaService;
 import java.util.List;
 
 @RestController
-@RequestMapping(("/area"))
+@RequestMapping("/area")
 public class AreaController {
 
     @Autowired

@@ -7,7 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import tcc.com.controller.request.initialForm.InitialFormRequest;
 import tcc.com.domain.area.Area;
 import tcc.com.domain.reason.Reason;
-import tcc.com.domain.studyDays.StudyDays;
+import tcc.com.domain.studyDays.StudyDay;
 import tcc.com.domain.studyDurations.Durations;
 import tcc.com.domain.studyDurations.StudyDuration;
 import tcc.com.domain.user.User;
@@ -29,7 +29,7 @@ public class CreateInitialFormService {
     private ReasonRepository reasonRepository;
 
     @Autowired
-    private StudyDaysRepository studyDaysRepository;
+    private StudyDayRepository studyDayRepository;
 
     @Autowired
     private StudyDurationsRepository studyDurationsRepository;
@@ -72,9 +72,9 @@ public class CreateInitialFormService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seleção de dias inválida, por favor, tente novamente!");
         }
 
-        List<StudyDays> studyDays = studyDaysRepository.findAllByWeekDayIn(weekDaysToFetch);
+        List<StudyDay> studyDays = studyDayRepository.findAllByWeekDayIn(weekDaysToFetch);
 
-        for(StudyDays studyDay : studyDays) {
+        for(StudyDay studyDay : studyDays) {
             user.createUserDay(studyDay);
         }
 

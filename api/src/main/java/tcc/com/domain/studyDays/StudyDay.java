@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "study_day")
-public class StudyDays {
+public class StudyDay {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
