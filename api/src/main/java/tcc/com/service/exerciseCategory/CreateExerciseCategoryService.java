@@ -1,5 +1,6 @@
 package tcc.com.service.exerciseCategory;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class CreateExerciseCategoryService {
     @Autowired
     private ExerciseCategoryRepository exerciseCategoryRepository;
 
+    @Transactional
     public void create(ExerciseCategoryRequest request) {
         ExerciseCategory exerciseCategory = ExerciseCategoryMapper.toEntity(request);
 
@@ -29,7 +31,7 @@ public class CreateExerciseCategoryService {
             exerciseCategory.setImage(uuid + fileName);
 
             exerciseCategoryRepository.save(exerciseCategory);
-        }else {
+        } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A imagem é obrigatória!");
         }
     }
