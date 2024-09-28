@@ -10,4 +10,5 @@ public class EditUserRequest {
     private String username;
     private MultipartFile avatar;
     private MultipartFile banner;
+    private String color;
 }

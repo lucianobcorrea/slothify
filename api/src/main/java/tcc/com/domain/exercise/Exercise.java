@@ -3,9 +3,9 @@ package tcc.com.domain.exercise;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import tcc.com.domain.exerciseCategory.ExerciseCategory;
 import tcc.com.domain.exerciseOption.ExerciseOption;
 import tcc.com.domain.lesson.Lesson;
+import tcc.com.domain.userAnswer.UserAnswer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +30,9 @@ public class Exercise {
     @JoinColumn(name = "lesson_id", nullable = false)
     private Lesson lesson;
 
-    @ManyToOne
-    @JoinColumn(name = "exercise_category_id", nullable = false)
-    private ExerciseCategory exerciseCategory;
-
     @OneToMany(mappedBy = "exercise")
     private List<ExerciseOption> exerciseOptions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "exercise")
+    private List<UserAnswer> userAnswers = new ArrayList<>();
 }

@@ -1,5 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Login, Register, Home, Step, Menu, Profile } from "../ui/index.ts";
+import {
+  Login,
+  Register,
+  Home,
+  Step,
+  Menu,
+  Profile,
+  Missions,
+} from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 
 export const router = createBrowserRouter([
@@ -36,6 +44,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Profile />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/missoes",
+    element: (
+      <ProtectedRoute>
+        <Missions />
       </ProtectedRoute>
     ),
   },

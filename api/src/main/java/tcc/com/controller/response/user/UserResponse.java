@@ -13,5 +13,6 @@ public class UserResponse {
     private String email;
     private String avatar;
     private String banner;
+    private String color;
     private boolean initialForm;
 }

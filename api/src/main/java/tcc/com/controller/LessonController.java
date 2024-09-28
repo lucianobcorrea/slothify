@@ -14,9 +14,9 @@ public class LessonController {
     @Autowired
     private CreateLessonService createLessonService;
 
-    @PostMapping("/create")
+    @PostMapping("/create/{id}/{exerciseCategoryId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid LessonRequest request, @PathVariable Long id) {
-        createLessonService.create(id, request);
+    public void create(@Valid LessonRequest request, @PathVariable Long id, @PathVariable Long exerciseCategoryId) {
+        createLessonService.create(id, exerciseCategoryId, request);
     }
 }

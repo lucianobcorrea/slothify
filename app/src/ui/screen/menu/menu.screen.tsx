@@ -7,9 +7,9 @@ export const Menu = () => {
     <section className="h-screen w-full flex justify-center items-center p-6">
       <div className="grid grid-cols-6 grid-rows-6 gap-6 h-full w-full text-3xl text-white font-bold">
         
-        <Link to="/jogar" className="col-span-3 row-span-3">
+        <Link to="/missoes" className="col-span-3 row-span-3">
           <div className="h-full w-full bg-neutral-800 rounded-3xl flex justify-start items-end p-8 border border-transparent hover:border-neutral-600 hover:scale-[1.01] transition-transform duration-300 ease-in-out">
-            Jogar
+            Missões
           </div>
         </Link>
         

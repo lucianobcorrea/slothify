@@ -16,7 +16,7 @@ public class ExerciseController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@ModelAttribute @Valid ExerciseRequest request, @PathVariable Long lessonId, @PathVariable Long exerciseCategoryId) {
-        createExerciseService.create(lessonId, exerciseCategoryId, request);
+    public void create(@ModelAttribute @Valid ExerciseRequest request, @PathVariable Long lessonId) {
+        createExerciseService.create(lessonId, request);
     }
 }

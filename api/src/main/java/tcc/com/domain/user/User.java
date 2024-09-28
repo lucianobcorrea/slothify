@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import tcc.com.domain.studyDays.StudyDay;
 import tcc.com.domain.studyDurations.StudyDuration;
+import tcc.com.domain.userAnswer.UserAnswer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +34,7 @@ public class User implements UserDetails {
     private boolean initialForm;
     private String avatar;
     private String banner;
+    private String color;
 
     @ManyToOne
     @JoinColumn(name = "study_duration_id")
@@ -41,6 +43,9 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserAnswer> userAnswers = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "user_area",

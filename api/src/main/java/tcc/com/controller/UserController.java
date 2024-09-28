@@ -27,7 +27,7 @@ public class UserController {
 
     @PatchMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public void edit(@ModelAttribute @Valid EditUserRequest request) {
-        editUserService.edit(request);
+    public UserResponse edit(@ModelAttribute @Valid EditUserRequest request) {
+        return editUserService.edit(request);
     }
 }

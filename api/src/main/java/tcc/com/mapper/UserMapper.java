@@ -18,8 +18,9 @@ public class UserMapper {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .avatar(user.getAvatar())
-                .banner(user.getBanner())
+                .color(user.getColor())
+                .avatar("http://localhost:8080/files/" + user.getAvatar())
+                .banner("http://localhost:8080/files/" + user.getBanner())
                 .initialForm(user.isInitialForm())
                 .build();
     }

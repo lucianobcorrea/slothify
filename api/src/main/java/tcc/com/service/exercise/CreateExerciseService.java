@@ -31,15 +31,12 @@ public class CreateExerciseService {
     private ConvertImage convertImage;
 
     @Transactional
-    public void create(Long lessonId, Long exerciseCategoryId, ExerciseRequest request) {
+    public void create(Long lessonId, ExerciseRequest request) {
 
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lição não encontrada."));
 
-        ExerciseCategory exerciseCategory = exerciseCategoryRepository.findById(exerciseCategoryId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria de exercício não encontrada."));
-
-        Exercise exercise = ExerciseMapper.toEntity(request, lesson, exerciseCategory);
+        Exercise exercise = ExerciseMapper.toEntity(request, lesson);
 
         if(!request.getImage().isEmpty()) {
             String uuid = convertImage.uuid();

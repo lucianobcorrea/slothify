@@ -14,7 +14,7 @@ public class ChapterController {
     @Autowired
     private CreateChapterService createChapterService;
 
-    @PostMapping("/create")
+    @PostMapping("/create/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@Valid ChapterRequest request, @PathVariable Long id) {
         createChapterService.create(id, request);

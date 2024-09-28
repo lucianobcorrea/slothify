@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import tcc.com.domain.exercise.Exercise;
+import tcc.com.domain.lesson.Lesson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,5 +25,5 @@ public class ExerciseCategory {
     private ExerciseCategoryTypes name;
 
     @OneToMany(mappedBy = "exerciseCategory")
-    private List<Exercise> exercises = new ArrayList<>();
+    private List<Lesson> exercises = new ArrayList<>();
 }
