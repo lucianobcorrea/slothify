@@ -8,6 +8,7 @@ public class ChapterMapper {
     public static Chapter toEntity(ChapterRequest request) {
         Chapter chapter = new Chapter();
         chapter.setTitle(request.getTitle());
+        chapter.setColor(request.getColor());
         return chapter;
     }
 }

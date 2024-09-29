@@ -19,11 +19,14 @@ public class Chapter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String color;
+
     @ManyToOne
     @JoinColumn(name = "area_id", nullable = false)
     private Area area;
 
     @OneToMany(mappedBy = "chapter")
+    @OrderBy("id")
     private List<Lesson> lessons = new ArrayList<>();
 
     private String title;

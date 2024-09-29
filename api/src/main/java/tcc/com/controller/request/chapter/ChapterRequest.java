@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class ChapterRequest {
     String title;
+    String color;
 }
