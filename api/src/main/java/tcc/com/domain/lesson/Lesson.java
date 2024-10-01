@@ -26,6 +26,9 @@ public class Lesson {
 
     private String title;
 
+    @Enumerated(EnumType.STRING)
+    private ExerciseType exerciseType;
+
     @OneToMany(mappedBy = "lesson")
     private List<Exercise> exercises = new ArrayList<>();
 

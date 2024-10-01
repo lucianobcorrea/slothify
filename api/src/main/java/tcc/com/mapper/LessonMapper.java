@@ -12,6 +12,7 @@ public class LessonMapper {
         lesson.setTitle(request.getTitle());
         lesson.setChapter(chapter);
         lesson.setExerciseCategory(exerciseCategory);
+        lesson.setExerciseType(request.getExerciseType());
         return lesson;
     }
 }

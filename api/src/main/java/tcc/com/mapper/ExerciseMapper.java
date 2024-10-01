@@ -9,7 +9,6 @@ public class ExerciseMapper {
     public static Exercise toEntity(ExerciseRequest request, Lesson lesson) {
         Exercise exercise = new Exercise();
         exercise.setStatement(request.getStatement());
-        exercise.setExerciseType(request.getExerciseType());
         exercise.setLesson(lesson);
         return exercise;
     }

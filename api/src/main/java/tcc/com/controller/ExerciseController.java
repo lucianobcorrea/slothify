@@ -14,7 +14,7 @@ public class ExerciseController {
     @Autowired
     private CreateExerciseService createExerciseService;
 
-    @PostMapping("/create")
+    @PostMapping("/create/{lessonId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@ModelAttribute @Valid ExerciseRequest request, @PathVariable Long lessonId) {
         createExerciseService.create(lessonId, request);

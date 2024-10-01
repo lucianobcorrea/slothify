@@ -20,9 +20,6 @@ public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private ExerciseType exerciseType;
-
     private String statement;
     private String image;
 

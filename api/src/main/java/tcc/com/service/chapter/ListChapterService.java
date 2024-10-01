@@ -45,6 +45,7 @@ public class ListChapterService {
                 return LessonResponse.builder()
                         .id(lesson.getId())
                         .title(lesson.getTitle())
+                        .exerciseType(lesson.getExerciseType())
                         .exerciseCategory(categoryResponse)
                         .build();
             }).collect(Collectors.toList());

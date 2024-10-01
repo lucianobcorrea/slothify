@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useEffect } from "react";
+import { ButtonComponent } from "@/ui/component/button/button.component";
 
 export const Missions = () => {
   const { chapters, fetchChapters } = useGetChapters(2);
@@ -57,7 +58,12 @@ export const Missions = () => {
                               />
                             </li>
                           </PopoverTrigger>
-                          <PopoverContent>{lesson.title}</PopoverContent>
+                          <PopoverContent className="text-center bg-neutral-700 border-neutral-500">
+                            <h2 className="text-white text-xl font-bold">{lesson.title}</h2>
+                            <ButtonComponent btnType="button" classname="mt-4 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color">
+                              Iniciar
+                            </ButtonComponent>
+                          </PopoverContent>
                         </Popover>
                       </div>
                     );
