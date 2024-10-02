@@ -7,7 +7,7 @@ export const ChooseType = () => {
   return (
     <>
       {location.state.exerciseType === "MULTIPLE_CHOICE" ? (
-        <MultipleChoice lessonId={location.state.lessonId}/>
+        <MultipleChoice lessonId={location.state.lessonId} />
       ) : null}
     </>
   );
