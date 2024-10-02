@@ -9,6 +9,8 @@ interface ExerciseCategory {
 }
 
 interface Lesson {
+  id: number;
+  exerciseType: string;
   title: string;
   exerciseCategory: ExerciseCategory;
 }
