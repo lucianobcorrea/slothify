@@ -11,6 +11,7 @@ interface Exercise {
 
 export function useGetExercise(id: number) {
   const [exercise, setExercise] = useState<Exercise | null>(null);
+  const [exerciseContextLoaded, setExerciseContextLoaded] = useState(false);
 
   async function fetchExercise() {
     try {
@@ -19,11 +20,14 @@ export function useGetExercise(id: number) {
     } catch (error) {
       const message = getResponseError(error);
       toast.error(message);
+    } finally {
+      setExerciseContextLoaded(true);
     }
   }
 
   return {
     exercise,
     fetchExercise,
+    exerciseContextLoaded,
   };
 }

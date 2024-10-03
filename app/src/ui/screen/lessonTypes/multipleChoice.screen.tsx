@@ -9,15 +9,18 @@ interface exerciseProps {
 }
 
 export const MultipleChoice = (props: exerciseProps) => {
-  const { exercise, fetchExercise } = useGetExercise(props.lessonId);
-  const { exerciseOptions, fetchExerciseOptions } = useGetExerciseOptions(
-    Number(exercise?.id)
+  const { exercise, fetchExercise, exerciseContextLoaded } = useGetExercise(
+    props.lessonId
   );
+  const { options, fetchExerciseOptions } = useGetExerciseOptions(exercise?.id);
 
   useEffect(() => {
     fetchExercise();
-    fetchExerciseOptions();
-  }, []);
+
+    if (exerciseContextLoaded) {
+      fetchExerciseOptions();
+    }
+  }, [exerciseContextLoaded]);
 
   return (
     <>
@@ -29,40 +32,32 @@ export const MultipleChoice = (props: exerciseProps) => {
         />
 
         <h2
-          className="text-white mt-10"
+          className="text-white text-lg mt-10 leading-7"
           dangerouslySetInnerHTML={{ __html: exercise?.statement || "" }}
         />
       </section>
 
-      <section className="container">
+      <section className="container mt-10">
+        <h2 className="text-white text-2xl mb-5 italic underline">O seu objetivo agora é decidir qual é a opção correta:</h2>
         <RadioGroup>
-          <div className="flex items-center space-x-2 mb-1">
-            <RadioGroupItem
-              className="peer bg-primary-color text-primary-color-darker w-5 h-5 border-secondary-color"
-              value="option-one"
-              id="option-one"
-            />
-            <Label
-              className="text-neutral-300 text-xl font-bold cursor-pointer peer-hover:text-white peer-aria-checked:text-white transition-colors duration-300"
-              htmlFor="option-one"
-            >
-              Option One
-            </Label>
-          </div>
+          {options?.map((option, index) => {
 
-          <div className="flex items-center space-x-2 mb-1">
-            <RadioGroupItem
-              className="peer bg-primary-color text-primary-color-darker w-5 h-5 border-secondary-color"
-              value="option-two"
-              id="option-two"
-            />
-            <Label
-              className="text-neutral-300 text-xl font-bold cursor-pointer peer-hover:text-white peer-aria-checked:text-white transition-colors duration-300"
-              htmlFor="option-two"
-            >
-              Option Two
-            </Label>
-          </div>
+            return (
+              <div className="flex items-center space-x-2 mb-1" key={index}>
+                <RadioGroupItem
+                  className="peer bg-primary-color text-secondary-color w-5 h-5 border-secondary-color"
+                  value={option.content}
+                  id={option.content}
+                />
+                <Label
+                  className="text-neutral-300 text-xl font-bold cursor-pointer peer-hover:text-white peer-aria-checked:text-secondary-color transition-colors duration-300"
+                  htmlFor={option.content}
+                >
+                  {option.content}
+                </Label>
+              </div>
+            );
+          })}
         </RadioGroup>
       </section>
     </>
