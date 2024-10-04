@@ -4,11 +4,11 @@ import { useGetExercise } from "@/hook/useGetExercise/useGetExercise.hook";
 import { useGetExerciseOptions } from "@/hook/useGetExerciseOptions/useGetExerciseOptions";
 import { useEffect } from "react";
 
-interface exerciseProps {
+interface ExerciseProps {
   lessonId: number;
 }
 
-export const MultipleChoice = (props: exerciseProps) => {
+export const MultipleChoice = (props: ExerciseProps) => {
   const { exercise, fetchExercise, exerciseContextLoaded } = useGetExercise(
     props.lessonId
   );
@@ -26,7 +26,7 @@ export const MultipleChoice = (props: exerciseProps) => {
     <>
       <section className="container">
         <img
-          className="w-full"
+          className="w-full max-h-[450px] object-cover"
           src={exercise?.image}
           alt="Imagem do exercício"
         />

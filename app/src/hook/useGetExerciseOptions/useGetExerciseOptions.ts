@@ -3,7 +3,8 @@ import { getExerciseOptions } from "@/api/exercise/getExerciseOptions.api";
 import { toast } from "react-toastify";
 import { getResponseError } from "@/api/error/error.api";
 
-interface ExerciseOptions {
+export interface ExerciseOptions {
+  id: number;
   content: string;
   correct: boolean;
   correctOrder: number;

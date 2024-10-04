@@ -42,6 +42,10 @@ public class CreateExerciseOptionService {
             exerciseOption.setCorrect(request.getCorrect());
         }
 
+        if (request.getCategory() != null) {
+            exerciseOption.setCategory(request.getCategory());
+        }
+
         exerciseOptionRepository.save(exerciseOption);
     }
 }

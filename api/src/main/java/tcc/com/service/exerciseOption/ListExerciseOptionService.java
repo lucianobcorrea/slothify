@@ -10,6 +10,7 @@ import tcc.com.mapper.ExerciseOptionMapper;
 import tcc.com.repository.ExerciseOptionRepository;
 import tcc.com.repository.ExerciseRepository;
 
+import java.util.Collections;
 import java.util.List;
 import static java.util.stream.Collectors.*;
 
@@ -28,8 +29,13 @@ public class ListExerciseOptionService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Exercício não encontrado."));
 
-        return exerciseOptionRepository.findAllByExercise(exercise).stream()
+        List<ExerciseOptionResponse> optionResponses = exerciseOptionRepository.findAllByExercise(exercise)
+                .stream()
                 .map(ExerciseOptionMapper::toResponse)
                 .collect(toList());
+
+        Collections.shuffle(optionResponses);
+
+        return optionResponses;
     }
 }
