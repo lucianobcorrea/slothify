@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import tcc.com.controller.request.exercise.ExerciseRequest;
 import tcc.com.domain.exercise.Exercise;
-import tcc.com.domain.exerciseCategory.ExerciseCategory;
 import tcc.com.domain.lesson.Lesson;
 import tcc.com.mapper.ExerciseMapper;
 import tcc.com.repository.ExerciseCategoryRepository;

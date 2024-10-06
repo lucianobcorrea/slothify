@@ -6,6 +6,7 @@ import lombok.Setter;
 import tcc.com.domain.chapter.Chapter;
 import tcc.com.domain.exercise.Exercise;
 import tcc.com.domain.exerciseCategory.ExerciseCategory;
+import tcc.com.domain.explanation.Explanation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,9 @@ public class Lesson {
 
     @OneToMany(mappedBy = "lesson")
     private List<Exercise> exercises = new ArrayList<>();
+
+    @OneToMany(mappedBy = "lesson")
+    private List<Explanation> explanations = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "exercise_category_id", nullable = false)
