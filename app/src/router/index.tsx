@@ -8,6 +8,7 @@ import {
   Profile,
   Missions,
   ChooseType,
+  Explanation,
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 
@@ -61,6 +62,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <ChooseType />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/explicacao",
+    element: (
+      <ProtectedRoute>
+        <Explanation />
       </ProtectedRoute>
     ),
   },

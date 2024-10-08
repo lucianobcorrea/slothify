@@ -9,8 +9,6 @@ import tcc.com.controller.response.explanation.ExplanationResponse;
 import tcc.com.service.explanation.CreateExplanationService;
 import tcc.com.service.explanation.GetExplanationService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/explanation")
 public class ExplanationController {

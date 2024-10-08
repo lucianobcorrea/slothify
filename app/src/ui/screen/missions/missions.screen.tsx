@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/popover";
 import { useEffect } from "react";
 import { ButtonComponent } from "@/ui/component/button/button.component";
-import { useNavigate } from "react-router-dom";
+import { useGetExplanation } from "@/hook/useGetExplanation/useGetExplanation.hook";
 
 export const Missions = () => {
   const { chapters, fetchChapters } = useGetChapters(2);
-  const navigate = useNavigate();
+  const { fetchExplanation } = useGetExplanation();
 
   useEffect(() => {
     fetchChapters();
@@ -66,14 +66,7 @@ export const Missions = () => {
                               {lesson.title}
                             </h2>
                             <ButtonComponent
-                              clickEvent={() =>
-                                navigate("/exercicio", {
-                                  state: {
-                                    lessonId: lesson.id,
-                                    exerciseType: lesson.exerciseType,
-                                  },
-                                })
-                              }
+                              clickEvent={() => fetchExplanation(lesson.id, lesson.exerciseType)}
                               btnType="button"
                               classname="mt-4 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
                             >
