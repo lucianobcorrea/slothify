@@ -94,18 +94,18 @@ module.exports = {
         },
         sway: {
           "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-5px)" },
+          "50%": { transform: "translateY(-10px)" },
         },
         "image-zoom": {
-          "0%, 100%": { transform: "scale(1)" },
-          "50%": { transform: "scale(1.2)" },
+          "0%": { transform: "scale(1.4)" },
+          "100%": { transform: "scale(1)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        sway: "sway 2s ease-in-out infinite",
-		"image-zoom": "image-zoom 10s ease-in" 
+        sway: "sway 1.5s ease-in-out infinite",
+        "image-zoom": "image-zoom 0.6s ease",
       },
     },
   },

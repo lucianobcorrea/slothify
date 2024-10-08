@@ -25,15 +25,24 @@ export const Explanation = () => {
 
   return (
     <section className="relative container p-12 bg-neutral-850 text-white rounded-lg shadow-lg flex flex-col mt-12 mb-12 border border-neutral-700">
-      <img
-        src={writingSloth}
-        alt="Preguiça Escrevendo"
-        className={`transition-all duration-1000 ease-in-out ${
-          animationStage === "initial"
-            ? "w-96 h-96 absolute inset-0 m-auto animate-image-zoom"
-            : "w-32 h-32 absolute bottom-4 left-10 animate-sway"
-        }`}
-      />
+      <div
+        className="absolute top-0 left-0 transition-transform duration-1000 ease-in-out"
+        style={{
+          transform:
+            animationStage === "initial"
+              ? "translate(calc(45vw - 100%), calc(50vh - 55%)) scale(1)"
+              : "translate(10px, calc(100vh - 92%)) translateX(-90px) scale(0.333)",
+          width: animationStage === "initial" ? "24rem" : "24rem",
+        }}
+      >
+        <img
+          src={writingSloth}
+          alt="Preguiça Escrevendo"
+          className={`w-full h-full ${
+            animationStage === "initial" ? "animate-image-zoom" : "animate-sway"
+          }`}
+        />
+      </div>
 
       <div
         className={`${
