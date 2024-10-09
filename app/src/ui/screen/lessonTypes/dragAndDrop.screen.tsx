@@ -11,6 +11,8 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import { ButtonComponent } from "@/ui/component/button/button.component";
+import { useNavigate } from "react-router-dom";
 
 interface ExerciseProps {
   lessonId: number;
@@ -34,7 +36,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   });
 
   const style = {
-    transform: transform ? CSS.Translate.toString(transform) : undefined
+    transform: transform ? CSS.Translate.toString(transform) : undefined,
   };
 
   return (
@@ -81,6 +83,9 @@ export const DragAndDrop = (props: ExerciseProps) => {
   const { exercise, fetchExercise, exerciseContextLoaded } = useGetExercise(
     props.lessonId
   );
+
+  const navigate = useNavigate();
+
   const { options, fetchExerciseOptions } = useGetExerciseOptions(exercise?.id);
 
   const [assignedItems, setAssignedItems] = useState<{
@@ -201,7 +206,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
             ))}
           </div>
 
-          <div className="flex gap-10 mb-20">
+          <div className="flex gap-10 mb-10">
             {Object.entries(assignedItems).map(([key, value]) => (
               <div className="w-full" key={key}>
                 <DroppableArea id={key}>
@@ -211,6 +216,22 @@ export const DragAndDrop = (props: ExerciseProps) => {
             ))}
           </div>
         </DndContext>
+      </section>
+
+      <section className="container text-center mt-10 mb-20">
+        <ButtonComponent
+          clickEvent={() => navigate("/missoes")}
+          btnType="button"
+          classname="mt-4 me-6 bg-neutral-200 hover:bg-gray-300 hover:border-white border-neutral-100 text-black w-52"
+        >
+          Voltar depois
+        </ButtonComponent>
+        <ButtonComponent
+          classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color mt-12 w-52"
+          btnType="button"
+        >
+          Confirmar
+        </ButtonComponent>
       </section>
     </>
   );

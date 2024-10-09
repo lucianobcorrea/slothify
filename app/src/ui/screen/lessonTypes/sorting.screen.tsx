@@ -9,6 +9,8 @@ import {
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 import { CSS } from "@dnd-kit/utilities";
+import { useNavigate } from "react-router-dom";
+import { ButtonComponent } from "@/ui/component/button/button.component";
 
 interface ExerciseProps {
   lessonId: number;
@@ -26,11 +28,12 @@ interface SortableItemProps {
 }
 
 const SortableItem = ({ id, content }: SortableItemProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition: transition
+    transition: transition,
   };
 
   return (
@@ -52,6 +55,7 @@ export const Sorting = (props: ExerciseProps) => {
   );
   const { options, fetchExerciseOptions } = useGetExerciseOptions(exercise?.id);
   const [items, setItems] = useState<Option[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchExercise();
@@ -69,15 +73,17 @@ export const Sorting = (props: ExerciseProps) => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-  
+
     if (!over || active.id === over.id) {
       return;
     }
-  
+
     setItems((items) => {
-      const oldIndex = items.findIndex((item) => item.correctOrder === active.id);
+      const oldIndex = items.findIndex(
+        (item) => item.correctOrder === active.id
+      );
       const newIndex = items.findIndex((item) => item.correctOrder === over.id);
-  
+
       return arrayMove(items, oldIndex, newIndex);
     });
   };
@@ -97,7 +103,7 @@ export const Sorting = (props: ExerciseProps) => {
         />
       </section>
 
-      <section className="container mt-10 mb-12">
+      <section className="container mt-10 mb-10">
         <h2 className="text-white text-2xl mb-12 italic underline">
           O seu objetivo agora é decidir a ordem correta:
         </h2>
@@ -121,6 +127,22 @@ export const Sorting = (props: ExerciseProps) => {
             </SortableContext>
           </DndContext>
         </div>
+      </section>
+
+      <section className="container text-center mt-10 mb-20">
+        <ButtonComponent
+          clickEvent={() => navigate("/missoes")}
+          btnType="button"
+          classname="mt-4 me-6 bg-neutral-200 hover:bg-gray-300 hover:border-white border-neutral-100 text-black w-52"
+        >
+          Voltar depois
+        </ButtonComponent>
+        <ButtonComponent
+          classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color mt-12 w-52"
+          btnType="button"
+        >
+          Confirmar
+        </ButtonComponent>
       </section>
     </>
   );

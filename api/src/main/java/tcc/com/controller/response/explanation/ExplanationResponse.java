@@ -16,5 +16,6 @@ public class ExplanationResponse {
     private String example;
     private String tip;
     private Long lesson_id;
+    private String exerciseType;
     private List<KeyPointResponse> keyPoints;
 }

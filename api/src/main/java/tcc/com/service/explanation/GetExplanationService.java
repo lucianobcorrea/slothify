@@ -50,6 +50,7 @@ public class GetExplanationService {
                 .example(explanation.getExample())
                 .tip(explanation.getTip())
                 .lesson_id(lessonId)
+                .exerciseType(String.valueOf(lesson.getExerciseType()))
                 .keyPoints(keyPointResponses)
                 .build();
     }

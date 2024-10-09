@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ButtonComponent } from "@/ui/component/button/button.component";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import writingSloth from "@/assets/image/initialForm/writing-sloth.svg";
@@ -12,6 +12,7 @@ interface KeyPoint {
 export const Explanation = () => {
   const location = useLocation();
   const [animationStage, setAnimationStage] = useState("initial");
+  const navigate = useNavigate();
 
   useEffect(() => {
     Aos.init({ duration: 1000 });
@@ -110,8 +111,24 @@ export const Explanation = () => {
 
         <div className="text-center" data-aos="fade-up" data-aos-delay="700">
           <ButtonComponent
+            clickEvent={() => navigate("/missoes")}
             btnType="button"
-            classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color mt-12 w-60"
+            classname="mt-4 me-6 bg-neutral-200 hover:bg-gray-300 hover:border-white border-neutral-100 text-black w-52"
+          >
+            Voltar
+          </ButtonComponent>
+
+          <ButtonComponent
+            clickEvent={() =>
+              navigate("/exercicio", {
+                state: {
+                  lessonId: location.state.explanation.lesson_id,
+                  exerciseType: location.state.explanation.exerciseType,
+                },
+              })
+            }
+            btnType="button"
+            classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color mt-12 w-52"
           >
             Continuar
           </ButtonComponent>

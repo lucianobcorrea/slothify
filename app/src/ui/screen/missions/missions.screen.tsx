@@ -9,6 +9,27 @@ import { useEffect } from "react";
 import { ButtonComponent } from "@/ui/component/button/button.component";
 import { useGetExplanation } from "@/hook/useGetExplanation/useGetExplanation.hook";
 
+const tailwindMarginClasses = [
+  // Margens à esquerda
+  "ml-10",
+  "ml-14",
+  "ml-16",
+  "ml-20",
+  "ml-24",
+  "ml-28",
+  "ml-32",
+  "ml-36",
+  // Margens à direita
+  "mr-10",
+  "mr-14",
+  "mr-16",
+  "mr-20",
+  "mr-24",
+  "mr-28",
+  "mr-32",
+  "mr-36",
+];
+
 export const Missions = () => {
   const { chapters, fetchChapters } = useGetChapters(2);
   const { fetchExplanation } = useGetExplanation();
@@ -48,12 +69,30 @@ export const Missions = () => {
               <div>
                 <ul className="mt-4 flex flex-col">
                   {chapter.lessons.map((lesson, index) => {
-                    console.log(lesson);
+                    const isMarginLeft = Math.random() < 0.5;
+                    const marginSizes = [
+                      "10",
+                      "14",
+                      "16",
+                      "20",
+                      "24",
+                      "28",
+                      "32",
+                      "36",
+                    ];
+                    const randomIndex = Math.floor(
+                      Math.random() * marginSizes.length
+                    );
+                    const marginSize = marginSizes[randomIndex];
+                    const marginClass = `${
+                      isMarginLeft ? "ml" : "mr"
+                    }-${marginSize}`;
+
                     return (
                       <div key={index}>
                         <Popover>
                           <PopoverTrigger>
-                            <li>
+                            <li className={`relative ${marginClass}`}>
                               <img
                                 src={lesson.exerciseCategory.image}
                                 alt={lesson.exerciseCategory.name}
@@ -66,7 +105,9 @@ export const Missions = () => {
                               {lesson.title}
                             </h2>
                             <ButtonComponent
-                              clickEvent={() => fetchExplanation(lesson.id, lesson.exerciseType)}
+                              clickEvent={() =>
+                                fetchExplanation(lesson.id, lesson.exerciseType)
+                              }
                               btnType="button"
                               classname="mt-4 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
                             >
@@ -78,6 +119,11 @@ export const Missions = () => {
                     );
                   })}
                 </ul>
+                <div className="hidden">
+                  {tailwindMarginClasses.map((cls) => (
+                    <span key={cls} className={cls}></span>
+                  ))}
+                </div>
               </div>
             </div>
 
