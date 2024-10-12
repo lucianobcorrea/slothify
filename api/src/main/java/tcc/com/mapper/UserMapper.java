@@ -19,6 +19,7 @@ public class UserMapper {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .color(user.getColor())
+                .rankingPoint(user.getRankingPoint())
                 .avatar("http://localhost:8080/files/" + user.getAvatar())
                 .banner("http://localhost:8080/files/" + user.getBanner())
                 .initialForm(user.isInitialForm())

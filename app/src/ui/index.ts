@@ -23,5 +23,6 @@ export { FormTemplate } from "@/ui/component/initialForm/form.component";
 export { MessageBoxSelect } from "@/ui/component/messageBoxSelect/messageBoxSelect.component";
 export { MessageBoxRadio } from "@/ui/component/messageBoxRadio/messageBoxRadio.component";
 export { Header } from "@/ui/component/header/header.component";
+export { LoadingSpinner } from "@/ui/component/spinner/spinner.component";
 
 export { Main } from "@/ui/layouts/main.layout";

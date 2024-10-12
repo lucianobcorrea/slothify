@@ -14,5 +14,6 @@ public class UserResponse {
     private String avatar;
     private String banner;
     private String color;
+    private Integer rankingPoint;
     private boolean initialForm;
 }

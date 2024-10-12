@@ -35,6 +35,7 @@ public class User implements UserDetails {
     private String avatar;
     private String banner;
     private String color;
+    private Integer rankingPoint;
 
     @ManyToOne
     @JoinColumn(name = "study_duration_id")
