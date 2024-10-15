@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface ExerciseOptionRepository extends JpaRepository<ExerciseOption, Long> {
     List<ExerciseOption> findAllByExercise(Exercise exercise);
+    ExerciseOption findByExerciseIdAndCorrectTrue(Long exerciseId);
 }

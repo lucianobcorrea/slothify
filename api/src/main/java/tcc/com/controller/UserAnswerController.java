@@ -4,19 +4,19 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import tcc.com.controller.request.userAnswer.UserAnswerRequest;
-import tcc.com.service.userAnswer.CreateUserAnswerService;
+import tcc.com.controller.request.userAnswer.AnswerRequest;
+import tcc.com.service.userAnswer.CreateMultipleChoiceService;
 
 @RestController
 @RequestMapping("/user-answer")
 public class UserAnswerController {
 
     @Autowired
-    private CreateUserAnswerService createUserAnswerService;
+    private CreateMultipleChoiceService createMultipleChoiceService;
 
-    @PostMapping("/create")
+    @PutMapping("/multiple-choice/{exerciseId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody UserAnswerRequest request, @PathVariable Long exerciseId) {
-        createUserAnswerService.create(exerciseId, request);
+    public void multipleChoice(@Valid @RequestBody AnswerRequest request, @PathVariable Long exerciseId) {
+        createMultipleChoiceService.create(exerciseId, request);
     }
 }
