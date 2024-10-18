@@ -94,7 +94,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
   const [unassignedItems, setUnassignedItems] = useState<ExerciseOptions[]>([]);
 
   const [finalResults, setFinalResults] = useState({});
-
+  console.log(finalResults);
   useEffect(() => {
     fetchExercise();
 

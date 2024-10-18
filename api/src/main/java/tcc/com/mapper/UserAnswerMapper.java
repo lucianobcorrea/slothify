@@ -6,6 +6,7 @@ import tcc.com.domain.user.User;
 import tcc.com.domain.userAnswer.UserAnswer;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserAnswerMapper {
 
@@ -13,6 +14,14 @@ public class UserAnswerMapper {
         UserAnswer userAnswer = new UserAnswer();
         userAnswer.setAnswer(request.getAnswer());
         userAnswer.setCorrect(request.isCorrect());
+        userAnswer.setExercise(exercise);
+        userAnswer.setAnswerDate(LocalDateTime.now());
+        userAnswer.setUser(user);
+        return userAnswer;
+    }
+
+    public static UserAnswer toEntityGeneral(Exercise exercise, User user) {
+        UserAnswer userAnswer = new UserAnswer();
         userAnswer.setExercise(exercise);
         userAnswer.setAnswerDate(LocalDateTime.now());
         userAnswer.setUser(user);
