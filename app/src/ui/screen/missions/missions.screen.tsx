@@ -13,18 +13,9 @@ import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 const tailwindMarginClasses = [
   // Margens à esquerda
@@ -114,34 +105,44 @@ export const Missions = () => {
 
                         return (
                           <div key={lesson.id}>
-                            <Popover>
-                              <PopoverTrigger>
-                                <li className={`relative ${marginClass}`}>
-                                  <img
-                                    src={lesson.exerciseCategory.image}
-                                    alt={lesson.exerciseCategory.name}
-                                    className="w-full max-w-32"
-                                  />
-                                </li>
-                              </PopoverTrigger>
-                              <PopoverContent className="text-center bg-neutral-700 border-neutral-500">
-                                <h2 className="text-white text-xl font-bold">
-                                  {lesson.title}
-                                </h2>
-                                <ButtonComponent
-                                  clickEvent={() =>
-                                    fetchExplanation(
-                                      lesson.id,
-                                      lesson.exerciseType
-                                    )
-                                  }
-                                  btnType="button"
-                                  classname="mt-4 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
-                                >
-                                  Iniciar
-                                </ButtonComponent>
-                              </PopoverContent>
-                            </Popover>
+                            {lesson.canBeDone === true ? (
+                              <Popover>
+                                <PopoverTrigger>
+                                  <li className={`relative ${marginClass}`}>
+                                    <img
+                                      src={lesson.exerciseCategory.image}
+                                      alt={lesson.exerciseCategory.name}
+                                      className="w-full max-w-32"
+                                    />
+                                  </li>
+                                </PopoverTrigger>
+                                <PopoverContent className="text-center bg-neutral-700 border-neutral-500">
+                                  <h2 className="text-white text-xl font-bold">
+                                    {lesson.title}
+                                  </h2>
+                                  <ButtonComponent
+                                    clickEvent={() =>
+                                      fetchExplanation(
+                                        lesson.id,
+                                        lesson.exerciseType
+                                      )
+                                    }
+                                    btnType="button"
+                                    classname="mt-4 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
+                                  >
+                                    Iniciar
+                                  </ButtonComponent>
+                                </PopoverContent>
+                              </Popover>
+                            ) : (
+                              <li className={`relative ${marginClass}`}>
+                                <img
+                                  src={lesson.exerciseCategory.image}
+                                  alt={lesson.exerciseCategory.name}
+                                  className="w-full max-w-32 grayscale"
+                                />
+                              </li>
+                            )}
                           </div>
                         );
                       })}
@@ -159,21 +160,42 @@ export const Missions = () => {
         </div>
 
         <div className="col-span-3 mt-10">
-          <div className="sticky top-10 flex justify-end">
-            <div className="bg-neutral-700 px-20 py-6 rounded-xl border-[1px] border-neutral-500">
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <ButtonComponent
-                    btnType="button"
-                    classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
-                  >
-                    Selecionar área
-                  </ButtonComponent>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full"></DropdownMenuContent>
-              </DropdownMenu>
+          {areas.length > 1 ? (
+            <div className="sticky top-10 flex justify-end">
+              <div className="bg-neutral-700 px-20 py-6 rounded-xl border-[1px] border-neutral-500">
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <ButtonComponent
+                      btnType="button"
+                      classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
+                    >
+                      Selecionar área
+                    </ButtonComponent>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-full p-0 bg-neutral-700 border-neutral-500 mt-3">
+                    {areas.map((area, index) => {
+                      return (
+                        <>
+                          <ButtonComponent
+                            key={index}
+                            btnType="button"
+                            classname="bg-transparent text-white border-none hover:bg-neutral-800 w-full shadow-none hover:rounded-sm !rounded-none"
+                          >
+                            <DropdownMenuItem className="cursor-pointer focus:bg-transparent focus:text-white">
+                              {area.title}
+                            </DropdownMenuItem>
+                          </ButtonComponent>
+                          {index < areas.length - 1 ? (
+                            <hr className="border-neutral-500" />
+                          ) : null}
+                        </>
+                      );
+                    })}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </Main>

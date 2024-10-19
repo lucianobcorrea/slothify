@@ -23,7 +23,7 @@ public class Exercise {
     private String statement;
     private String image;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "lesson_id", nullable = false)
     private Lesson lesson;
 

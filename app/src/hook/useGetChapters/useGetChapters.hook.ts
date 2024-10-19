@@ -12,6 +12,7 @@ interface Lesson {
   id: number;
   exerciseType: string;
   title: string;
+  canBeDone: boolean;
   exerciseCategory: ExerciseCategory;
 }
 

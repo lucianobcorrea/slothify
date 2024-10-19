@@ -14,4 +14,5 @@ public class LessonResponse {
     private String title;
     private ExerciseType exerciseType;
     private ExerciseCategoryResponse exerciseCategory;
+    private boolean canBeDone;
 }

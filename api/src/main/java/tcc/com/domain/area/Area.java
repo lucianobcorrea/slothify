@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import tcc.com.domain.chapter.Chapter;
 import tcc.com.domain.user.User;
+import tcc.com.domain.userCourseProgress.UserCourseProgress;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,6 +20,9 @@ public class Area {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "area", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCourseProgress> userCourseProgress;
 
     private String title;
     private String slug;

@@ -12,10 +12,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import tcc.com.domain.studyDays.StudyDay;
 import tcc.com.domain.studyDurations.StudyDuration;
 import tcc.com.domain.userAnswer.UserAnswer;
+import tcc.com.domain.userCourseProgress.UserCourseProgress;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -47,6 +49,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<UserAnswer> userAnswers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCourseProgress> courseProgress;
 
     @ManyToMany
     @JoinTable(name = "user_area",
