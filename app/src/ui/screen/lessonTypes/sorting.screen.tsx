@@ -56,7 +56,7 @@ export const Sorting = (props: ExerciseProps) => {
   const { options, fetchExerciseOptions } = useGetExerciseOptions(exercise?.id);
   const [items, setItems] = useState<Option[]>([]);
   const navigate = useNavigate();
-
+  console.log(items);
   useEffect(() => {
     fetchExercise();
 

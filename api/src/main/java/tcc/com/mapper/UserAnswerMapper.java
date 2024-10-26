@@ -17,6 +17,7 @@ public class UserAnswerMapper {
         userAnswer.setExercise(exercise);
         userAnswer.setAnswerDate(LocalDateTime.now());
         userAnswer.setUser(user);
+        userAnswer.setLesson(exercise.getLesson());
         return userAnswer;
     }
 
@@ -25,6 +26,7 @@ public class UserAnswerMapper {
         userAnswer.setExercise(exercise);
         userAnswer.setAnswerDate(LocalDateTime.now());
         userAnswer.setUser(user);
+        userAnswer.setLesson(exercise.getLesson());
         return userAnswer;
     }
 }

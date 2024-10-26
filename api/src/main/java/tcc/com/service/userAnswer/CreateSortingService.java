@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import tcc.com.controller.request.userAnswer.AnswerRequest;
+import tcc.com.controller.request.userAnswer.SortingList;
+import tcc.com.controller.request.userAnswer.SortingRequest;
 import tcc.com.controller.response.userAnswer.AnswerResponse;
 import tcc.com.domain.exercise.Exercise;
-import tcc.com.domain.exerciseOption.ExerciseOption;
 import tcc.com.domain.user.User;
 import tcc.com.domain.userAnswer.UserAnswer;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
@@ -22,7 +22,7 @@ import tcc.com.repository.UserCourseProgressRepository;
 import tcc.com.security.AuthenticatedUserService;
 
 @Service
-public class CreateMultipleChoiceService {
+public class CreateSortingService {
 
     @Autowired
     private ExerciseOptionRepository exerciseOptionRepository;
@@ -39,25 +39,35 @@ public class CreateMultipleChoiceService {
     @Autowired
     private UserCourseProgressRepository userCourseProgressRepository;
 
-    public ResponseEntity<AnswerResponse> create(Long exerciseId, AnswerRequest request) {
-        ExerciseOption exerciseOption = exerciseOptionRepository.findByExerciseIdAndCorrectTrue(exerciseId);
+    public ResponseEntity<AnswerResponse> create(Long exerciseId, SortingRequest request) {
 
         User user = authenticatedUserService.get();
 
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Esse exercício não existe."));
 
-        boolean isCorrect = exerciseOption.getContent().equals(request.getAnswer());
-        request.setCorrect(isCorrect);
-
         UserAnswer userAnswer = userAnswerRepository.findByUserAndExercise(user, exercise);
 
         if(userAnswer == null) {
-            userAnswer = UserAnswerMapper.toEntity(request, exercise, user);
-        } else {
-            userAnswer.setAnswer(request.getAnswer());
-            userAnswer.setCorrect(request.isCorrect());
-            userAnswer.setLesson(exercise.getLesson());
+            userAnswer = UserAnswerMapper.toEntityGeneral(exercise, user);
+        }
+
+        String answer;
+        int index = 1;
+
+        for(SortingList list : request.getSortingList()) {
+            if(list.correctOrder != index) {
+                answer = list.content;
+                userAnswer.setCorrect(false);
+                userAnswer.setAnswer(answer);
+                break;
+            }else {
+                answer = list.content;
+                userAnswer.setCorrect(true);
+                userAnswer.setAnswer(answer);
+                userAnswer.setLesson(exercise.getLesson());
+            }
+            index++;
         }
 
         UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user, exercise.getLesson().getChapter().getArea());
@@ -73,7 +83,7 @@ public class CreateMultipleChoiceService {
         userCourseProgressRepository.save(userCourseProgress);
         userAnswerRepository.save(userAnswer);
 
-        if(!isCorrect) {
+        if(!userAnswer.isCorrect()) {
             return ResponseEntity.ok(new AnswerResponse(false, "Resposta incorreta, tente novamente!"));
         }else {
             return ResponseEntity.ok(new AnswerResponse(true, "Resposta correta!"));

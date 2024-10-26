@@ -1,6 +1,6 @@
 package tcc.com.controller.request.userAnswer;
 
-public class DragAndDropList {
-    public String category;
+public class SortingList {
     public String content;
+    public int correctOrder;
 }
