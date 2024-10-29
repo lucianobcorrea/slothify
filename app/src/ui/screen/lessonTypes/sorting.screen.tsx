@@ -12,6 +12,21 @@ import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponent } from "@/ui/component/button/button.component";
 
+import { Loader2 } from "lucide-react";
+import happySloth from "@/assets/image/exercise/happy.png";
+import sadSloth from "@/assets/image/exercise/sad.png";
+import { toast } from "react-toastify";
+import { getResponseError } from "@/api/error/error.api";
+import { sorting } from "@/api/exercise/sorting.api";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+
 interface ExerciseProps {
   lessonId: number;
 }
@@ -56,7 +71,7 @@ export const Sorting = (props: ExerciseProps) => {
   const { options, fetchExerciseOptions } = useGetExerciseOptions(exercise?.id);
   const [items, setItems] = useState<Option[]>([]);
   const navigate = useNavigate();
-  console.log(items);
+
   useEffect(() => {
     fetchExercise();
 
@@ -88,8 +103,95 @@ export const Sorting = (props: ExerciseProps) => {
     });
   };
 
+  interface ResponseType {
+    message: string;
+    correct: boolean;
+  }
+
+  interface FinalResult {
+    content: string | undefined;
+    correctOrder: number | undefined;
+  }
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [exerciseResponse, setResponse] = useState<ResponseType | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function onSubmit(request: FinalResult[]): Promise<boolean> {
+    try {
+      const response = await sorting(exercise?.id, request);
+      setResponse(response.data);
+      setLoading(true);
+      return true;
+    } catch (error) {
+      const message = getResponseError(error);
+      toast.error(message);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent
+          onInteractOutside={(e) => {
+            e.preventDefault();
+          }}
+          className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center [&>button]:hidden"
+        >
+          <DialogHeader className="flex items-center">
+            <DialogTitle className="text-4xl">
+              {exerciseResponse?.correct
+                ? "Resposta certa :)"
+                : "Resposta incorreta :("}
+            </DialogTitle>
+            {exerciseResponse?.correct ? (
+              <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
+                <img
+                  className="w-full max-w-[300px]"
+                  src={happySloth}
+                  alt="Preguiça feliz"
+                />
+                Você pode jogar novamente ou continuar a sua jornada e retornar
+                quando quiser!
+              </DialogDescription>
+            ) : (
+              <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
+                <img
+                  className="w-full max-w-[300px]"
+                  src={sadSloth}
+                  alt="Preguiça triste"
+                />
+                Você pode tentar novamente ou continuar a sua jornada e retornar
+                depois!
+              </DialogDescription>
+            )}
+          </DialogHeader>
+
+          <DialogFooter>
+            <div className="flex gap-6 mt-2">
+              <ButtonComponent
+                clickEvent={() => window.location.reload()}
+                btnType="button"
+                classname="bg-neutral-200 hover:bg-gray-300 hover:border-white border-neutral-100 text-black"
+              >
+                Jogar novamente
+              </ButtonComponent>
+
+              <ButtonComponent
+                btnType="button"
+                clickEvent={() => navigate("/missoes")}
+                classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
+              >
+                Concluir
+              </ButtonComponent>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <section className="container">
         <img
           className="w-full max-h-[450px] object-cover"
@@ -138,10 +240,28 @@ export const Sorting = (props: ExerciseProps) => {
           Voltar depois
         </ButtonComponent>
         <ButtonComponent
-          classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color mt-12 w-52"
-          btnType="button"
+          btnType="submit"
+          disabled={loading}
+          clickEvent={
+            !loading
+              ? async () => {
+                  const success = await onSubmit(items);
+                  if (success) {
+                    setOpen(true);
+                  }
+                }
+              : undefined
+          }
+          classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
         >
-          Confirmar
+          {loading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Confirmando...
+            </>
+          ) : (
+            "Confirmar"
+          )}
         </ButtonComponent>
       </section>
     </>
