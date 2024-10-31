@@ -18,6 +18,7 @@ interface AuthUser {
   color: string;
   rankingPoint: number;
   initialForm?: boolean;
+  percentageToNextLevel: number;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

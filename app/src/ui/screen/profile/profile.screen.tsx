@@ -35,7 +35,7 @@ export type FormFields = z.infer<typeof schema>;
 export const Profile = () => {
   const { authUser } = useAuthContext();
   const [open, setOpen] = useState<boolean>(false);
-
+  console.log(authUser);
   const {
     register,
     handleSubmit,

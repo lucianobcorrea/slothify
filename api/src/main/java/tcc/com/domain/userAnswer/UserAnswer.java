@@ -22,6 +22,7 @@ public class UserAnswer {
     private String answer;
     private boolean correct;
     private LocalDateTime answerDate;
+    private boolean alreadyAnswered;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

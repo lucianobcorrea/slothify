@@ -1,6 +1,7 @@
 package tcc.com.domain.user;
 
 import tcc.com.domain.area.Area;
+import tcc.com.domain.level.Level;
 import tcc.com.domain.reason.Reason;
 import tcc.com.domain.role.Role;
 import jakarta.persistence.*;
@@ -38,6 +39,7 @@ public class User implements UserDetails {
     private String banner;
     private String color;
     private Integer rankingPoint;
+    private Integer currentXp;
 
     @ManyToOne
     @JoinColumn(name = "study_duration_id")
@@ -46,6 +48,10 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "level_id")
+    private Level level;
 
     @OneToMany(mappedBy = "user")
     private List<UserAnswer> userAnswers = new ArrayList<>();
