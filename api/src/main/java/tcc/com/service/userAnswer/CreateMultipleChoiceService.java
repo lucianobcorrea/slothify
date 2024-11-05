@@ -45,6 +45,9 @@ public class CreateMultipleChoiceService {
     private static final int MULTIPLE_CHOICE_XP = 20;
     private static final int WRONG_MULTIPLE_CHOICE_XP = 5;
 
+    private static final int ADVERGAME_XP = 30;
+    private static final int BOSS_XP = 50;
+
     public ResponseEntity<AnswerResponse> create(Long exerciseId, AnswerRequest request) {
         ExerciseOption exerciseOption = exerciseOptionRepository.findByExerciseIdAndCorrectTrue(exerciseId);
 
@@ -68,7 +71,17 @@ public class CreateMultipleChoiceService {
 
         if(isCorrect) {
             if(!userAnswer.isAlreadyAnswered()) {
-                user.setCurrentXp(user.getCurrentXp() + MULTIPLE_CHOICE_XP);
+                switch (exercise.getLesson().getExerciseCategory().getName()) {
+                    case ADVERGAME:
+                        user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
+                        break;
+                    case BOSS:
+                        user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
+                        break;
+                    default:
+                        user.setCurrentXp(user.getCurrentXp() + MULTIPLE_CHOICE_XP);
+                        break;
+                }
             }
             UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user, exercise.getLesson().getChapter().getArea());
             if (userCourseProgress == null) {

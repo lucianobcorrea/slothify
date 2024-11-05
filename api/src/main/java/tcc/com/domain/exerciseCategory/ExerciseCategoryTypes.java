@@ -2,8 +2,8 @@ package tcc.com.domain.exerciseCategory;
 
 public enum ExerciseCategoryTypes {
 
-    MAIN,
-    SECONDARY,
+    SIMPLE_LEVEL,
+    INTERACTIVE_LEVEL,
     ADVERGAME,
     BOSS
 }

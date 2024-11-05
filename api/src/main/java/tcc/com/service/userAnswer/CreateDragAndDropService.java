@@ -45,6 +45,9 @@ public class CreateDragAndDropService {
     private static final int DRAG_AND_DROP_XP = 30;
     private static final int WRONG_DRAG_AND_DROP_XP = 5;
 
+    private static final int ADVERGAME_XP = 40;
+    private static final int BOSS_XP = 60;
+
     public ResponseEntity<AnswerResponse> create(Long exerciseId, DragAndDropRequest request) {
 
         User user = authenticatedUserService.get();
@@ -76,7 +79,17 @@ public class CreateDragAndDropService {
 
         if(userAnswer.isCorrect()) {
             if(!userAnswer.isAlreadyAnswered()) {
-                user.setCurrentXp(user.getCurrentXp() + DRAG_AND_DROP_XP);
+                switch (exercise.getLesson().getExerciseCategory().getName()) {
+                    case ADVERGAME:
+                        user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
+                        break;
+                    case BOSS:
+                        user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
+                        break;
+                    default:
+                        user.setCurrentXp(user.getCurrentXp() + DRAG_AND_DROP_XP);
+                        break;
+                }
             }
             UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user, exercise.getLesson().getChapter().getArea());
             if (userCourseProgress == null) {

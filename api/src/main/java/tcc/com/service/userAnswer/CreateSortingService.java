@@ -46,6 +46,9 @@ public class CreateSortingService {
     private static final int SORTING_XP = 30;
     private static final int WRONG_SORTING_XP = 5;
 
+    private static final int ADVERGAME_XP = 40;
+    private static final int BOSS_XP = 60;
+
     public ResponseEntity<AnswerResponse> create(Long exerciseId, SortingRequest request) {
 
         User user = authenticatedUserService.get();
@@ -79,7 +82,17 @@ public class CreateSortingService {
 
         if(userAnswer.isCorrect()) {
             if(!userAnswer.isAlreadyAnswered()) {
-                user.setCurrentXp(user.getCurrentXp() + SORTING_XP);
+                switch (exercise.getLesson().getExerciseCategory().getName()) {
+                    case ADVERGAME:
+                        user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
+                        break;
+                    case BOSS:
+                        user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
+                        break;
+                    default:
+                        user.setCurrentXp(user.getCurrentXp() + SORTING_XP);
+                        break;
+                }
             }
             UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user, exercise.getLesson().getChapter().getArea());
             if (userCourseProgress == null) {

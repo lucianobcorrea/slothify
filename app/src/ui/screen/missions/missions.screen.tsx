@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ButtonComponent } from "@/ui/component/button/button.component";
 import { useGetExplanation } from "@/hook/useGetExplanation/useGetExplanation.hook";
 import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
@@ -39,13 +39,22 @@ const tailwindMarginClasses = [
 ];
 
 export const Missions = () => {
+  const setUserArea = (areaId: number) => {
+    setAreaId(areaId);
+    localStorage.setItem('areaId', areaId.toString());
+  };
+
+  const localStorageAreaId = localStorage.getItem('areaId');
+
   const { areas, fetchUserAreas } = useGetUserAreas();
-  const { chapters, fetchChapters } = useGetChapters(2);
+  const [areaId, setAreaId] = useState<number>(Number(localStorageAreaId) === 0 ? -1 : Number(localStorageAreaId));
+
+  const { chapters, fetchChapters } = useGetChapters(areaId);
   const { fetchExplanation } = useGetExplanation();
 
   useEffect(() => {
     fetchChapters();
-  }, []);
+  }, [areaId]);
 
   useEffect(() => {
     fetchUserAreas();
@@ -178,6 +187,9 @@ export const Missions = () => {
                         <>
                           <ButtonComponent
                             key={index}
+                            clickEvent={() =>
+                              setUserArea(area.id ? area.id : -1)
+                            }
                             btnType="button"
                             classname="bg-transparent text-white border-none hover:bg-neutral-800 w-full shadow-none hover:rounded-sm !rounded-none"
                           >

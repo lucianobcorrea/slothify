@@ -39,10 +39,16 @@ public class ListChapterService {
     private AuthenticatedUserService authenticatedUserService;
 
     public List<ChapterResponse> list(Long areaId) {
-        Area area = areaRepository.findById(areaId)
-                .orElseThrow(() -> new RuntimeException("Área não encontrada"));
 
         User user = authenticatedUserService.get();
+        Area area;
+
+        if(areaId == -1) {
+            area = user.getAreas().get(0);
+        }else {
+            area = areaRepository.findById(areaId)
+                    .orElseThrow(() -> new RuntimeException("Área não encontrada"));
+        }
 
         List<Chapter> chapters = chapterRepository.findByArea(area);
 
