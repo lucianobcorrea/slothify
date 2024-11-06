@@ -15,6 +15,10 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrophy } from "@fortawesome/free-solid-svg-icons";
+import { Progress } from "@/components/ui/progress";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputComponent } from "@/ui/component/input/input.component";
@@ -22,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { useEditProfile } from "@/hook/useEditProfile/useEditProfile.hook";
 import { useAuthContext } from "@/hook/useAuthContext/useAuthContext.hook";
 import { useState, useEffect } from "react";
+import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
@@ -33,9 +38,11 @@ const schema = z.object({
 export type FormFields = z.infer<typeof schema>;
 
 export const Profile = () => {
+  const userData = useUserDataContext();
+
   const { authUser } = useAuthContext();
   const [open, setOpen] = useState<boolean>(false);
-  console.log(authUser);
+
   const {
     register,
     handleSubmit,
@@ -47,7 +54,7 @@ export const Profile = () => {
       username: authUser?.username || "",
       color: authUser?.color || "#424242",
     },
-  }); 
+  });
 
   const onSubmit = useEditProfile(setOpen);
 
@@ -73,7 +80,7 @@ export const Profile = () => {
         <div className="grid grid-cols-[1.3fr,2fr,0.5fr] px-24">
           <div className="relative">
             <div
-              className="rounded-3xl p-6 w-full h-full flex justify-center relative top-[-50%]"
+              className="rounded-3xl p-6 w-full flex justify-center relative top-[-50%]"
               style={{
                 backgroundColor: authUser?.color ? authUser.color : "#424242",
               }}
@@ -84,6 +91,39 @@ export const Profile = () => {
                 alt="Avatar do usuário"
               />
             </div>
+
+            <div className="flex items-center gap-2 relative top-[-45%]">
+              <div className="w-full">
+                {!userData.maxLevel ? (
+                  <p className="text-[16px] text-white font-medium">
+                    <span style={{ color: userData.levelColor }}>
+                      {userData.actualXp}
+                    </span>
+                    /{userData.xpToNextLevel} XP
+                  </p>
+                ) : (
+                  <p className="text-[16px] font-bold text-white">
+                    <FontAwesomeIcon
+                      style={{ color: userData.levelColor }}
+                      icon={faTrophy}
+                      className="mr-2 text-lg"
+                    />
+                    {userData.actualXp} XP
+                    <span
+                      className="ml-2 text-lg"
+                      role="img"
+                      aria-label="trophy"
+                    ></span>
+                  </p>
+                )}
+                <Progress
+                  value={userData.percentageToNextLevel}
+                  className="w-full bg-neutral-500 h-5"
+                  indicatorStyle={{ backgroundColor: userData.levelColor }}
+                />
+              </div>
+            </div>
+
           </div>
           <div className="flex justify-start ps-10">
             <h1 className="font-bold text-white text-4xl">
@@ -106,8 +146,8 @@ export const Profile = () => {
                     <DialogHeader>
                       <DialogTitle>Editar perfil</DialogTitle>
                       <DialogDescription className="text-neutral-400">
-                        Escolha o nome de usuário, avatar e banner do seu perfil.
-                        Clique em salvar quando você terminar.
+                        Escolha o nome de usuário, avatar e banner do seu
+                        perfil. Clique em salvar quando você terminar.
                       </DialogDescription>
                     </DialogHeader>
 
@@ -115,7 +155,9 @@ export const Profile = () => {
                       <div>
                         <InputComponent
                           register={{ ...register("username") }}
-                          classname={`mt-6 ${errors.username ? "mb-2" : "mb-6"}`}
+                          classname={`mt-6 ${
+                            errors.username ? "mb-2" : "mb-6"
+                          }`}
                           placeholder="Ex.: Luciano Corrêa"
                           type="text"
                           id="username"

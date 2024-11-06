@@ -9,6 +9,12 @@ import { useEffect, useState } from "react";
 import { ButtonComponent } from "@/ui/component/button/button.component";
 import { useGetExplanation } from "@/hook/useGetExplanation/useGetExplanation.hook";
 import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
+import { useAuthContext } from "@/hook/useAuthContext/useAuthContext.hook";
+import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
+import { Progress } from "@/components/ui/progress";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 import {
   DropdownMenu,
@@ -41,13 +47,18 @@ const tailwindMarginClasses = [
 export const Missions = () => {
   const setUserArea = (areaId: number) => {
     setAreaId(areaId);
-    localStorage.setItem('areaId', areaId.toString());
+    localStorage.setItem("areaId", areaId.toString());
   };
 
-  const localStorageAreaId = localStorage.getItem('areaId');
+  const { authUser } = useAuthContext();
+  const userData = useUserDataContext();
+
+  const localStorageAreaId = localStorage.getItem("areaId");
 
   const { areas, fetchUserAreas } = useGetUserAreas();
-  const [areaId, setAreaId] = useState<number>(Number(localStorageAreaId) === 0 ? -1 : Number(localStorageAreaId));
+  const [areaId, setAreaId] = useState<number>(
+    Number(localStorageAreaId) === 0 ? -1 : Number(localStorageAreaId)
+  );
 
   const { chapters, fetchChapters } = useGetChapters(areaId);
   const { fetchExplanation } = useGetExplanation();
@@ -169,45 +180,94 @@ export const Missions = () => {
         </div>
 
         <div className="col-span-3 mt-10">
-          {areas.length > 1 ? (
-            <div className="sticky top-10 flex justify-end">
-              <div className="bg-neutral-700 px-20 py-6 rounded-xl border-[1px] border-neutral-500">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <ButtonComponent
-                      btnType="button"
-                      classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
-                    >
-                      Selecionar área
-                    </ButtonComponent>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full p-0 bg-neutral-700 border-neutral-500 mt-3">
-                    {areas.map((area, index) => {
-                      return (
-                        <>
-                          <ButtonComponent
-                            key={index}
-                            clickEvent={() =>
-                              setUserArea(area.id ? area.id : -1)
-                            }
-                            btnType="button"
-                            classname="bg-transparent text-white border-none hover:bg-neutral-800 w-full shadow-none hover:rounded-sm !rounded-none"
-                          >
-                            <DropdownMenuItem className="cursor-pointer focus:bg-transparent focus:text-white">
-                              {area.title}
-                            </DropdownMenuItem>
-                          </ButtonComponent>
-                          {index < areas.length - 1 ? (
-                            <hr className="border-neutral-500" />
-                          ) : null}
-                        </>
-                      );
-                    })}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+          <div className="sticky top-10 ">
+            <div className="flex justify-end mb-7 w-full">
+              <div className="bg-neutral-700 p-6 rounded-xl border-[1px] border-neutral-500 w-full">
+                <h2 className="text-[24px] text-white font-bold">
+                  Nível do Jogador
+                </h2>
+
+                <div className="flex items-center gap-2">
+                  <img
+                    className="max-w-24"
+                    src={authUser?.avatar}
+                    alt="Avatar"
+                  />
+                  <div className="w-full">
+                    {!userData.maxLevel ? (
+                      <p className="text-[16px] text-white font-medium">
+                        <span style={{ color: userData.levelColor }}>
+                          {userData.actualXp}
+                        </span>
+                        /{userData.xpToNextLevel} XP
+                      </p>
+                    ) : (
+                      <p
+                        className="text-[16px] font-bold text-white"
+                      >
+                        <FontAwesomeIcon
+                          style={{ color: userData.levelColor }}
+                          icon={faTrophy}
+                          className="mr-2 text-lg"
+                        />
+                        {userData.actualXp} XP
+                        <span
+                          className="ml-2 text-lg"
+                          role="img"
+                          aria-label="trophy"
+                        ></span>
+                      </p>
+                    )}
+                    <Progress
+                      value={userData.percentageToNextLevel}
+                      className="w-full bg-neutral-500 h-5"
+                      indicatorStyle={{ backgroundColor: userData.levelColor }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          ) : null}
+
+            {areas.length > 1 ? (
+              <div className="flex justify-end w-full text-center">
+                <div className="bg-neutral-700 p-6 rounded-xl border-[1px] border-neutral-500 w-full">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <ButtonComponent
+                        btnType="button"
+                        classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
+                      >
+                        Selecionar área
+                      </ButtonComponent>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-full p-0 bg-neutral-700 border-neutral-500 mt-3">
+                      {areas.map((area, index) => {
+                        return (
+                          <>
+                            <ButtonComponent
+                              key={index}
+                              clickEvent={() =>
+                                setUserArea(area.id ? area.id : -1)
+                              }
+                              btnType="button"
+                              classname="bg-transparent text-white border-none hover:bg-neutral-800 w-full shadow-none hover:rounded-sm !rounded-none"
+                            >
+                              <DropdownMenuItem className="cursor-pointer focus:bg-transparent focus:text-white">
+                                {area.title}
+                              </DropdownMenuItem>
+                            </ButtonComponent>
+                            {index < areas.length - 1 ? (
+                              <hr className="border-neutral-500" />
+                            ) : null}
+                          </>
+                        );
+                      })}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     </Main>

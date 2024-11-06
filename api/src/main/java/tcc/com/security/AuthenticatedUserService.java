@@ -1,7 +1,6 @@
 package tcc.com.security;
 
 import tcc.com.controller.response.user.UserResponse;
-import tcc.com.domain.level.Level;
 import tcc.com.mapper.UserMapper;
 import tcc.com.repository.LevelRepository;
 import tcc.com.repository.UserRepository;
@@ -47,26 +46,7 @@ public class AuthenticatedUserService {
         User user = get();
 
         if(nonNull(user)) {
-            int percentageToNextLevel;
-
-            Level currentLevel = user.getLevel();
-            Level nextLevel = levelRepository.findByLevelNumber(currentLevel.getLevelNumber() + 1);
-
-            if (nextLevel != null) {
-                int xpIntoCurrentLevel = user.getCurrentXp() - currentLevel.getRequiredXp();
-                int xpNeededForNextLevel = nextLevel.getRequiredXp() - currentLevel.getRequiredXp();
-
-                if (xpNeededForNextLevel > 0) {
-                    percentageToNextLevel = (int) ((double) xpIntoCurrentLevel * 100 / xpNeededForNextLevel);
-                    percentageToNextLevel = Math.max(0, Math.min(percentageToNextLevel, 100));
-                } else {
-                    percentageToNextLevel = 100;
-                }
-            } else {
-                percentageToNextLevel = 100;
-            }
-            System.out.println("NSDGNIOJKDFGS" + percentageToNextLevel);
-            return UserMapper.toResponse(user, percentageToNextLevel);
+            return UserMapper.toResponse(user);
         }else {
             return new UserResponse();
         }

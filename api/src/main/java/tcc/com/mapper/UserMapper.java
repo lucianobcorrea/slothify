@@ -13,22 +13,16 @@ public class UserMapper {
         return user;
     }
 
-    public static UserResponse toResponse(User user, int percentage) {
+    public static UserResponse toResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .color(user.getColor())
-                .percentageToNextLevel(percentage)
                 .rankingPoint(user.getRankingPoint())
                 .avatar("http://localhost:8080/files/" + user.getAvatar())
                 .banner("http://localhost:8080/files/" + user.getBanner())
                 .initialForm(user.isInitialForm())
                 .build();
-    }
-
-    public static UserResponse toResponse(User user) {
-        int defaultPercentage = 0;
-        return toResponse(user, defaultPercentage);
     }
 }
