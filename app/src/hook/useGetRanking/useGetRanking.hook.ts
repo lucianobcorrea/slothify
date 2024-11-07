@@ -6,12 +6,9 @@ import { getResponseError } from "@/api/error/error.api";
 interface User {
   id: number;
   username: string;
-  email: string;
   avatar: string;
-  banner: string;
   color: string;
-  rankingPoint: number;
-  initialForm: boolean;
+  points: number;
 }
 
 export function useGetRanking(initialPage: number) {

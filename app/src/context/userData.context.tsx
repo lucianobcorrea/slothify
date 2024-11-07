@@ -12,7 +12,13 @@ interface UserData {
   levelColor: string;
 }
 
-export const UserDataContext = createContext<UserData | undefined>(undefined);
+export const UserDataContext = createContext<
+  | {
+      userData: UserData | undefined;
+      refreshUserData: () => Promise<void>;
+    }
+  | undefined
+>(undefined);
 
 interface UserDataProps {
   children: ReactNode;
@@ -25,10 +31,14 @@ export const UserDataProvider = ({ children }: UserDataProps) => {
   useEffect(() => {
     async function loadUserData() {
       await fetchUserData();
-        setLoading(false);
+      setLoading(false);
     }
     loadUserData();
   }, []);
+
+  const refreshUserData = async () => {
+    await fetchUserData();
+  };
 
   if (loading) {
     return (
@@ -39,8 +49,8 @@ export const UserDataProvider = ({ children }: UserDataProps) => {
   }
 
   return (
-    <UserDataContext.Provider value={userData}>
-        {children}
+    <UserDataContext.Provider value={{ userData, refreshUserData }}>
+      {children}
     </UserDataContext.Provider>
   );
 };

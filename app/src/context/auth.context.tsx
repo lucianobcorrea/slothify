@@ -2,6 +2,8 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import { user } from "@/api/auth/user.api";
 import { getResponseError } from "@/api/error/error.api";
 import { toast } from "react-toastify";
+import defaultAvatar from "@/assets/image/profile/default.png";
+import defaultBanner from "@/assets/image/profile/defaultBanner.png";
 
 interface AuthContextType {
   authUser: AuthUser | null;
@@ -38,6 +40,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         try {
           const response = await user();
           const authUserData = response;
+
+          if (!authUserData.avatar) {
+            authUserData.avatar = defaultAvatar;
+          }
+
+          if (!authUserData.banner) {
+            authUserData.banner = defaultBanner;
+          }
+
           setAuthUser(authUserData);
           setIsLoggedIn(true);
         } catch (error) {

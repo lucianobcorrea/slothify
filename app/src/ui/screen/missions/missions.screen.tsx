@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
+import defaultAvatar from "@/assets/image/profile/default.png";
 import { ButtonComponent } from "@/ui/component/button/button.component";
 import { useGetExplanation } from "@/hook/useGetExplanation/useGetExplanation.hook";
 import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
@@ -51,7 +52,7 @@ export const Missions = () => {
   };
 
   const { authUser } = useAuthContext();
-  const userData = useUserDataContext();
+  const { userData } = useUserDataContext();
 
   const localStorageAreaId = localStorage.getItem("areaId");
 
@@ -190,27 +191,25 @@ export const Missions = () => {
                 <div className="flex items-center gap-2">
                   <img
                     className="max-w-24"
-                    src={authUser?.avatar}
+                    src={authUser?.avatar || defaultAvatar}
                     alt="Avatar"
                   />
                   <div className="w-full">
-                    {!userData.maxLevel ? (
+                    {!userData?.maxLevel ? (
                       <p className="text-[16px] text-white font-medium">
-                        <span style={{ color: userData.levelColor }}>
-                          {userData.actualXp}
+                        <span style={{ color: userData?.levelColor }}>
+                          {userData?.actualXp}
                         </span>
-                        /{userData.xpToNextLevel} XP
+                        /{userData?.xpToNextLevel} XP
                       </p>
                     ) : (
-                      <p
-                        className="text-[16px] font-bold text-white"
-                      >
+                      <p className="text-[16px] font-bold text-white">
                         <FontAwesomeIcon
-                          style={{ color: userData.levelColor }}
+                          style={{ color: userData?.levelColor }}
                           icon={faTrophy}
                           className="mr-2 text-lg"
                         />
-                        {userData.actualXp} XP
+                        {userData?.actualXp} XP
                         <span
                           className="ml-2 text-lg"
                           role="img"
@@ -219,9 +218,9 @@ export const Missions = () => {
                       </p>
                     )}
                     <Progress
-                      value={userData.percentageToNextLevel}
+                      value={userData?.percentageToNextLevel}
                       className="w-full bg-neutral-500 h-5"
-                      indicatorStyle={{ backgroundColor: userData.levelColor }}
+                      indicatorStyle={{ backgroundColor: userData?.levelColor }}
                     />
                   </div>
                 </div>

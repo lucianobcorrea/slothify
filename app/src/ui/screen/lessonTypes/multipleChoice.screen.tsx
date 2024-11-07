@@ -32,6 +32,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
 
 interface ExerciseProps {
   lessonId: number;
@@ -75,11 +76,13 @@ export const MultipleChoice = (props: ExerciseProps) => {
   }
 
   const [exerciseResponse, setResponse] = useState<ResponseType | null>(null);
+  const { refreshUserData } = useUserDataContext();
 
   async function onSubmit(data: z.infer<typeof schema>) {
     try {
       const response = await multipleChoice(exercise?.id, data.answer);
       setResponse(response.data);
+      refreshUserData();
     } catch (error) {
       const message = getResponseError(error);
       toast.error(message);

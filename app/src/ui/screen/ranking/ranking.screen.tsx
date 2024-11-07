@@ -5,6 +5,7 @@ import thirdPlace from "@/assets/image/ranking/3-place.png";
 import { useGetRanking } from "@/hook/useGetRanking/useGetRanking.hook";
 import { useEffect, useRef, useCallback } from "react";
 import { LoadingSpinner } from "@/ui/component/spinner/spinner.component";
+import defaultAvatar from "@/assets/image/profile/default.png";
 
 export const Ranking = () => {
   const { ranking, fetchRanking, hasMore, isLoading } = useGetRanking(0);
@@ -45,46 +46,59 @@ export const Ranking = () => {
                   index === ranking.length - 1 ? lastRankingElementRef : null
                 }
               >
-                <div className="flex items-center justify-between">
-                  {index === 0 ? (
-                    <img
-                      className="max-w-[75px] w-full"
-                      src={firstPlace}
-                      alt="Medalha dourada de primeiro lugar"
-                    />
-                  ) : index === 1 ? (
-                    <img
-                      className="max-w-[75px] w-full"
-                      src={secondPlace}
-                      alt="Medalha de prata de segundo lugar"
-                    />
-                  ) : index === 2 ? (
-                    <img
-                      className="max-w-[75px] w-full"
-                      src={thirdPlace}
-                      alt="Medalha de bronze de terceiro lugar"
-                    />
-                  ) : (
-                    <h1 className="text-[40px] text-white font-bold">
-                      {index + 1}.
-                    </h1>
-                  )}
+                <div className="grid grid-cols-[50px_1fr_300px_50px] items-center gap-20">
+                  {/* Coluna da Medalha */}
+                  <div className="flex-shrink-0 text-center">
+                    {index === 0 ? (
+                      <img
+                        className="max-w-[50px] w-full"
+                        src={firstPlace}
+                        alt="Medalha dourada de primeiro lugar"
+                      />
+                    ) : index === 1 ? (
+                      <img
+                        className="max-w-[50px] w-full"
+                        src={secondPlace}
+                        alt="Medalha de prata de segundo lugar"
+                      />
+                    ) : index === 2 ? (
+                      <img
+                        className="max-w-[50px] w-full"
+                        src={thirdPlace}
+                        alt="Medalha de bronze de terceiro lugar"
+                      />
+                    ) : (
+                      <h1 className="text-[30px] text-white font-bold">
+                        {index + 1}.
+                      </h1>
+                    )}
+                  </div>
+
+                  {/* Coluna do Avatar */}
                   <div
-                    className="rounded-full flex items-center justify-center"
+                    className="w-32 h-w-32 rounded-full flex items-center justify-center"
                     style={{ backgroundColor: user.color }}
                   >
                     <img
-                      className="w-full max-w-32"
-                      src={user.avatar}
+                      className="w-32 h-32 rounded-full"
+                      src={user?.avatar || defaultAvatar}
                       alt="Imagem de perfil do usuário"
                     />
                   </div>
-                  <h2 className="text-white text-3xl font-medium">
-                    {user.username}
-                  </h2>
-                  <h3 className="text-secondary-color text-xl font-bold">
-                    {user.rankingPoint}
-                  </h3>
+
+                  {/* Coluna do Nome */}
+                  <div className="flex-1">
+                    <h2 className="text-white text-2xl font-medium">
+                      {user.username}
+                    </h2>
+                  </div>
+
+                  {/* Coluna dos Pontos */}
+                  <div className="flex-shrink-0 text-center">
+                    <h3 className="text-secondary-color text-lg font-bold">
+                      {user.points}
+                    </h3>
+                  </div>
                 </div>
                 <hr className="border-1 border-neutral-500 my-6" />
               </div>

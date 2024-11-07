@@ -15,6 +15,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
+import defaultAvatar from "@/assets/image/profile/default.png";
+import defaultBanner from "@/assets/image/profile/defaultBanner.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 import { Progress } from "@/components/ui/progress";
@@ -38,7 +40,7 @@ const schema = z.object({
 export type FormFields = z.infer<typeof schema>;
 
 export const Profile = () => {
-  const userData = useUserDataContext();
+  const { userData, } = useUserDataContext();
 
   const { authUser } = useAuthContext();
   const [open, setOpen] = useState<boolean>(false);
@@ -72,7 +74,7 @@ export const Profile = () => {
       <div className="relative">
         <img
           className="w-full h-[600px] object-cover rounded-b-[50px]"
-          src={authUser?.banner}
+          src={authUser?.banner || defaultBanner}
           alt="Banner do usuário"
         />
       </div>
@@ -87,28 +89,28 @@ export const Profile = () => {
             >
               <img
                 className="w-[300px] h-[300px] object-cover"
-                src={authUser?.avatar}
+                src={authUser?.avatar || defaultAvatar}
                 alt="Avatar do usuário"
               />
             </div>
 
             <div className="flex items-center gap-2 relative top-[-45%]">
               <div className="w-full">
-                {!userData.maxLevel ? (
+                {!userData?.maxLevel ? (
                   <p className="text-[16px] text-white font-medium">
-                    <span style={{ color: userData.levelColor }}>
-                      {userData.actualXp}
+                    <span style={{ color: userData?.levelColor }}>
+                      {userData?.actualXp}
                     </span>
-                    /{userData.xpToNextLevel} XP
+                    /{userData?.xpToNextLevel} XP
                   </p>
                 ) : (
                   <p className="text-[16px] font-bold text-white">
                     <FontAwesomeIcon
-                      style={{ color: userData.levelColor }}
+                      style={{ color: userData?.levelColor }}
                       icon={faTrophy}
                       className="mr-2 text-lg"
                     />
-                    {userData.actualXp} XP
+                    {userData?.actualXp} XP
                     <span
                       className="ml-2 text-lg"
                       role="img"
@@ -117,13 +119,12 @@ export const Profile = () => {
                   </p>
                 )}
                 <Progress
-                  value={userData.percentageToNextLevel}
+                  value={userData?.percentageToNextLevel}
                   className="w-full bg-neutral-500 h-5"
-                  indicatorStyle={{ backgroundColor: userData.levelColor }}
+                  indicatorStyle={{ backgroundColor: userData?.levelColor }}
                 />
               </div>
             </div>
-
           </div>
           <div className="flex justify-start ps-10">
             <h1 className="font-bold text-white text-4xl">

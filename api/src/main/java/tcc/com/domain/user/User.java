@@ -2,6 +2,7 @@ package tcc.com.domain.user;
 
 import tcc.com.domain.area.Area;
 import tcc.com.domain.level.Level;
+import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.reason.Reason;
 import tcc.com.domain.role.Role;
 import jakarta.persistence.*;
@@ -38,8 +39,10 @@ public class User implements UserDetails {
     private String avatar;
     private String banner;
     private String color;
-    private Integer rankingPoint;
     private Integer currentXp;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Ranking ranking;
 
     @ManyToOne
     @JoinColumn(name = "study_duration_id")

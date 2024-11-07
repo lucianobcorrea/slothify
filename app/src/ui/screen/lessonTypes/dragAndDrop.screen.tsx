@@ -29,6 +29,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
+import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
+
 interface ExerciseProps {
   lessonId: number;
 }
@@ -149,6 +151,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [exerciseResponse, setResponse] = useState<ResponseType | null>(null);
   const [loading, setLoading] = useState(false);
+  const { refreshUserData } = useUserDataContext();
 
   async function onSubmit(request: FinalResult[]): Promise<boolean> {
     if (request.length === 0) {
@@ -165,6 +168,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
       const response = await dragAndDrop(exercise?.id, request);
       setResponse(response.data);
       setLoading(true);
+      refreshUserData();
       return true;
     } catch (error) {
       const message = getResponseError(error);
