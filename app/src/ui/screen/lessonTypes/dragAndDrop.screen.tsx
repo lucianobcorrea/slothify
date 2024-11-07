@@ -134,7 +134,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
 
       const correctOptions = options.filter((opt) => opt.correct === true);
 
-      correctOptions.forEach((opt, index) => {
+      correctOptions.forEach((_, index) => {
         const pos = `position-${index + 1}`;
         initialAssignments[pos] = null;
       });

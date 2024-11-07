@@ -19,8 +19,14 @@ interface Duration {
   TWENTY_MINUTES: string;
 }
 
+interface StudyDurationItem {
+  duration: keyof Duration;
+  image: string;
+}
+
 export const StudyDuration = (props: StudyDurationProps) => {
   const { studyDurations, fetchStudyDurations } = useGetStudyDuration();
+  const durations = studyDurations as StudyDurationItem[];
 
   useEffect(() => {
     fetchStudyDurations();
@@ -42,7 +48,7 @@ export const StudyDuration = (props: StudyDurationProps) => {
       message="Quanto tempo do seu dia você quer dedicar para completar a sua missão com sucesso?"
     >
       <div className="grid grid-cols-2 gap-10 mt-20">
-        {studyDurations.map((studyDuration, index) => {
+        {durations.map((studyDuration, index) => {
           return (
             <div key={index}>
               <MessageBoxRadio
