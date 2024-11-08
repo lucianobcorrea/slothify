@@ -1,5 +1,6 @@
 package tcc.com.mapper;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tcc.com.controller.request.user.UserRequest;
 import tcc.com.controller.response.user.UserResponse;
 import tcc.com.domain.level.Level;
@@ -17,14 +18,16 @@ public class UserMapper {
         return user;
     }
 
+    static String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/files/";
+
     public static UserResponse toResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .color(user.getColor())
-                .avatar(user.getAvatar() != null ? "http://localhost:8080/files/" + user.getAvatar() : null)
-                .banner(user.getBanner() != null ? "http://localhost:8080/files/" + user.getBanner() : null)
+                .avatar(user.getAvatar() != null ? baseUrl + user.getAvatar() : null)
+                .banner(user.getBanner() != null ? baseUrl + user.getBanner() : null)
                 .initialForm(user.isInitialForm())
                 .build();
     }

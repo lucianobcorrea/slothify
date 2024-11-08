@@ -1,0 +1,40 @@
+services:
+  postgres-db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=tcc
+      - POSTGRES_USER=tcc
+      - POSTGRES_PASSWORD=102030
+    volumes:
+      - ./tcc.sql:/docker-entrypoint-initdb.d/tcc.sql
+      - db_data:/var/lib/postgresql/data
+
+  spring-app:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/tcc
+      SPRING_DATASOURCE_USERNAME: tcc
+      SPRING_DATASOURCE_PASSWORD: 102030
+      STORAGE_DIR: /app/src/main/java/tcc/com/storage/
+    volumes:
+      - ./api/src/main/java/tcc/com/storage:/app/src/main/java/tcc/com/storage/
+    depends_on:
+      - postgres-db
+
+  spa-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - spring-app
+
+volumes:
+  db_data:

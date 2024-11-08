@@ -36,6 +36,8 @@ public class ConvertImage {
             byte[] bytes = img.getBytes();
             Path path = Paths.get(fileStorageConfig.getStoragePath() + uuid + fileName);
 
+            System.out.println("Salvando arquivo em: " + path);
+
             Files.write(path, bytes);
 
             return fileName;

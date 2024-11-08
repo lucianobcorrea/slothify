@@ -33,3 +33,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar a pasta storage
+src/main/java/tcc/com/storage/

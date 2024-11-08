@@ -10,6 +10,7 @@ import tcc.com.controller.request.userAnswer.DragAndDropRequest;
 import tcc.com.controller.response.userAnswer.AnswerResponse;
 import tcc.com.domain.exercise.Exercise;
 import tcc.com.domain.level.Level;
+import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
 import tcc.com.domain.userAnswer.UserAnswer;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
@@ -42,6 +43,9 @@ public class CreateDragAndDropService {
     @Autowired
     private LevelRepository levelRepository;
 
+    @Autowired
+    private RankingRepository rankingRepository;
+
     private static final int DRAG_AND_DROP_XP = 30;
     private static final int WRONG_DRAG_AND_DROP_XP = 5;
 
@@ -51,6 +55,7 @@ public class CreateDragAndDropService {
     public ResponseEntity<AnswerResponse> create(Long exerciseId, DragAndDropRequest request) {
 
         User user = authenticatedUserService.get();
+        Ranking ranking = rankingRepository.findByUser(user);
 
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Esse exercício não existe."));
@@ -81,15 +86,20 @@ public class CreateDragAndDropService {
             if(!userAnswer.isAlreadyAnswered()) {
                 switch (exercise.getLesson().getExerciseCategory().getName()) {
                     case ADVERGAME:
+                        ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
                         user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
                         break;
                     case BOSS:
+                        ranking.setPoints(ranking.getPoints() + BOSS_XP);
                         user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
                         break;
                     default:
+                        ranking.setPoints(ranking.getPoints() + DRAG_AND_DROP_XP);
                         user.setCurrentXp(user.getCurrentXp() + DRAG_AND_DROP_XP);
                         break;
                 }
+
+                rankingRepository.save(ranking);
             }
             UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user, exercise.getLesson().getChapter().getArea());
             if (userCourseProgress == null) {

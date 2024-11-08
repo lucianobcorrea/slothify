@@ -2,6 +2,7 @@ package tcc.com.service.reason;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tcc.com.FileStorageConfig;
 import tcc.com.controller.response.reason.ReasonResponse;
 import tcc.com.mapper.ReasonMapper;
@@ -20,8 +21,10 @@ public class GetReasonService {
     private FileStorageConfig fileStorageConfig;
 
     public List<ReasonResponse> getReasons() {
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/files/";
+
         return reasonRepository.findAll().stream()
-                .peek(reason -> reason.setImage("http://localhost:8080/files/" + reason.getImage()))
+                .peek(reason -> reason.setImage(baseUrl + reason.getImage()))
                 .map(ReasonMapper::toResponse)
                 .collect(Collectors.toList());
     }

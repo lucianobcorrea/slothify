@@ -1,5 +1,6 @@
 package tcc.com.mapper;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tcc.com.controller.request.exercise.ExerciseRequest;
 import tcc.com.controller.response.exercise.ExerciseResponse;
 import tcc.com.domain.exercise.Exercise;
@@ -14,11 +15,13 @@ public class ExerciseMapper {
         return exercise;
     }
 
+    static String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/files/";
+
     public static ExerciseResponse toResponse(Exercise exercise) {
         ExerciseResponse response = new ExerciseResponse();
         response.setId(exercise.getId());
         response.setStatement(exercise.getStatement());
-        response.setImage("http://localhost:8080/files/" + exercise.getImage());
+        response.setImage(baseUrl + exercise.getImage());
         return response;
     }
 }

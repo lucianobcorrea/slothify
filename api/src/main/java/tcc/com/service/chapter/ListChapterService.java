@@ -2,6 +2,7 @@ package tcc.com.service.chapter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tcc.com.controller.response.chapter.ChapterResponse;
 import tcc.com.controller.response.exerciseCategory.ExerciseCategoryResponse;
 import tcc.com.controller.response.lesson.LessonResponse;
@@ -59,9 +60,11 @@ public class ListChapterService {
         return chapters.stream().map(chapter -> {
             List<LessonResponse> lessonResponses = chapter.getLessons().stream().map(lesson -> {
 
+                String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/files/";
+
                 ExerciseCategory category = lesson.getExerciseCategory();
                 ExerciseCategoryResponse categoryResponse = ExerciseCategoryResponse.builder()
-                        .image("http://localhost:8080/files/" + category.getImage())
+                        .image(baseUrl + category.getImage())
                         .name(String.valueOf(category.getName()))
                         .build();
 
