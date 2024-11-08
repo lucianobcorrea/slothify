@@ -11,6 +11,7 @@ interface UserData {
   actualLevel: number;
   xpToNextLevel: number | null;
   levelColor: string;
+  coins: number;
 }
 
 export function useGetUserData() {

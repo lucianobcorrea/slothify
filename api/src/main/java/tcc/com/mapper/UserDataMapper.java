@@ -4,7 +4,7 @@ import tcc.com.controller.response.user.UserDataResponse;
 
 public class UserDataMapper {
 
-    public static UserDataResponse toResponse(int percentageToNextLevel, boolean maxLevel, int actualXp, Integer nextLevel, int actualLevel, Integer xpToNextLevel, String levelColor) {
+    public static UserDataResponse toResponse(int percentageToNextLevel, boolean maxLevel, int actualXp, Integer nextLevel, int actualLevel, Integer xpToNextLevel, String levelColor, Integer coins) {
         return UserDataResponse.builder()
                 .percentageToNextLevel(percentageToNextLevel)
                 .maxLevel(maxLevel)
@@ -13,6 +13,7 @@ public class UserDataMapper {
                 .actualLevel(actualLevel)
                 .xpToNextLevel(xpToNextLevel)
                 .levelColor(levelColor)
+                .coins(coins)
                 .build();
     }
 }

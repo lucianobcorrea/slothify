@@ -10,6 +10,7 @@ interface UserData {
   actualLevel: number;
   xpToNextLevel: number | null;
   levelColor: string;
+  coins: number;
 }
 
 export const UserDataContext = createContext<

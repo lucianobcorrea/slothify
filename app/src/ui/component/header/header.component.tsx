@@ -4,10 +4,14 @@ import profile from "@/assets/image/general/profile.png";
 import shop from "@/assets/image/general/shop.png";
 import missions from "@/assets/image/general/missions.png";
 import config from "@/assets/image/general/config.png";
+import ranking from "@/assets/image/ranking/1-place.png";
 
 import { Link } from "react-router-dom";
+import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
 
 export const Header = () => {
+  const { userData, } = useUserDataContext();
+
   return (
     <header className="h-32 border-b-[1px] border-neutral-700 bg-neutral-850 flex items-center">
       <div className="container flex justify-between items-center p-0">
@@ -55,6 +59,17 @@ export const Header = () => {
               <p className="text-white font-bold text-xl">Missões</p>
             </div>
           </Link>
+
+          <Link to="/ranking">
+            <div className="flex items-center gap-3 bg-neutral-700 w-fit px-6 py-2 rounded-lg hover:bg-neutral-600  transition ease-in-out">
+              <img
+                className="max-h-11 max-w-11"
+                src={ranking}
+                alt="Livro aberto"
+              />
+              <p className="text-white font-bold text-xl">Ranking</p>
+            </div>
+          </Link>
         </div>
 
         <div className="flex items-center gap-10">
@@ -66,7 +81,7 @@ export const Header = () => {
           <span className="text-neutral-700 font-medium text-xl">|</span>
 
           <div className="flex items-center gap-2">
-            <p className="text-secondary-color font-bold text-xl">2134</p>
+            <p className="text-secondary-color font-bold text-xl">{userData?.coins}</p>
             <img className="max-h-6 max-w-6" src={coin} alt="Moeda dourada" />
           </div>
         </div>

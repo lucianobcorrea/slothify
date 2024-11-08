@@ -52,6 +52,8 @@ public class CreateDragAndDropService {
     private static final int ADVERGAME_XP = 40;
     private static final int BOSS_XP = 60;
 
+    private static final int WRONG_COINS = 3;
+
     public ResponseEntity<AnswerResponse> create(Long exerciseId, DragAndDropRequest request) {
 
         User user = authenticatedUserService.get();
@@ -88,14 +90,17 @@ public class CreateDragAndDropService {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
                         user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
+                        user.setCoins(user.getCoins() + (5 + (ADVERGAME_XP/10)));
                         break;
                     case BOSS:
                         ranking.setPoints(ranking.getPoints() + BOSS_XP);
                         user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
+                        user.setCoins(user.getCoins() + (5 + (BOSS_XP/10)));
                         break;
                     default:
                         ranking.setPoints(ranking.getPoints() + DRAG_AND_DROP_XP);
                         user.setCurrentXp(user.getCurrentXp() + DRAG_AND_DROP_XP);
+                        user.setCoins(user.getCoins() + (5 + (DRAG_AND_DROP_XP/10)));
                         break;
                 }
 
@@ -114,8 +119,11 @@ public class CreateDragAndDropService {
         }else {
             if(!userAnswer.isAlreadyAnswered()) {
                 user.setCurrentXp(user.getCurrentXp() + WRONG_DRAG_AND_DROP_XP);
+                user.setCoins(user.getCoins() + WRONG_COINS);
             }
         }
+
+        userRepository.save(user);
 
         Level currentLevel = user.getLevel();
         Level nextLevel = levelRepository.findByLevelNumber(currentLevel.getLevelNumber() + 1);

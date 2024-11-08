@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class UserDataResponse {
     int percentageToNextLevel;
+    Integer coins;
     boolean maxLevel;
     int actualXp;
     Integer nextLevel;

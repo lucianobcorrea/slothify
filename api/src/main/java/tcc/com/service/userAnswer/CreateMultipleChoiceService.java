@@ -52,6 +52,8 @@ public class CreateMultipleChoiceService {
     private static final int ADVERGAME_XP = 30;
     private static final int BOSS_XP = 50;
 
+    private static final int WRONG_COINS = 3;
+
     public ResponseEntity<AnswerResponse> create(Long exerciseId, AnswerRequest request) {
         ExerciseOption exerciseOption = exerciseOptionRepository.findByExerciseIdAndCorrectTrue(exerciseId);
 
@@ -80,14 +82,17 @@ public class CreateMultipleChoiceService {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
                         user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
+                        user.setCoins(user.getCoins() + (5 + (ADVERGAME_XP/10)));
                         break;
                     case BOSS:
                         ranking.setPoints(ranking.getPoints() + BOSS_XP);
                         user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
+                        user.setCoins(user.getCoins() + (5 + (BOSS_XP/10)));
                         break;
                     default:
                         ranking.setPoints(ranking.getPoints() + MULTIPLE_CHOICE_XP);
                         user.setCurrentXp(user.getCurrentXp() + MULTIPLE_CHOICE_XP);
+                        user.setCoins(user.getCoins() + (5 + (MULTIPLE_CHOICE_XP/10)));
                         break;
                 }
 
@@ -106,8 +111,11 @@ public class CreateMultipleChoiceService {
         }else {
             if(!userAnswer.isAlreadyAnswered()) {
                 user.setCurrentXp(user.getCurrentXp() + WRONG_MULTIPLE_CHOICE_XP);
+                user.setCoins(user.getCoins() + WRONG_COINS);
             }
         }
+
+        userRepository.save(user);
 
         Level currentLevel = user.getLevel();
         Level nextLevel = levelRepository.findByLevelNumber(currentLevel.getLevelNumber() + 1);

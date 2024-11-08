@@ -40,6 +40,7 @@ public class User implements UserDetails {
     private String banner;
     private String color;
     private Integer currentXp;
+    private Integer coins;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Ranking ranking;

@@ -55,6 +55,6 @@ public class GetUserDataService {
             xpToNextLevel = null;
         }
 
-        return UserDataMapper.toResponse(percentageToNextLevel, maxLevel, actualXp, nextLevel, actualLevel, xpToNextLevel, levelColor);
+        return UserDataMapper.toResponse(percentageToNextLevel, maxLevel, actualXp, nextLevel, actualLevel, xpToNextLevel, levelColor, user.getCoins());
     }
 }

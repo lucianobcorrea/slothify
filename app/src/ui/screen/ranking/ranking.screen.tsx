@@ -47,7 +47,6 @@ export const Ranking = () => {
                 }
               >
                 <div className="grid grid-cols-[50px_1fr_300px_50px] items-center gap-20">
-                  {/* Coluna da Medalha */}
                   <div className="flex-shrink-0 text-center">
                     {index === 0 ? (
                       <img
@@ -74,7 +73,6 @@ export const Ranking = () => {
                     )}
                   </div>
 
-                  {/* Coluna do Avatar */}
                   <div
                     className="w-32 h-w-32 rounded-full flex items-center justify-center"
                     style={{ backgroundColor: user.color }}
@@ -86,14 +84,12 @@ export const Ranking = () => {
                     />
                   </div>
 
-                  {/* Coluna do Nome */}
                   <div className="flex-1">
                     <h2 className="text-white text-2xl font-medium">
                       {user.username}
                     </h2>
                   </div>
 
-                  {/* Coluna dos Pontos */}
                   <div className="flex-shrink-0 text-center">
                     <h3 className="text-secondary-color text-lg font-bold">
                       {user.points}
