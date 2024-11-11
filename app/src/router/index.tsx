@@ -10,6 +10,7 @@ import {
   ChooseType,
   Explanation,
   Ranking,
+  Shop,
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 
@@ -79,6 +80,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Ranking />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/loja",
+    element: (
+      <ProtectedRoute>
+        <Shop />
       </ProtectedRoute>
     ),
   },

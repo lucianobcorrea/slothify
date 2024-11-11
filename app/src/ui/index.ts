@@ -14,6 +14,7 @@ export { Missions } from "@/ui/screen/missions/missions.screen";
 export { ChooseType } from "@/ui/screen/lessonTypes/chooseType.screen";
 export { Explanation } from "@/ui/screen/explanation/explanation.screen";
 export { Ranking } from "@/ui/screen/ranking/ranking.screen";
+export { Shop } from "@/ui/screen/shop/shop.screen";
 
 export { ProgressComponent } from "@/ui/component/progress/progress.component";
 export { MessageBox } from "@/ui/component/messageBox/messageBox.component";

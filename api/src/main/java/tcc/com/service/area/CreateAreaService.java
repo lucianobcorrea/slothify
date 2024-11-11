@@ -29,7 +29,6 @@ public class CreateAreaService {
         area.setSlug(Slug.toSlug(area.getTitle()));
 
         if(areaRepository.existsBySlug(area.getSlug())) {
-            System.out.println(area.getSlug());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Essa área já existe, por favor, cadastre uma diferente!");
         }
 
