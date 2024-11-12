@@ -25,5 +25,6 @@ export { MessageBoxSelect } from "@/ui/component/messageBoxSelect/messageBoxSele
 export { MessageBoxRadio } from "@/ui/component/messageBoxRadio/messageBoxRadio.component";
 export { Header } from "@/ui/component/header/header.component";
 export { LoadingSpinner } from "@/ui/component/spinner/spinner.component";
+export { ItemCard } from "@/ui/component/itemCard/ItemCard.component";
 
 export { Main } from "@/ui/layouts/main.layout";

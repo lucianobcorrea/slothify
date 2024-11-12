@@ -6,10 +6,12 @@ import { toast } from "react-toastify";
 import { user } from "@/api/auth/user.api";
 import { useAuthContext } from "@/hook/useAuthContext/useAuthContext.hook";
 import { getResponseError } from "@/api/error/error.api";
+import { useUserDataContext } from "../useDataUserContext/useUserDataContext.hook";
 
 export function useLogin() {
   const navigate = useNavigate();
   const { setIsLoggedIn, setAuthUser } = useAuthContext();
+  const { refreshUserData } = useUserDataContext();
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -20,6 +22,7 @@ export function useLogin() {
 
       setAuthUser(authUser);
       setIsLoggedIn(true);
+      refreshUserData();
       if (!authUser.initialForm) {
         navigate("/bem-vindo");
       } else {
