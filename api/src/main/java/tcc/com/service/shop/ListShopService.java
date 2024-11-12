@@ -22,6 +22,10 @@ public class ListShopService {
 
         return items.stream()
                 .map(ItemMapper::toResponse)
-                .collect(Collectors.groupingBy(ItemResponse::getSubtype));
+                .collect(Collectors.groupingBy(itemResponse ->
+                        "UTILITY".equalsIgnoreCase(itemResponse.getItemType())
+                                ? "UTILITY"
+                                : itemResponse.getSubtype()
+                ));
     }
 }

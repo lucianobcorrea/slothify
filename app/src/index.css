@@ -50,6 +50,21 @@ code {
   background: var(--gray-500);
 }
 
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  content: none;
+}
+
+.custom-swiper-button-prev,
+.custom-swiper-button-next {
+  transition: background-color 0.3s ease;
+}
+
+.custom-swiper-button-prev:hover,
+.custom-swiper-button-next:hover {
+  background-color: #333; 
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
