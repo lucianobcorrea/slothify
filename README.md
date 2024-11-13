@@ -6,4 +6,5 @@ Welcome to the Platform for Combating Procrastination, developed as part of my f
 
 - Frontend: React, TypeScript, TailwindCSS
 - Backend: Spring Boot, PostgreSQL
+- Other Tools: Git for version control, Docker for containerization
 
