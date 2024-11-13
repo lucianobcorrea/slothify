@@ -1,6 +1,6 @@
 # Platform for Combating Procrastination
 
-Welcome to the Platform for Combating Procrastination, developed as part of my final thesis project in Computer Science. This platform leverages gamification to help users overcome procrastination and stay motivated in their learning journey. By incorporating interactive challenges, rewards, and storytelling elements, the platform transforms learning into an engaging, fun, and rewarding experience.
+This project is being developed as part of my final thesis in Computer Science. The platform leverages gamification to help users overcome procrastination and stay motivated in their learning journey. By incorporating interactive challenges, rewards, and storytelling elements, it transforms learning into an engaging, fun, and rewarding experience.
 
 ## 🛠️ Technologies Used
 
