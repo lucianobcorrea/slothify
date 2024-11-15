@@ -17,6 +17,7 @@ interface Item {
     rarity: string;
     itemType: string;
     subtype: string;
+    userHasItem: boolean;
   }
 
   interface SwiperWithNavigationProps {
@@ -77,6 +78,7 @@ interface Item {
                 value={item.value}
                 rarity={item.rarity}
                 subtype={item.subtype}
+                alreadyHas={item.userHasItem}
               />
             </button>
           </SwiperSlide>

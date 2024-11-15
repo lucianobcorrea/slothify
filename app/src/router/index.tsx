@@ -11,6 +11,7 @@ import {
   Explanation,
   Ranking,
   Shop,
+  AfterBuying
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 
@@ -91,4 +92,12 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+  {
+    path: "/loja/comprar",
+    element: (
+      <ProtectedRoute>
+        <AfterBuying/>
+      </ProtectedRoute>
+    ),
+  }
 ]);

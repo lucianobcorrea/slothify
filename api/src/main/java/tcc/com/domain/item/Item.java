@@ -3,6 +3,10 @@ package tcc.com.domain.item;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import tcc.com.domain.user.UserItem;
+import tcc.com.domain.user.UserUsedItem;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +32,10 @@ public class Item {
 
     @Enumerated(EnumType.STRING)
     private Subtype subtype;
+
+    @OneToMany(mappedBy = "item")
+    private List<UserItem> userItems;
+
+    @OneToMany(mappedBy = "item")
+    private List<UserUsedItem> userUsedItems;
 }

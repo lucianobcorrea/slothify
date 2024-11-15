@@ -21,7 +21,7 @@ public class ItemMapper {
 
     static String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/files/";
 
-    public static ItemResponse toResponse(Item item) {
+    public static ItemResponse toResponse(Item item, boolean userHasItem) {
         return ItemResponse.builder()
             .id(item.getId())
             .name(item.getName())
@@ -32,6 +32,7 @@ public class ItemMapper {
             .rarity(item.getRarity().toString())
             .itemType(item.getItemType().toString())
             .subtype(item.getSubtype().toString())
+            .userHasItem(userHasItem)
             .build();
     }
 }

@@ -3,6 +3,9 @@ import shopSloth from "@/assets/image/home/shop-sloth.png";
 import { useGetShopItems } from "@/hook/useGetShopItems/useGetShopItems.hook";
 import { useEffect, useState } from "react";
 import SwiperWithNavigation from "@/ui/component/swiperWithNavigation/swiperWithNavigation.component";
+import coin from "@/assets/image/general/coin.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import {
   Dialog,
   DialogContent,
@@ -12,16 +15,20 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { ButtonComponent } from "@/ui/component/button/button.component";
+import { useBuyItem } from "@/hook/useBuyItem/useBuyItem.hook";
 
 export const Shop = () => {
   const { items, fetchShopItems } = useGetShopItems();
   const [open, setOpen] = useState<boolean>(false);
 
-  const [itemId, setItemId] = useState<number>();
+  const [itemId, setItemId] = useState<number>(0);
   const [itemImage, setItemImage] = useState<string>();
   const [itemValue, setItemValue] = useState<number>();
   const [itemName, setItemName] = useState<string>();
   const [itemDescription, setItemDescription] = useState<string>();
+  const [itemAlreadyHas, setAlreadyHas] = useState<boolean>();
+
+  const { fetchBuyItem } = useBuyItem();
 
   interface Item {
     id: number;
@@ -33,6 +40,7 @@ export const Shop = () => {
     rarity: string;
     itemType: string;
     subtype: string;
+    userHasItem: boolean;
   }
 
   useEffect(() => {
@@ -45,6 +53,7 @@ export const Shop = () => {
     setItemValue(item.value);
     setItemName(item.name);
     setItemDescription(item.description);
+    setAlreadyHas(item.userHasItem);
     setOpen(true);
   }
 
@@ -66,6 +75,21 @@ export const Shop = () => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
           <DialogHeader className="flex items-center">
+            {!itemAlreadyHas ? (
+              <div className="flex gap-2 bg-neutral-750 rounded-md w-fit px-3 py-1 absolute items-center left-5 top-5">
+                <h3 className="text-end text-2xl text-secondary-color font-bold">
+                  {itemValue}
+                </h3>
+                <img className="max-w-6 max-h-6" src={coin} alt="Moeda" />
+              </div>
+            ) : (
+              <div className="flex gap-2 bg-neutral-750 rounded-md w-fit px-2 py-[6px] absolute items-center left-5 top-5">
+                <FontAwesomeIcon
+                  className="text-lime-400 text-3xl"
+                  icon={faCheck}
+                />
+              </div>
+            )}
             <DialogTitle className="text-4xl">{itemName}</DialogTitle>
             {itemImage && (
               <img className="max-w-[300px]" src={itemImage} alt={itemName} />
@@ -78,10 +102,12 @@ export const Shop = () => {
           <DialogFooter>
             <div className="flex gap-6 mt-2">
               <ButtonComponent
+                disabled={itemAlreadyHas}
+                clickEvent={() => fetchBuyItem(itemId)}
                 btnType="button"
                 classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
               >
-                Comprar
+                {itemAlreadyHas ? "Já possui" : "Comprar"}
               </ButtonComponent>
               <ButtonComponent
                 clickEvent={() => setOpen(false)}

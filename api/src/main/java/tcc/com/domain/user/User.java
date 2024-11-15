@@ -1,6 +1,7 @@
 package tcc.com.domain.user;
 
 import tcc.com.domain.area.Area;
+import tcc.com.domain.item.Item;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.reason.Reason;
@@ -44,6 +45,12 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Ranking ranking;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserItem> userItems;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserUsedItem> userUsedItems;
 
     @ManyToOne
     @JoinColumn(name = "study_duration_id")

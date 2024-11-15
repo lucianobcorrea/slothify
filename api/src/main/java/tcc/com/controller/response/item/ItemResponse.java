@@ -17,4 +17,5 @@ public class ItemResponse {
     private String rarity;
     private String itemType;
     private String subtype;
+    private boolean userHasItem;
 }

@@ -13,6 +13,7 @@ interface Item {
   rarity: string;
   itemType: string;
   subtype: string;
+  userHasItem: boolean;
 }
 
 interface Items {
