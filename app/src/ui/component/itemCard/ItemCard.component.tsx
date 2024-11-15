@@ -61,12 +61,25 @@ export const ItemCard = (props: Props) => {
     >
       <div className="bg-neutral-800 rounded-xl relative">
         <div className="flex justify-end">
-          <div className="flex gap-2 bg-neutral-750 rounded-md w-fit px-3 py-1 absolute right-[24px] top-[24px]">
-            <h3 className="text-end text-secondary-color font-bold">
-              {props.value}
-            </h3>
-            <img className="max-w-5 max-h-5 relative" src={coin} alt="Moeda" />
-          </div>
+          {!props.alreadyHas ? (
+            <div className="flex gap-2 bg-neutral-750 rounded-md w-fit px-3 py-1 absolute right-[24px] top-[24px]">
+              <h3 className="text-end text-secondary-color font-bold">
+                {props.value}
+              </h3>
+              <img
+                className="max-w-5 max-h-5 relative"
+                src={coin}
+                alt="Moeda"
+              />
+            </div>
+          ) : (
+            <div className="absolute right-[24px] top-[24px]">
+              <FontAwesomeIcon
+                className="text-lime-400 text-3xl"
+                icon={faCheck}
+              />
+            </div>
+          )}
         </div>
         <img
           className="min-h-64 object-cover"

@@ -29,7 +29,7 @@ export const Shop = () => {
   const [itemAlreadyHas, setAlreadyHas] = useState<boolean>();
 
   const { fetchBuyItem } = useBuyItem();
-
+  
   interface Item {
     id: number;
     name: string;
