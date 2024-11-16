@@ -9,4 +9,5 @@ import tcc.com.domain.lesson.ExerciseType;
 public class LessonRequest {
     String title;
     ExerciseType exerciseType;
+    int sequence;
 }

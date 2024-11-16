@@ -313,7 +313,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
         </h2>
 
         <DndContext onDragEnd={handleDragEnd}>
-          <div className="flex mb-10 gap-10">
+          <div className="flex mb-10 gap-10 flex-wrap">
             {unassignedItems.map((item) => (
               <DraggableItem
                 key={item.category}

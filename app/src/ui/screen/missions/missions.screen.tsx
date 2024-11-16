@@ -127,34 +127,36 @@ export const Missions = () => {
                         return (
                           <div key={lesson.id}>
                             {lesson.canBeDone === true ? (
-                              <Popover>
-                                <PopoverTrigger>
-                                  <li className={`relative ${marginClass}`}>
-                                    <img
-                                      src={lesson.exerciseCategory.image}
-                                      alt={lesson.exerciseCategory.name}
-                                      className="w-full max-w-32"
-                                    />
-                                  </li>
-                                </PopoverTrigger>
-                                <PopoverContent className="text-center bg-neutral-700 border-neutral-500">
-                                  <h2 className="text-white text-xl font-bold">
-                                    {lesson.title}
-                                  </h2>
-                                  <ButtonComponent
-                                    clickEvent={() =>
-                                      fetchExplanation(
-                                        lesson.id,
-                                        lesson.exerciseType
-                                      )
-                                    }
-                                    btnType="button"
-                                    classname="mt-4 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
-                                  >
-                                    Iniciar
-                                  </ButtonComponent>
-                                </PopoverContent>
-                              </Popover>
+                              <div className={`${marginClass}`}>
+                                <Popover>
+                                  <PopoverTrigger>
+                                    <li className={`relative`}>
+                                      <img
+                                        src={lesson.exerciseCategory.image}
+                                        alt={lesson.exerciseCategory.name}
+                                        className="w-full max-w-32"
+                                      />
+                                    </li>
+                                  </PopoverTrigger>
+                                  <PopoverContent className="text-center bg-neutral-700 border-neutral-500">
+                                    <h2 className="text-white text-xl font-bold">
+                                      {lesson.title}
+                                    </h2>
+                                    <ButtonComponent
+                                      clickEvent={() =>
+                                        fetchExplanation(
+                                          lesson.id,
+                                          lesson.exerciseType
+                                        )
+                                      }
+                                      btnType="button"
+                                      classname="mt-4 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
+                                    >
+                                      Iniciar
+                                    </ButtonComponent>
+                                  </PopoverContent>
+                                </Popover>
+                              </div>
                             ) : (
                               <li className={`relative ${marginClass}`}>
                                 <img

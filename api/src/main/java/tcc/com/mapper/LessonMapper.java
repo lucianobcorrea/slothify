@@ -11,6 +11,7 @@ public class LessonMapper {
         Lesson lesson = new Lesson();
         lesson.setTitle(request.getTitle());
         lesson.setChapter(chapter);
+        lesson.setSequence(request.getSequence());
         lesson.setExerciseCategory(exerciseCategory);
         lesson.setExerciseType(request.getExerciseType());
         return lesson;

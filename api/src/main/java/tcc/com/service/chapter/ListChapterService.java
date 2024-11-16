@@ -9,6 +9,7 @@ import tcc.com.controller.response.lesson.LessonResponse;
 import tcc.com.domain.area.Area;
 import tcc.com.domain.chapter.Chapter;
 import tcc.com.domain.exerciseCategory.ExerciseCategory;
+import tcc.com.domain.lesson.Lesson;
 import tcc.com.domain.user.User;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
 import tcc.com.repository.*;
@@ -75,7 +76,8 @@ public class ListChapterService {
                     canBeDone = true;
                 }else {
                     if(userCourseProgress != null && userCourseProgress.getLastUnlockedLesson() != null) {
-                        canBeDone = lesson.getId() <= userCourseProgress.getLastUnlockedLesson().getId() + 1;
+                        int lastSequence = userCourseProgress.getLastUnlockedLesson().getSequence();
+                        canBeDone = lesson.getSequence() <= lastSequence + 1;
                     }
                 }
 
