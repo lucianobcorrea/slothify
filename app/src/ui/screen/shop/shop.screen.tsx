@@ -22,14 +22,15 @@ export const Shop = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   const [itemId, setItemId] = useState<number>(0);
-  const [itemImage, setItemImage] = useState<string>();
+  const [itemImage, setItemImage] = useState<string>("");
   const [itemValue, setItemValue] = useState<number>();
-  const [itemName, setItemName] = useState<string>();
-  const [itemDescription, setItemDescription] = useState<string>();
+  const [itemName, setItemName] = useState<string>("");
+  const [itemDescription, setItemDescription] = useState<string>("");
   const [itemAlreadyHas, setAlreadyHas] = useState<boolean>();
+  const [itemSubtype, setSubtype] = useState<string>("");
 
-  const { fetchBuyItem } = useBuyItem();
-  
+  const { fetchBuyItem } = useBuyItem(itemImage, itemName, itemDescription, itemSubtype);
+
   interface Item {
     id: number;
     name: string;
@@ -54,6 +55,7 @@ export const Shop = () => {
     setItemName(item.name);
     setItemDescription(item.description);
     setAlreadyHas(item.userHasItem);
+    setSubtype(item.subtype);
     setOpen(true);
   }
 
@@ -92,7 +94,13 @@ export const Shop = () => {
             )}
             <DialogTitle className="text-4xl">{itemName}</DialogTitle>
             {itemImage && (
-              <img className="max-w-[300px]" src={itemImage} alt={itemName} />
+              <img
+                className={`${
+                  itemSubtype == "BANNER" ? "py-10 max-w-[500px]" : "max-w-[300px]"
+                }`}
+                src={itemImage}
+                alt={itemName}
+              />
             )}
             <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
               {itemDescription}
