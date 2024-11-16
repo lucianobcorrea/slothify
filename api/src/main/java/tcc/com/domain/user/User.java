@@ -43,6 +43,9 @@ public class User implements UserDetails {
     private Integer currentXp;
     private Integer coins;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserAchievement> userAchievements;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Ranking ranking;
 
@@ -69,6 +72,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserCourseProgress> courseProgress;
+
+    @OneToOne(mappedBy = "user")
+    private UserData userData;
 
     @ManyToMany
     @JoinTable(name = "user_area",

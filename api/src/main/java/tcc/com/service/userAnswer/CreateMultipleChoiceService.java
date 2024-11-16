@@ -18,6 +18,7 @@ import tcc.com.mapper.UserAnswerMapper;
 import tcc.com.mapper.UserCourseProgressMapper;
 import tcc.com.repository.*;
 import tcc.com.security.AuthenticatedUserService;
+import tcc.com.utils.AssignAchievement;
 
 @Service
 public class CreateMultipleChoiceService {
@@ -45,6 +46,9 @@ public class CreateMultipleChoiceService {
 
     @Autowired
     private RankingRepository rankingRepository;
+
+    @Autowired
+    private AssignAchievement assignAchievement;
 
     private static final int MULTIPLE_CHOICE_XP = 20;
     private static final int WRONG_MULTIPLE_CHOICE_XP = 5;
@@ -78,6 +82,7 @@ public class CreateMultipleChoiceService {
 
         if(isCorrect) {
             if(!userAnswer.isAlreadyAnswered()) {
+                userAnswer.setAlreadyAnswered(true);
                 switch (exercise.getLesson().getExerciseCategory().getName()) {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
@@ -112,10 +117,9 @@ public class CreateMultipleChoiceService {
             if(!userAnswer.isAlreadyAnswered()) {
                 user.setCurrentXp(user.getCurrentXp() + WRONG_MULTIPLE_CHOICE_XP);
                 user.setCoins(user.getCoins() + WRONG_COINS);
+                userAnswer.setAlreadyAnswered(false);
             }
         }
-
-        userRepository.save(user);
 
         Level currentLevel = user.getLevel();
         Level nextLevel = levelRepository.findByLevelNumber(currentLevel.getLevelNumber() + 1);
@@ -126,12 +130,14 @@ public class CreateMultipleChoiceService {
             }
         }
 
+        userRepository.save(user);
+
+        assignAchievement.checkAndAssignAchievement(user);
+
         if(!isCorrect) {
-            userAnswer.setAlreadyAnswered(false);
             userAnswerRepository.save(userAnswer);
             return ResponseEntity.ok(new AnswerResponse(false, "Resposta incorreta, tente novamente!"));
         }else {
-            userAnswer.setAlreadyAnswered(true);
             userAnswerRepository.save(userAnswer);
             return ResponseEntity.ok(new AnswerResponse(true, "Resposta correta!"));
         }

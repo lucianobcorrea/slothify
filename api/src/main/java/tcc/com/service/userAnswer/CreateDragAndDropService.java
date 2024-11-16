@@ -86,6 +86,7 @@ public class CreateDragAndDropService {
 
         if(userAnswer.isCorrect()) {
             if(!userAnswer.isAlreadyAnswered()) {
+                userAnswer.setAlreadyAnswered(true);
                 switch (exercise.getLesson().getExerciseCategory().getName()) {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
@@ -120,10 +121,9 @@ public class CreateDragAndDropService {
             if(!userAnswer.isAlreadyAnswered()) {
                 user.setCurrentXp(user.getCurrentXp() + WRONG_DRAG_AND_DROP_XP);
                 user.setCoins(user.getCoins() + WRONG_COINS);
+                userAnswer.setAlreadyAnswered(false);
             }
         }
-
-        userRepository.save(user);
 
         Level currentLevel = user.getLevel();
         Level nextLevel = levelRepository.findByLevelNumber(currentLevel.getLevelNumber() + 1);
@@ -134,12 +134,12 @@ public class CreateDragAndDropService {
             }
         }
 
+        userRepository.save(user);
+
         if(!userAnswer.isCorrect()) {
-            userAnswer.setAlreadyAnswered(false);
             userAnswerRepository.save(userAnswer);
             return ResponseEntity.ok(new AnswerResponse(false, "Resposta incorreta, tente novamente!"));
         }else {
-            userAnswer.setAlreadyAnswered(true);
             userAnswerRepository.save(userAnswer);
             return ResponseEntity.ok(new AnswerResponse(true, "Resposta correta!"));
         }

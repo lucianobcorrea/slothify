@@ -5,12 +5,10 @@ import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.role.Role;
 import tcc.com.domain.user.User;
+import tcc.com.domain.user.UserData;
 import tcc.com.domain.user.UserRoles;
 import tcc.com.mapper.UserMapper;
-import tcc.com.repository.LevelRepository;
-import tcc.com.repository.RankingRepository;
-import tcc.com.repository.RoleRepository;
-import tcc.com.repository.UserRepository;
+import tcc.com.repository.*;
 import tcc.com.validator.user.PasswordValidator;
 import tcc.com.validator.user.UniqueEmailValidator;
 import jakarta.transaction.Transactional;
@@ -43,6 +41,9 @@ public class CreateUserService {
     @Autowired
     private LevelRepository levelRepository;
 
+    @Autowired
+    private UserDataRepository userDataRepository;
+
     @Transactional
     public ResponseEntity<Void> create(UserRequest data) {
 
@@ -62,6 +63,10 @@ public class CreateUserService {
         Ranking ranking = new Ranking();
         ranking.setUser(user);
         rankingRepository.save(ranking);
+
+        UserData userData = new UserData();
+        userData.setUser(user);
+        userDataRepository.save(userData);
 
         return ResponseEntity.ok().build();
     }

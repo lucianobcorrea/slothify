@@ -256,8 +256,6 @@ CREATE TABLE user_data (
     completed_sorting_exercises INTEGER NOT NULL DEFAULT 0,
     completed_drag_and_drop_exercises INTEGER NOT NULL DEFAULT 0,
     completed_total_exercises INTEGER NOT NULL DEFAULT 0,
-    user_level INTEGER NOT NULL DEFAULT 0,
-    total_xp INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
