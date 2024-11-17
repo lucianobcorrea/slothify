@@ -1,6 +1,5 @@
 package tcc.com.service.userAnswer;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +12,14 @@ import tcc.com.domain.exercise.Exercise;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
+import tcc.com.domain.user.UserData;
 import tcc.com.domain.userAnswer.UserAnswer;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
 import tcc.com.mapper.UserAnswerMapper;
 import tcc.com.mapper.UserCourseProgressMapper;
 import tcc.com.repository.*;
 import tcc.com.security.AuthenticatedUserService;
+import tcc.com.utils.AssignAchievement;
 
 @Service
 public class CreateSortingService {
@@ -46,6 +47,12 @@ public class CreateSortingService {
 
     @Autowired
     private RankingRepository rankingRepository;
+
+    @Autowired
+    private AssignAchievement assignAchievement;
+
+    @Autowired
+    private UserDataRepository userDataRepository;
 
     private static final int SORTING_XP = 30;
     private static final int WRONG_SORTING_XP = 5;
@@ -90,6 +97,12 @@ public class CreateSortingService {
         if(userAnswer.isCorrect()) {
             if(!userAnswer.isAlreadyAnswered()) {
                 userAnswer.setAlreadyAnswered(true);
+
+                UserData userData = userDataRepository.findByUser(user);
+                userData.setCompletedTotalExercises(userData.getCompletedTotalExercises() + 1);
+                userData.setCompletedSortingExercises(userData.getCompletedSortingExercises() + 1);
+                userDataRepository.save(userData);
+
                 switch (exercise.getLesson().getExerciseCategory().getName()) {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
@@ -138,6 +151,8 @@ public class CreateSortingService {
         }
 
         userRepository.save(user);
+
+        assignAchievement.checkAndAssignAchievement(user);
 
         if(!userAnswer.isCorrect()) {
             userAnswerRepository.save(userAnswer);

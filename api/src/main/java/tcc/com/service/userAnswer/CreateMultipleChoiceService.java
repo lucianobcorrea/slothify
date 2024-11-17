@@ -12,6 +12,7 @@ import tcc.com.domain.exerciseOption.ExerciseOption;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
+import tcc.com.domain.user.UserData;
 import tcc.com.domain.userAnswer.UserAnswer;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
 import tcc.com.mapper.UserAnswerMapper;
@@ -50,6 +51,9 @@ public class CreateMultipleChoiceService {
     @Autowired
     private AssignAchievement assignAchievement;
 
+    @Autowired
+    private UserDataRepository userDataRepository;
+
     private static final int MULTIPLE_CHOICE_XP = 20;
     private static final int WRONG_MULTIPLE_CHOICE_XP = 5;
 
@@ -83,6 +87,12 @@ public class CreateMultipleChoiceService {
         if(isCorrect) {
             if(!userAnswer.isAlreadyAnswered()) {
                 userAnswer.setAlreadyAnswered(true);
+
+                UserData userData = userDataRepository.findByUser(user);
+                userData.setCompletedTotalExercises(userData.getCompletedTotalExercises() + 1);
+                userData.setCompletedMultipleChoiceExercises(userData.getCompletedMultipleChoiceExercises() + 1);
+                userDataRepository.save(userData);
+
                 switch (exercise.getLesson().getExerciseCategory().getName()) {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);

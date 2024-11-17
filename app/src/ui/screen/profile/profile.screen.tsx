@@ -29,6 +29,9 @@ import { useEditProfile } from "@/hook/useEditProfile/useEditProfile.hook";
 import { useAuthContext } from "@/hook/useAuthContext/useAuthContext.hook";
 import { useState, useEffect } from "react";
 import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
+import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
+import { useGetUserReasons } from "@/hook/useGetUserReasons/useGetUserReasons.hook";
+import { useGetUserSchedule } from "@/hook/useGetUserSchedule/useGetUserSchedule.hook";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
@@ -40,10 +43,12 @@ const schema = z.object({
 export type FormFields = z.infer<typeof schema>;
 
 export const Profile = () => {
-  const { userData, } = useUserDataContext();
-
+  const { userData } = useUserDataContext();
   const { authUser } = useAuthContext();
   const [open, setOpen] = useState<boolean>(false);
+  const { areas, fetchUserAreas } = useGetUserAreas();
+  const { reasons, fetchUserReasons } = useGetUserReasons();
+  const { schedules, fetchUserSchedule } = useGetUserSchedule();
 
   const {
     register,
@@ -69,6 +74,12 @@ export const Profile = () => {
     }
   }, [authUser, reset]);
 
+  useEffect(() => {
+    fetchUserAreas();
+    fetchUserReasons();
+    fetchUserSchedule();
+  }, []);
+
   return (
     <Main>
       <div className="relative">
@@ -78,7 +89,7 @@ export const Profile = () => {
           alt="Banner do usuário"
         />
       </div>
-      <div className="container bg-neutral-850 bottom-[-6%] left-0 right-0 rounded-3xl py-10 relative z-10 mt-[-150px]">
+      <div className="container bg-neutral-850 bottom-[-6%] left-0 right-0 rounded-3xl py-10 relative z-10 mt-[-150px] mb-10">
         <div className="grid grid-cols-[1.3fr,2fr,0.5fr] px-24">
           <div className="relative">
             <div
@@ -96,6 +107,9 @@ export const Profile = () => {
 
             <div className="flex items-center gap-2 relative top-[-45%]">
               <div className="w-full">
+                <h2 className="text-[24px] text-white font-bold mb-2">
+                  Nível do Jogador: {userData?.actualLevel}
+                </h2>
                 {!userData?.maxLevel ? (
                   <p className="text-[16px] text-white font-medium">
                     <span style={{ color: userData?.levelColor }}>
@@ -254,6 +268,61 @@ export const Profile = () => {
             </Dialog>
           </div>
         </div>
+
+        <hr className="border-neutral-600 mt-[-130px]" />
+        <section className="container mt-10">
+          <div className="grid grid-cols-3 gap-16">
+            <div>
+              <h2 className="text-secondary-color text-xl pb-3">
+                O que estou aprendendo?
+              </h2>
+              <ul className="marker:text-primary-color">
+                {areas.map((area, index) => {
+                  return (
+                    <li key={index} className="text-white list-disc list">
+                      {area.title}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-secondary-color text-xl pb-3">
+                Qual a minha motivação?
+              </h2>
+              <ul className="marker:text-primary-color">
+                {reasons.map((reason, index) => {
+                  return (
+                    <li key={index} className="text-white list-disc list">
+                      {reason.title}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            {schedules && (
+              <div>
+                <h2 className="text-secondary-color text-xl pb-3">
+                  Eu estudo...
+                </h2>
+                <ul className="marker:text-primary-color">
+                  {schedules.studyDays.map((schedule, index) => {
+                    return (
+                      <li key={index} className="text-white list-disc list">
+                        {schedule.weekDay}
+                      </li>
+                    );
+                  })}
+                  <li className="text-white list-disc list">
+                    Por {schedules.studyDuration} Minutos
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
       </div>
     </Main>
   );

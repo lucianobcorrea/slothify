@@ -12,12 +12,14 @@ import tcc.com.domain.exercise.Exercise;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
+import tcc.com.domain.user.UserData;
 import tcc.com.domain.userAnswer.UserAnswer;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
 import tcc.com.mapper.UserAnswerMapper;
 import tcc.com.mapper.UserCourseProgressMapper;
 import tcc.com.repository.*;
 import tcc.com.security.AuthenticatedUserService;
+import tcc.com.utils.AssignAchievement;
 
 @Service
 public class CreateDragAndDropService {
@@ -45,6 +47,12 @@ public class CreateDragAndDropService {
 
     @Autowired
     private RankingRepository rankingRepository;
+
+    @Autowired
+    private AssignAchievement assignAchievement;
+
+    @Autowired
+    private UserDataRepository userDataRepository;
 
     private static final int DRAG_AND_DROP_XP = 30;
     private static final int WRONG_DRAG_AND_DROP_XP = 5;
@@ -87,6 +95,12 @@ public class CreateDragAndDropService {
         if(userAnswer.isCorrect()) {
             if(!userAnswer.isAlreadyAnswered()) {
                 userAnswer.setAlreadyAnswered(true);
+
+                UserData userData = userDataRepository.findByUser(user);
+                userData.setCompletedTotalExercises(userData.getCompletedTotalExercises() + 1);
+                userData.setCompletedDragAndDropExercises(userData.getCompletedDragAndDropExercises() + 1);
+                userDataRepository.save(userData);
+
                 switch (exercise.getLesson().getExerciseCategory().getName()) {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
@@ -135,6 +149,8 @@ public class CreateDragAndDropService {
         }
 
         userRepository.save(user);
+
+        assignAchievement.checkAndAssignAchievement(user);
 
         if(!userAnswer.isCorrect()) {
             userAnswerRepository.save(userAnswer);

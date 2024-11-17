@@ -53,7 +53,7 @@ export const Missions = () => {
 
   const { authUser } = useAuthContext();
   const { userData } = useUserDataContext();
-
+  
   const localStorageAreaId = localStorage.getItem("areaId");
 
   const { areas, fetchUserAreas } = useGetUserAreas();
@@ -187,7 +187,7 @@ export const Missions = () => {
             <div className="flex justify-end mb-7 w-full">
               <div className="bg-neutral-700 p-6 rounded-xl border-[1px] border-neutral-500 w-full">
                 <h2 className="text-[24px] text-white font-bold">
-                  Nível do Jogador
+                  Nível do Jogador: {userData?.actualLevel}
                 </h2>
 
                 <div className="flex items-center gap-2">
