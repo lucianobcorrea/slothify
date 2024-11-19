@@ -11,7 +11,8 @@ import {
   Explanation,
   Ranking,
   Shop,
-  AfterBuying
+  AfterBuying,
+  Items
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 
@@ -49,6 +50,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Profile />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/perfil/items",
+    element: (
+      <ProtectedRoute>
+        <Items />
       </ProtectedRoute>
     ),
   },

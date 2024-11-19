@@ -1,9 +1,11 @@
 package tcc.com.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tcc.com.controller.request.user.EditUserRequest;
 import tcc.com.controller.response.area.AreaResponse;
+import tcc.com.controller.response.item.ItemResponse;
 import tcc.com.controller.response.reason.ReasonResponse;
 import tcc.com.controller.response.studySchedule.StudyScheduleResponse;
 import tcc.com.controller.response.user.UserDataResponse;
@@ -12,12 +14,10 @@ import tcc.com.security.AuthenticatedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import tcc.com.service.reason.GetUserReasonsService;
-import tcc.com.service.user.EditUserService;
-import tcc.com.service.user.GetUserAreasService;
-import tcc.com.service.user.GetUserDataService;
-import tcc.com.service.user.GetUserScheduleService;
+import tcc.com.service.user.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -40,6 +40,9 @@ public class UserController {
 
     @Autowired
     private GetUserScheduleService getUserScheduleService;
+
+    @Autowired
+    private GetUserItemsService getUserItemsService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -75,5 +78,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserDataResponse getUserData() {
         return getUserDataService.getUserData();
+    }
+
+    @GetMapping("/items")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Map<String, List<ItemResponse>>> getShopItems() {
+        Map<String, List<ItemResponse>> items = getUserItemsService.getItems();
+        return ResponseEntity.ok(items);
     }
 }

@@ -35,4 +35,18 @@ public class ItemMapper {
             .userHasItem(userHasItem)
             .build();
     }
+
+    public static ItemResponse toResponse(Item item) {
+        return ItemResponse.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .image(baseUrl + item.getImage())
+                .value(item.getValue())
+                .duration(item.getDuration())
+                .rarity(item.getRarity().toString())
+                .itemType(item.getItemType().toString())
+                .subtype(item.getSubtype().toString())
+                .build();
+    }
 }

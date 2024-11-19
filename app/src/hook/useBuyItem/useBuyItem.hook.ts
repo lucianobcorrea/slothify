@@ -2,6 +2,7 @@ import { buyItem } from "@/api/shop/buyItem";
 import { toast } from "react-toastify";
 import { getResponseError } from "@/api/error/error.api";
 import { useNavigate } from "react-router-dom";
+import { useUserDataContext } from "../useDataUserContext/useUserDataContext.hook";
 
 export function useBuyItem(
   itemImage: string,
@@ -10,10 +11,12 @@ export function useBuyItem(
   itemSubtype: string
 ) {
   const navigate = useNavigate();
+  const { refreshUserData } = useUserDataContext();
 
   async function fetchBuyItem(itemId: number) {
     try {
       await buyItem(itemId);
+      refreshUserData();
       navigate("/loja/comprar", {
         state: {
           image: itemImage,

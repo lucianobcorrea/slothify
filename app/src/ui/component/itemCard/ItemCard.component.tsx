@@ -8,7 +8,7 @@ interface Props {
   value: number;
   rarity: string;
   subtype: string;
-  alreadyHas: boolean;
+  alreadyHas: boolean | null;
 }
 
 export const ItemCard = (props: Props) => {

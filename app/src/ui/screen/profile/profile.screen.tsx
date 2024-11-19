@@ -32,6 +32,8 @@ import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext
 import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
 import { useGetUserReasons } from "@/hook/useGetUserReasons/useGetUserReasons.hook";
 import { useGetUserSchedule } from "@/hook/useGetUserSchedule/useGetUserSchedule.hook";
+import { useGetUserItems } from "@/hook/useGetUserItems/useGetUserItems.hook";
+import { Link } from "react-router-dom";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
@@ -46,9 +48,11 @@ export const Profile = () => {
   const { userData } = useUserDataContext();
   const { authUser } = useAuthContext();
   const [open, setOpen] = useState<boolean>(false);
+  const [openItems, setOpenItems] = useState<boolean>(false);
   const { areas, fetchUserAreas } = useGetUserAreas();
   const { reasons, fetchUserReasons } = useGetUserReasons();
   const { schedules, fetchUserSchedule } = useGetUserSchedule();
+  const { items, fetchUserItems } = useGetUserItems();
 
   const {
     register,
@@ -78,7 +82,37 @@ export const Profile = () => {
     fetchUserAreas();
     fetchUserReasons();
     fetchUserSchedule();
+    fetchUserItems();
   }, []);
+
+  const [itemId, setItemId] = useState<number>(0);
+  const [itemImage, setItemImage] = useState<string>("");
+  const [itemName, setItemName] = useState<string>("");
+  const [itemDescription, setItemDescription] = useState<string>("");
+  const [itemSubtype, setSubtype] = useState<string>("");
+  const [itemType, setType] = useState<string>("");
+
+  interface Item {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    value: number;
+    duration: number | null;
+    rarity: string;
+    itemType: string;
+    subtype: string;
+  }
+
+  function setItemData(item: Item) {
+    setItemImage(item.image);
+    setItemId(item.id);
+    setItemName(item.name);
+    setItemDescription(item.description);
+    setSubtype(item.subtype);
+    setType(item.itemType);
+    setOpenItems(true);
+  }
 
   return (
     <Main>
@@ -269,14 +303,85 @@ export const Profile = () => {
           </div>
         </div>
 
-        <hr className="border-neutral-600 mt-[-130px]" />
+        <Dialog open={openItems} onOpenChange={setOpenItems}>
+          <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
+            <DialogHeader className="flex items-center">
+              <DialogTitle className="text-4xl">{itemName}</DialogTitle>
+              {itemImage && (
+                <img
+                  className={`${
+                    itemSubtype == "BANNER"
+                      ? "py-10 max-w-[500px]"
+                      : "max-w-[300px]"
+                  }`}
+                  src={itemImage}
+                  alt={itemName}
+                />
+              )}
+              <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
+                {itemDescription}
+              </DialogDescription>
+            </DialogHeader>
+
+            {itemType == "UTILITY" ? (
+              <DialogFooter>
+                <div className="flex mt-2">
+                  <ButtonComponent
+                    btnType="button"
+                    classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
+                  >
+                    Usar item
+                  </ButtonComponent>
+                </div>
+              </DialogFooter>
+            ) : null}
+          </DialogContent>
+        </Dialog>
+
+        <div className="container mt-[-130px] mb-20 relative z-10">
+          <div className="grid grid-cols-2 gap-5">
+            <div className="bg-neutral-900 p-6 rounded-xl">
+              <div className="flex justify-between mb-4">
+                <h2 className="text-white">Meus itens</h2>
+                <Link to="/perfil/items" className="text-secondary-color hover:underline">
+                  Ver mais
+                </Link>
+              </div>
+              <div className="grid grid-cols-4 gap-5">
+                {items && Object.keys(items).length > 0 ? (
+                  Object.entries(items).map(([, itemArray]) =>
+                    itemArray.map((item) => (
+                      <button key={item.id} onClick={() => setItemData(item)}>
+                        <div className="bg-neutral-800 p-4 rounded-xl h-full">
+                          <img
+                            className="max-w-[100px] h-full object-cover"
+                            src={item.image}
+                            alt={item.name}
+                          />
+                        </div>
+                      </button>
+                    ))
+                  )
+                ) : (
+                  <p className="text-white col-span-4">
+                    Nenhum item encontrado.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div></div>
+          </div>
+        </div>
+
+        <hr className="border-neutral-600" />
         <section className="container mt-10">
           <div className="grid grid-cols-3 gap-16">
             <div>
               <h2 className="text-secondary-color text-xl pb-3">
                 O que estou aprendendo?
               </h2>
-              <ul className="marker:text-primary-color">
+              <ul className="marker:text-primary-color pl-5">
                 {areas.map((area, index) => {
                   return (
                     <li key={index} className="text-white list-disc list">
@@ -291,7 +396,7 @@ export const Profile = () => {
               <h2 className="text-secondary-color text-xl pb-3">
                 Qual a minha motivação?
               </h2>
-              <ul className="marker:text-primary-color">
+              <ul className="marker:text-primary-color pl-5">
                 {reasons.map((reason, index) => {
                   return (
                     <li key={index} className="text-white list-disc list">
@@ -307,14 +412,18 @@ export const Profile = () => {
                 <h2 className="text-secondary-color text-xl pb-3">
                   Eu estudo...
                 </h2>
-                <ul className="marker:text-primary-color">
-                  {schedules.studyDays.map((schedule, index) => {
-                    return (
-                      <li key={index} className="text-white list-disc list">
-                        {schedule.weekDay}
-                      </li>
-                    );
-                  })}
+                <ul className="marker:text-primary-color pl-5">
+                  {schedules.studyDays.length == 7 ? (
+                    <li className="text-white list-disc list">Todos os dias</li>
+                  ) : (
+                    schedules.studyDays.map((schedule, index) => {
+                      return (
+                        <li key={index} className="text-white list-disc list">
+                          {schedule.weekDay}
+                        </li>
+                      );
+                    })
+                  )}
                   <li className="text-white list-disc list">
                     Por {schedules.studyDuration} Minutos
                   </li>
