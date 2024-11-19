@@ -79,6 +79,7 @@ interface Item {
                 rarity={item.rarity}
                 subtype={item.subtype}
                 alreadyHas={item.userHasItem}
+                showValue={true}
               />
             </button>
           </SwiperSlide>

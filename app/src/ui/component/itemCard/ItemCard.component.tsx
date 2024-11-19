@@ -9,6 +9,7 @@ interface Props {
   rarity: string;
   subtype: string;
   alreadyHas: boolean | null;
+  showValue: boolean;
 }
 
 export const ItemCard = (props: Props) => {
@@ -32,21 +33,24 @@ export const ItemCard = (props: Props) => {
       )} to-transparent`}
     >
       <div className="bg-neutral-800 rounded-xl p-6 relative">
-        <div className="flex justify-end">
-          {!props.alreadyHas ? (
-            <div className="flex gap-2 bg-neutral-750 rounded-md w-fit px-3 py-1">
-              <h3 className="text-end text-secondary-color font-bold">
-                {props.value}
-              </h3>
-              <img className="max-w-5 max-h-5" src={coin} alt="Moeda" />
-            </div>
-          ) : (
-            <FontAwesomeIcon
-              className="text-lime-400 text-3xl"
-              icon={faCheck}
-            />
-          )}
-        </div>
+        {props.showValue && (
+          <div className="flex justify-end">
+            {!props.alreadyHas ? (
+              <div className="flex gap-2 bg-neutral-750 rounded-md w-fit px-3 py-1">
+                <h3 className="text-end text-secondary-color font-bold">
+                  {props.value}
+                </h3>
+                <img className="max-w-5 max-h-5" src={coin} alt="Moeda" />
+              </div>
+            ) : (
+              <FontAwesomeIcon
+                className="text-lime-400 text-3xl"
+                icon={faCheck}
+              />
+            )}
+          </div>
+        )}
+
         <img className="max-full" src={props.image} alt={props.name} />
         <h2 className="text-white font-bold text-xl text-center">
           {props.name}
@@ -55,34 +59,36 @@ export const ItemCard = (props: Props) => {
     </div>
   ) : (
     <div
-      className={`relative rounded-xl p-1 bg-gradient-to-b ${getGradientColor(
+      className={`relative rounded-xl p-1 bg-gradient-to-b h-full ${getGradientColor(
         props.rarity
       )} to-transparent`}
     >
-      <div className="bg-neutral-800 rounded-xl relative">
-        <div className="flex justify-end">
-          {!props.alreadyHas ? (
-            <div className="flex gap-2 bg-neutral-750 rounded-md w-fit px-3 py-1 absolute right-[24px] top-[24px]">
-              <h3 className="text-end text-secondary-color font-bold">
-                {props.value}
-              </h3>
-              <img
-                className="max-w-5 max-h-5 relative"
-                src={coin}
-                alt="Moeda"
-              />
-            </div>
-          ) : (
-            <div className="absolute right-[24px] top-[24px]">
-              <FontAwesomeIcon
-                className="text-lime-400 text-3xl"
-                icon={faCheck}
-              />
-            </div>
-          )}
-        </div>
+      <div className="bg-neutral-800 rounded-xl relative h-full">
+        {props.showValue && (
+          <div className="flex justify-end">
+            {!props.alreadyHas ? (
+              <div className="flex gap-2 bg-neutral-750 rounded-md w-fit px-3 py-1 absolute right-[24px] top-[24px]">
+                <h3 className="text-end text-secondary-color font-bold">
+                  {props.value}
+                </h3>
+                <img
+                  className="max-w-5 max-h-5 relative"
+                  src={coin}
+                  alt="Moeda"
+                />
+              </div>
+            ) : (
+              <div className="absolute right-[24px] top-[24px]">
+                <FontAwesomeIcon
+                  className="text-lime-400 text-3xl"
+                  icon={faCheck}
+                />
+              </div>
+            )}
+          </div>
+        )}
         <img
-          className="min-h-64 object-cover"
+          className="object-cover min-h-64 h-full"
           src={props.image}
           alt={props.name}
         />

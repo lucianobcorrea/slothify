@@ -33,7 +33,7 @@ import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
 import { useGetUserReasons } from "@/hook/useGetUserReasons/useGetUserReasons.hook";
 import { useGetUserSchedule } from "@/hook/useGetUserSchedule/useGetUserSchedule.hook";
 import { useGetUserItems } from "@/hook/useGetUserItems/useGetUserItems.hook";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
@@ -53,6 +53,7 @@ export const Profile = () => {
   const { reasons, fetchUserReasons } = useGetUserReasons();
   const { schedules, fetchUserSchedule } = useGetUserSchedule();
   const { items, fetchUserItems } = useGetUserItems();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -343,14 +344,23 @@ export const Profile = () => {
             <div className="bg-neutral-900 p-6 rounded-xl">
               <div className="flex justify-between mb-4">
                 <h2 className="text-white">Meus itens</h2>
-                <Link to="/perfil/items" className="text-secondary-color hover:underline">
+                <button
+                  className="text-secondary-color"
+                  onClick={() =>
+                    navigate("/perfil/items", {
+                      state: { items },
+                    })
+                  }
+                >
                   Ver mais
-                </Link>
+                </button>
               </div>
               <div className="grid grid-cols-4 gap-5">
                 {items && Object.keys(items).length > 0 ? (
-                  Object.entries(items).map(([, itemArray]) =>
-                    itemArray.map((item) => (
+                  Object.entries(items)
+                    .flatMap(([, itemArray]) => itemArray)
+                    .slice(0, 8)
+                    .map((item) => (
                       <button key={item.id} onClick={() => setItemData(item)}>
                         <div className="bg-neutral-800 p-4 rounded-xl h-full">
                           <img
@@ -361,7 +371,6 @@ export const Profile = () => {
                         </div>
                       </button>
                     ))
-                  )
                 ) : (
                   <p className="text-white col-span-4">
                     Nenhum item encontrado.
