@@ -53,8 +53,19 @@ export const Missions = () => {
 
   const { authUser } = useAuthContext();
   const { userData } = useUserDataContext();
-  
+
   const localStorageAreaId = localStorage.getItem("areaId");
+
+  const mapExerciseCategoryName = (category: string): string => {
+    const categoryMap: { [key: string]: string } = {
+      SIMPLE_LEVEL: "Nível Simples",
+      ADVERGAME: "Advergame",
+      INTERACTIVE_LEVEL: "Nível Interativo",
+      BOSS: "Chefe",
+    };
+
+    return categoryMap[category] || "Categoria Desconhecida";
+  };
 
   const { areas, fetchUserAreas } = useGetUserAreas();
   const [areaId, setAreaId] = useState<number>(
@@ -139,6 +150,7 @@ export const Missions = () => {
                                     </li>
                                   </PopoverTrigger>
                                   <PopoverContent className="text-center bg-neutral-700 border-neutral-500">
+                                  <h3 className="text-white font-thin text-sm mb-1">{mapExerciseCategoryName(lesson.exerciseCategory.name)}</h3>
                                     <h2 className="text-white text-xl font-bold">
                                       {lesson.title}
                                     </h2>
@@ -183,7 +195,7 @@ export const Missions = () => {
         </div>
 
         <div className="col-span-3 mt-10">
-          <div className="sticky top-10 ">
+          <div className="sticky top-10">
             <div className="flex justify-end mb-7 w-full">
               <div className="bg-neutral-700 p-6 rounded-xl border-[1px] border-neutral-500 w-full">
                 <h2 className="text-[24px] text-white font-bold">

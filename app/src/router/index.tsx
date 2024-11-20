@@ -12,7 +12,8 @@ import {
   Ranking,
   Shop,
   AfterBuying,
-  Items
+  Items,
+  Achievements,
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 
@@ -62,6 +63,14 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: "/perfil/conquistas",
+    element: (
+      <ProtectedRoute>
+        <Achievements />
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: "/missoes",
     element: (
       <ProtectedRoute>
@@ -105,8 +114,8 @@ export const router = createBrowserRouter([
     path: "/loja/comprar",
     element: (
       <ProtectedRoute>
-        <AfterBuying/>
+        <AfterBuying />
       </ProtectedRoute>
     ),
-  }
+  },
 ]);

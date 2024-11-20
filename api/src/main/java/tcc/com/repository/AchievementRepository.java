@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface AchievementRepository extends JpaRepository<Achievement, Long> {
     List<Achievement> findByRequiredUserLevelLessThanEqual(int userLevel);
+    List<Achievement> findByRequiredMultipleChoiceExercisesLessThanEqual(int completedMultipleChoice);
+    List<Achievement> findByRequiredSortingExercisesLessThanEqual(int completedSorting);
+    List<Achievement> findByRequiredDragAndDropExercisesLessThanEqual(int completedDragAndDrop);
+    List<Achievement> findByRequiredXpLessThanEqual(int userXp);
 }

@@ -6,11 +6,9 @@ import tcc.com.domain.achievement.Achievement;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.user.User;
 import tcc.com.domain.user.UserAchievement;
+import tcc.com.domain.user.UserData;
 import tcc.com.mapper.UserAchievementMapper;
-import tcc.com.repository.AchievementRepository;
-import tcc.com.repository.LevelRepository;
-import tcc.com.repository.UserAchievementRepository;
-import tcc.com.repository.UserRepository;
+import tcc.com.repository.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,13 +29,31 @@ public class AssignAchievement {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserDataRepository userDataRepository;
+
     public void checkAndAssignAchievement(User user) {
+        UserData userData = userDataRepository.findByUser(user);
+
         Level level = user.getLevel();
         int userLevel = level.getLevelNumber();
+        int userXp = user.getCurrentXp();
+        int completedMultipleChoice = userData.getCompletedMultipleChoiceExercises();
+        int completedSorting = userData.getCompletedSortingExercises();
+        int completedDragAndDrop = userData.getCompletedDragAndDropExercises();
 
         List<Achievement> achievableAchievementsByLevel = achievementRepository.findByRequiredUserLevelLessThanEqual(userLevel);
+        List<Achievement> achievableAchievementsByXp = achievementRepository.findByRequiredXpLessThanEqual(userXp);
+
+        List<Achievement> achievableAchievementsByMultipleChoice = achievementRepository.findByRequiredMultipleChoiceExercisesLessThanEqual(completedMultipleChoice);
+        List<Achievement> achievableAchievementsBySorting = achievementRepository.findByRequiredSortingExercisesLessThanEqual(completedSorting);
+        List<Achievement> achievableAchievementsByDragAndDrop = achievementRepository.findByRequiredDragAndDropExercisesLessThanEqual(completedDragAndDrop);
 
         Set<Achievement> allAchievableAchievements = new HashSet<>();
+        allAchievableAchievements.addAll(achievableAchievementsByMultipleChoice);
+        allAchievableAchievements.addAll(achievableAchievementsBySorting);
+        allAchievableAchievements.addAll(achievableAchievementsByDragAndDrop);
+        allAchievableAchievements.addAll(achievableAchievementsByXp);
         allAchievableAchievements.addAll(achievableAchievementsByLevel);
 
         for (Achievement achievement : allAchievableAchievements) {
