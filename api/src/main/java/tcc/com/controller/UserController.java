@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tcc.com.controller.request.user.EditUserRequest;
+import tcc.com.controller.response.achievement.AchievementResponse;
 import tcc.com.controller.response.area.AreaResponse;
 import tcc.com.controller.response.item.ItemResponse;
 import tcc.com.controller.response.reason.ReasonResponse;
@@ -43,6 +44,9 @@ public class UserController {
 
     @Autowired
     private GetUserItemsService getUserItemsService;
+
+    @Autowired
+    private GetUserAchievements getUserAchievements;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -85,5 +89,11 @@ public class UserController {
     public ResponseEntity<Map<String, List<ItemResponse>>> getShopItems() {
         Map<String, List<ItemResponse>> items = getUserItemsService.getItems();
         return ResponseEntity.ok(items);
+    }
+
+    @GetMapping("/achievements")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AchievementResponse> getAchievements() {
+        return getUserAchievements.getUserAchievements();
     }
 }

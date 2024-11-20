@@ -33,7 +33,8 @@ import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
 import { useGetUserReasons } from "@/hook/useGetUserReasons/useGetUserReasons.hook";
 import { useGetUserSchedule } from "@/hook/useGetUserSchedule/useGetUserSchedule.hook";
 import { useGetUserItems } from "@/hook/useGetUserItems/useGetUserItems.hook";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useGetUserAchievements } from "@/hook/useGetUserAchievements/useGetUserAchievements.hook";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
@@ -49,10 +50,14 @@ export const Profile = () => {
   const { authUser } = useAuthContext();
   const [open, setOpen] = useState<boolean>(false);
   const [openItems, setOpenItems] = useState<boolean>(false);
+  const [openAchievements, setOpenAchievements] = useState<boolean>(false);
+
   const { areas, fetchUserAreas } = useGetUserAreas();
   const { reasons, fetchUserReasons } = useGetUserReasons();
   const { schedules, fetchUserSchedule } = useGetUserSchedule();
   const { items, fetchUserItems } = useGetUserItems();
+  const { achievements, fetchUserAchievements } = useGetUserAchievements();
+
   const navigate = useNavigate();
 
   const {
@@ -84,6 +89,7 @@ export const Profile = () => {
     fetchUserReasons();
     fetchUserSchedule();
     fetchUserItems();
+    fetchUserAchievements();
   }, []);
 
   const [itemId, setItemId] = useState<number>(0);
@@ -92,6 +98,27 @@ export const Profile = () => {
   const [itemDescription, setItemDescription] = useState<string>("");
   const [itemSubtype, setSubtype] = useState<string>("");
   const [itemType, setType] = useState<string>("");
+
+  const [achievementId, setAchievementId] = useState<number>(0);
+  const [achievementImage, setAchievementImage] = useState<string>("");
+  const [achievementName, setAchievementName] = useState<string>("");
+  const [achievementDescription, setAchievementDescription] =
+    useState<string>("");
+  const [achievementTotal, setAchievementTotal] = useState<number>(0);
+  const [achievementRequired, setAchievementRequired] = useState<number>(0);
+  const [achievementPercentage, setAchievementPercentage] = useState<number>(0);
+  const [userHasAchievement, setUserHasAchievement] = useState<boolean>(false);
+
+  interface Achievement {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    userHas: boolean;
+    total: number;
+    required: number;
+    percentage: number;
+  }
 
   interface Item {
     id: number;
@@ -103,6 +130,18 @@ export const Profile = () => {
     rarity: string;
     itemType: string;
     subtype: string;
+  }
+
+  function setAchievementData(achievement: Achievement) {
+    setAchievementImage(achievement.image);
+    setAchievementId(achievement.id);
+    setAchievementName(achievement.name);
+    setAchievementDescription(achievement.description);
+    setUserHasAchievement(achievement.userHas);
+    setOpenAchievements(true);
+    setAchievementTotal(achievement.total);
+    setAchievementRequired(achievement.required);
+    setAchievementPercentage(achievement.percentage);
   }
 
   function setItemData(item: Item) {
@@ -304,6 +343,7 @@ export const Profile = () => {
           </div>
         </div>
 
+        {/* Items modal */}
         <Dialog open={openItems} onOpenChange={setOpenItems}>
           <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
             <DialogHeader className="flex items-center">
@@ -336,6 +376,47 @@ export const Profile = () => {
                 </div>
               </DialogFooter>
             ) : null}
+          </DialogContent>
+        </Dialog>
+
+        {/* Achievements modal */}
+        <Dialog open={openAchievements} onOpenChange={setOpenAchievements}>
+          <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
+            <DialogHeader className="flex items-center">
+              <DialogTitle className="text-4xl">{achievementName}</DialogTitle>
+              {achievementImage && (
+                <img
+                  className={`${
+                    !userHasAchievement ? "grayscale" : ""
+                  } max-w-[300px]`}
+                  src={achievementImage}
+                  alt={achievementName}
+                />
+              )}
+              <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
+                {achievementDescription}
+
+                {userHasAchievement ? (
+                  <Progress
+                    value={achievementPercentage}
+                    className="w-full bg-neutral-500 h-5 mt-10"
+                    indicatorStyle={{ backgroundColor: "#A855F7" }}
+                  />
+                ) : (
+                  <>
+                    <div className="flex justify-between w-full mt-6">
+                      <h2>{achievementTotal}</h2>
+                      <h2 className="text-secondary-color font-bold">{achievementRequired}</h2>
+                    </div>
+                    <Progress
+                      value={achievementPercentage}
+                      className="w-full bg-neutral-500 h-5"
+                      indicatorStyle={{ backgroundColor: "#A855F7" }}
+                    />
+                  </>
+                )}
+              </DialogDescription>
+            </DialogHeader>
           </DialogContent>
         </Dialog>
 
@@ -379,7 +460,45 @@ export const Profile = () => {
               </div>
             </div>
 
-            <div></div>
+            <div className="bg-neutral-900 p-6 rounded-xl">
+              <div className="flex justify-between mb-4">
+                <h2 className="text-white">Minhas conquistas</h2>
+                <button
+                  className="text-secondary-color"
+                  onClick={() =>
+                    navigate("/perfil/conquistas", {
+                      state: { achievements },
+                    })
+                  }
+                >
+                  Ver mais
+                </button>
+              </div>
+              <div className="grid grid-cols-4 gap-5">
+                {achievements && achievements.length > 0 ? (
+                  achievements.slice(0, 8).map((achievement) => (
+                    <button
+                      key={achievement.id}
+                      onClick={() => setAchievementData(achievement)}
+                    >
+                      <div className="bg-neutral-800 p-4 rounded-xl h-full">
+                        <img
+                          className={`${
+                            !achievement.userHas ? "grayscale" : ""
+                          } max-w-[100px] h-full object-cover`}
+                          src={achievement.image}
+                          alt={achievement.name}
+                        />
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <p className="text-white col-span-4">
+                    Nenhum item encontrado.
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
