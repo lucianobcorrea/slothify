@@ -7,4 +7,5 @@ import tcc.com.domain.user.UserItem;
 
 public interface UserItemRepository extends JpaRepository<UserItem, Long> {
     UserItem findByItemAndUser(Item item, User user);
+    UserItem findByItemIdAndUser(int id, User user);
 }

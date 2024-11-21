@@ -20,27 +20,34 @@ import defaultBanner from "@/assets/image/profile/defaultBanner.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 import { Progress } from "@/components/ui/progress";
-
+import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InputComponent } from "@/ui/component/input/input.component";
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+
 import { useEditProfile } from "@/hook/useEditProfile/useEditProfile.hook";
 import { useAuthContext } from "@/hook/useAuthContext/useAuthContext.hook";
-import { useState, useEffect } from "react";
 import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
 import { useGetUserAreas } from "@/hook/useGetUserAreas/useGetUserAreas.hook";
 import { useGetUserReasons } from "@/hook/useGetUserReasons/useGetUserReasons.hook";
 import { useGetUserSchedule } from "@/hook/useGetUserSchedule/useGetUserSchedule.hook";
 import { useGetUserItems } from "@/hook/useGetUserItems/useGetUserItems.hook";
-import { useNavigate } from "react-router-dom";
 import { useGetUserAchievements } from "@/hook/useGetUserAchievements/useGetUserAchievements.hook";
+import { useGetUserTopRanking } from "@/hook/useGetUserTopRanking/useGetUserTopRanking.hook";
+
+import firstPlace from "@/assets/image/ranking/1-place.png";
+import secondPlace from "@/assets/image/ranking/2-place.png";
+import thirdPlace from "@/assets/image/ranking/3-place.png";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
   avatar: z.instanceof(FileList).optional(),
   banner: z.instanceof(FileList).optional(),
   color: z.string(),
+  userSelectedAvatar: z.string().nullable().optional(),
+  userSelectedBanner: z.string().nullable().optional(),
 });
 
 export type FormFields = z.infer<typeof schema>;
@@ -57,6 +64,7 @@ export const Profile = () => {
   const { schedules, fetchUserSchedule } = useGetUserSchedule();
   const { items, fetchUserItems } = useGetUserItems();
   const { achievements, fetchUserAchievements } = useGetUserAchievements();
+  const { ranking, fetchUserRanking } = useGetUserTopRanking();
 
   const navigate = useNavigate();
 
@@ -90,6 +98,7 @@ export const Profile = () => {
     fetchUserSchedule();
     fetchUserItems();
     fetchUserAchievements();
+    fetchUserRanking();
   }, []);
 
   const [itemId, setItemId] = useState<number>(0);
@@ -99,7 +108,6 @@ export const Profile = () => {
   const [itemSubtype, setSubtype] = useState<string>("");
   const [itemType, setType] = useState<string>("");
 
-  const [achievementId, setAchievementId] = useState<number>(0);
   const [achievementImage, setAchievementImage] = useState<string>("");
   const [achievementName, setAchievementName] = useState<string>("");
   const [achievementDescription, setAchievementDescription] =
@@ -134,7 +142,6 @@ export const Profile = () => {
 
   function setAchievementData(achievement: Achievement) {
     setAchievementImage(achievement.image);
-    setAchievementId(achievement.id);
     setAchievementName(achievement.name);
     setAchievementDescription(achievement.description);
     setUserHasAchievement(achievement.userHas);
@@ -143,7 +150,7 @@ export const Profile = () => {
     setAchievementRequired(achievement.required);
     setAchievementPercentage(achievement.percentage);
   }
-
+  
   function setItemData(item: Item) {
     setItemImage(item.image);
     setItemId(item.id);
@@ -214,10 +221,44 @@ export const Profile = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-start ps-10">
+          <div className="flex justify-start flex-col ps-10">
             <h1 className="font-bold text-white text-4xl">
               {authUser?.username}
             </h1>
+            {ranking && (
+              <div className="flex gap-4 mt-6">
+                <div className="flex items-center gap-2">
+                  <img
+                    className="max-w-[46px] w-full"
+                    src={firstPlace}
+                    alt="Medalha de primeiro lugar"
+                  />
+                  <h2 className="text-secondary-color font-bold">
+                    {ranking.timesInFirstPlace}
+                  </h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img
+                    className="max-w-[46px] w-full"
+                    src={secondPlace}
+                    alt="Medalha de segundo lugar"
+                  />
+                  <h2 className="text-secondary-color font-bold">
+                    {ranking.timesInSecondPlace}
+                  </h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img
+                    className="max-w-[46px] w-full"
+                    src={thirdPlace}
+                    alt="Medalha de terceiro lugar"
+                  />
+                  <h2 className="text-secondary-color font-bold">
+                    {ranking.timesInThirdPlace}
+                  </h2>
+                </div>
+              </div>
+            )}
           </div>
           <div>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -315,6 +356,68 @@ export const Profile = () => {
                       </div>
                     </div>
 
+                    {items && items.AVATAR && (
+                      <section className="mt-10 mb-10">
+                        <h2 className="mb-4">Seus avatares</h2>
+                        <div className="flex flex-wrap gap-5">
+                          {items.AVATAR.map((avatar) => (
+                            <div key={avatar.id}>
+                              <label
+                                htmlFor={avatar.id.toString()}
+                                className="cursor-pointer"
+                              >
+                                <input
+                                  {...register("userSelectedAvatar")}
+                                  type="radio"
+                                  id={avatar.id.toString()}
+                                  value={avatar.id}
+                                  className="hidden peer"
+                                />
+                                <img
+                                  className="max-w-28 rounded-full transition-transform duration-200 
+                         peer-checked:border-2 peer-checked:border-primary-color
+                         transform peer-checked:scale-105"
+                                  src={avatar.image}
+                                  alt={`Avatar ${avatar.id}`}
+                                />
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+
+                    {items && items.BANNER && (
+                      <section className="mt-10 mb-10">
+                        <h2 className="mb-4">Seus Banners</h2>
+                        <div className="flex flex-wrap gap-5">
+                          {items.BANNER.map((banner) => (
+                            <div key={banner.id}>
+                              <label
+                                htmlFor={banner.id.toString()}
+                                className="cursor-pointer"
+                              >
+                                <input
+                                  {...register("userSelectedBanner")}
+                                  type="radio"
+                                  id={banner.id.toString()}
+                                  value={banner.id}
+                                  className="hidden peer"
+                                />
+                                <img
+                                  className="max-w-36 transition-transform duration-200 
+                         peer-checked:border-2 peer-checked:border-primary-color
+                         transform peer-checked:scale-105"
+                                  src={banner.image}
+                                  alt={`Banner ${banner.id}`}
+                                />
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+
                     <DialogFooter>
                       <div className="flex gap-6">
                         <DialogClose>
@@ -406,7 +509,9 @@ export const Profile = () => {
                   <>
                     <div className="flex justify-between w-full mt-6">
                       <h2>{achievementTotal}</h2>
-                      <h2 className="text-secondary-color font-bold">{achievementRequired}</h2>
+                      <h2 className="text-secondary-color font-bold">
+                        {achievementRequired}
+                      </h2>
                     </div>
                     <Progress
                       value={achievementPercentage}

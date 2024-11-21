@@ -11,4 +11,6 @@ public class EditUserRequest {
     private MultipartFile avatar;
     private MultipartFile banner;
     private String color;
+    private String userSelectedAvatar;
+    private String userSelectedBanner;
 }
