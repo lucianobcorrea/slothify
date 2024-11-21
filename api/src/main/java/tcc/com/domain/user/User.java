@@ -46,6 +46,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<UserAchievement> userAchievements;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserDailyChallenge> userChallenges;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Ranking ranking;
 
