@@ -10,6 +10,7 @@ import tcc.com.controller.response.item.ItemResponse;
 import tcc.com.controller.response.reason.ReasonResponse;
 import tcc.com.controller.response.studySchedule.StudyScheduleResponse;
 import tcc.com.controller.response.user.UserDataResponse;
+import tcc.com.controller.response.user.UserRankingResponse;
 import tcc.com.controller.response.user.UserResponse;
 import tcc.com.security.AuthenticatedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class UserController {
 
     @Autowired
     private GetUserAchievements getUserAchievements;
+
+    @Autowired
+    private GetUserTopRanking getUserTopRanking;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -95,5 +99,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public List<AchievementResponse> getAchievements() {
         return getUserAchievements.getUserAchievements();
+    }
+
+    @GetMapping("/top-ranking")
+    @ResponseStatus(HttpStatus.OK)
+    public UserRankingResponse getRanking() {
+        return getUserTopRanking.getUserTopRanking();
     }
 }

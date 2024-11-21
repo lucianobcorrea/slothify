@@ -6,6 +6,6 @@ import tcc.com.domain.user.User;
 import tcc.com.domain.user.UserAchievement;
 
 public interface UserAchievementRepository extends JpaRepository<UserAchievement, Long> {
-    UserAchievement findByAchievement(Achievement achievement);
     UserAchievement findByAchievementAndUser(Achievement achievement, User user);
+    UserAchievement findByUserAndAchievement(User user, Achievement achievement);
 }

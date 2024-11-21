@@ -41,6 +41,7 @@ public class AssignAchievement {
         int completedMultipleChoice = userData.getCompletedMultipleChoiceExercises();
         int completedSorting = userData.getCompletedSortingExercises();
         int completedDragAndDrop = userData.getCompletedDragAndDropExercises();
+        int completedTotalExercises = userData.getCompletedTotalExercises();
 
         List<Achievement> achievableAchievementsByLevel = achievementRepository.findByRequiredUserLevelLessThanEqual(userLevel);
         List<Achievement> achievableAchievementsByXp = achievementRepository.findByRequiredXpLessThanEqual(userXp);
@@ -48,6 +49,7 @@ public class AssignAchievement {
         List<Achievement> achievableAchievementsByMultipleChoice = achievementRepository.findByRequiredMultipleChoiceExercisesLessThanEqual(completedMultipleChoice);
         List<Achievement> achievableAchievementsBySorting = achievementRepository.findByRequiredSortingExercisesLessThanEqual(completedSorting);
         List<Achievement> achievableAchievementsByDragAndDrop = achievementRepository.findByRequiredDragAndDropExercisesLessThanEqual(completedDragAndDrop);
+        List<Achievement> achievableAchievementsByTotalExercises = achievementRepository.findByRequiredExercisesLessThanEqual(completedTotalExercises);
 
         Set<Achievement> allAchievableAchievements = new HashSet<>();
         allAchievableAchievements.addAll(achievableAchievementsByMultipleChoice);
@@ -55,9 +57,10 @@ public class AssignAchievement {
         allAchievableAchievements.addAll(achievableAchievementsByDragAndDrop);
         allAchievableAchievements.addAll(achievableAchievementsByXp);
         allAchievableAchievements.addAll(achievableAchievementsByLevel);
+        allAchievableAchievements.addAll(achievableAchievementsByTotalExercises);
 
         for (Achievement achievement : allAchievableAchievements) {
-            if(userAchievementRepository.findByAchievement(achievement) == null) {
+            if(userAchievementRepository.findByUserAndAchievement(user, achievement) == null) {
                 UserAchievement userAchievement = UserAchievementMapper.toEntity(user, achievement);
                 userAchievementRepository.save(userAchievement);
 

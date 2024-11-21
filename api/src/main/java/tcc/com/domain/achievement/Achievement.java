@@ -25,6 +25,7 @@ public class Achievement {
     private String image;
     private Integer xpReward;
     private Integer coinsReward;
+
     private Integer requiredExercises;
     private Integer requiredMultipleChoiceExercises;
     private Integer requiredSortingExercises;
