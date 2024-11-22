@@ -20,12 +20,10 @@ import tcc.com.mapper.UserCourseProgressMapper;
 import tcc.com.repository.*;
 import tcc.com.security.AuthenticatedUserService;
 import tcc.com.utils.AssignAchievement;
+import tcc.com.utils.CompleteChallenge;
 
 @Service
 public class CreateSortingService {
-
-    @Autowired
-    private ExerciseOptionRepository exerciseOptionRepository;
 
     @Autowired
     private UserAnswerRepository userAnswerRepository;
@@ -53,6 +51,9 @@ public class CreateSortingService {
 
     @Autowired
     private UserDataRepository userDataRepository;
+
+    @Autowired
+    private CompleteChallenge completeChallenge;
 
     private static final int SORTING_XP = 30;
     private static final int WRONG_SORTING_XP = 5;
@@ -153,6 +154,7 @@ public class CreateSortingService {
         userRepository.save(user);
 
         assignAchievement.checkAndAssignAchievement(user);
+        completeChallenge.checkAndCompleteChallenge(user);
 
         if(!userAnswer.isCorrect()) {
             userAnswerRepository.save(userAnswer);

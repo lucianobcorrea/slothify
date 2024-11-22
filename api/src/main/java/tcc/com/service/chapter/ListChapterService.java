@@ -9,7 +9,6 @@ import tcc.com.controller.response.lesson.LessonResponse;
 import tcc.com.domain.area.Area;
 import tcc.com.domain.chapter.Chapter;
 import tcc.com.domain.exerciseCategory.ExerciseCategory;
-import tcc.com.domain.lesson.Lesson;
 import tcc.com.domain.user.User;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
 import tcc.com.repository.*;
@@ -26,13 +25,7 @@ public class ListChapterService {
     private AreaRepository areaRepository;
 
     @Autowired
-    private LessonRepository lessonRepository;
-
-    @Autowired
     private ChapterRepository chapterRepository;
-
-    @Autowired
-    private UserAnswerRepository userAnswerRepository;
 
     @Autowired
     private UserCourseProgressRepository userCourseProgressRepository;

@@ -2,7 +2,6 @@ package tcc.com.security;
 
 import tcc.com.controller.response.user.UserResponse;
 import tcc.com.mapper.UserMapper;
-import tcc.com.repository.LevelRepository;
 import tcc.com.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,9 +17,6 @@ public class AuthenticatedUserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private LevelRepository levelRepository;
 
     public Long getId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

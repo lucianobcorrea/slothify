@@ -20,6 +20,7 @@ import tcc.com.mapper.UserCourseProgressMapper;
 import tcc.com.repository.*;
 import tcc.com.security.AuthenticatedUserService;
 import tcc.com.utils.AssignAchievement;
+import tcc.com.utils.CompleteChallenge;
 
 @Service
 public class CreateMultipleChoiceService {
@@ -53,6 +54,9 @@ public class CreateMultipleChoiceService {
 
     @Autowired
     private UserDataRepository userDataRepository;
+
+    @Autowired
+    private CompleteChallenge completeChallenge;
 
     private static final int MULTIPLE_CHOICE_XP = 20;
     private static final int WRONG_MULTIPLE_CHOICE_XP = 5;
@@ -143,6 +147,7 @@ public class CreateMultipleChoiceService {
         userRepository.save(user);
 
         assignAchievement.checkAndAssignAchievement(user);
+        completeChallenge.checkAndCompleteChallenge(user);
 
         if(!isCorrect) {
             userAnswerRepository.save(userAnswer);

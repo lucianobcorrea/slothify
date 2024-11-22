@@ -1,16 +1,12 @@
 package tcc.com.service.reason;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import tcc.com.controller.request.area.AreaRequest;
 import tcc.com.controller.request.reason.ReasonRequest;
-import tcc.com.domain.area.Area;
 import tcc.com.domain.reason.Reason;
-import tcc.com.mapper.AreaMapper;
 import tcc.com.mapper.ReasonMapper;
 import tcc.com.repository.ReasonRepository;
 import tcc.com.utils.ConvertImage;

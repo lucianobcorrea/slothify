@@ -8,4 +8,5 @@ import tcc.com.domain.user.UserDailyChallenge;
 
 public interface UserDailyChallengeRepository extends JpaRepository<UserDailyChallenge, Long> {
     List<UserDailyChallenge> findByUser(User user);
+    UserDailyChallenge findByIdAndUser(Long userDailyChallengeId, User user);
 }

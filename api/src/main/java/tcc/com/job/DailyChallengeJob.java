@@ -28,6 +28,8 @@ public class DailyChallengeJob {
     @Scheduled(cron = "0 0 0 * * *")
     public void execute() throws InterruptedException {
 
+        userDailyChallengeRepository.deleteAllInBatch();
+
         List<Challenge> challenges = challengeRepository.findAll();
         List<User> users = userRepository.findAll();
 

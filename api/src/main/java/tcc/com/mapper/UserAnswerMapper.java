@@ -6,7 +6,6 @@ import tcc.com.domain.user.User;
 import tcc.com.domain.userAnswer.UserAnswer;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class UserAnswerMapper {
 

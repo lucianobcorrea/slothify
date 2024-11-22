@@ -7,14 +7,10 @@ import tcc.com.domain.level.Level;
 import tcc.com.domain.user.User;
 import tcc.com.mapper.UserDataMapper;
 import tcc.com.repository.LevelRepository;
-import tcc.com.repository.UserRepository;
 import tcc.com.security.AuthenticatedUserService;
 
 @Service
 public class GetUserDataService {
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private LevelRepository levelRepository;

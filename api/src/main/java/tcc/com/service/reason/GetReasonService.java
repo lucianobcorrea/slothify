@@ -3,7 +3,6 @@ package tcc.com.service.reason;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tcc.com.FileStorageConfig;
 import tcc.com.controller.response.reason.ReasonResponse;
 import tcc.com.mapper.ReasonMapper;
 import tcc.com.repository.ReasonRepository;
@@ -16,9 +15,6 @@ public class GetReasonService {
 
     @Autowired
     private ReasonRepository reasonRepository;
-
-    @Autowired
-    private FileStorageConfig fileStorageConfig;
 
     public List<ReasonResponse> getReasons() {
         String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/files/";

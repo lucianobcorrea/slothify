@@ -1,7 +1,9 @@
 package tcc.com.mapper;
 
 import tcc.com.controller.request.challenge.ChallengeRequest;
+import tcc.com.controller.response.challenge.ChallengeCollectResponse;
 import tcc.com.domain.challenge.Challenge;
+import tcc.com.domain.user.UserDailyChallenge;
 
 public class ChallengeMapper {
 
@@ -19,5 +21,12 @@ public class ChallengeMapper {
         challenge.setRequiredXp(request.getRequiredXp());
 
         return challenge;
+    }
+
+    public static ChallengeCollectResponse toResponse(UserDailyChallenge userDailyChallenge) {
+        ChallengeCollectResponse response = new ChallengeCollectResponse();
+        response.setCoinsReward(userDailyChallenge.getChallenge().getCoinsReward());
+        response.setXpReward(userDailyChallenge.getChallenge().getXpReward());
+        return response;
     }
 }

@@ -3,7 +3,6 @@ package tcc.com.domain.exerciseCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import tcc.com.domain.exercise.Exercise;
 import tcc.com.domain.lesson.Lesson;
 
 import java.util.ArrayList;

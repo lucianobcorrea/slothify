@@ -3,7 +3,6 @@ package tcc.com.service.area;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import tcc.com.FileStorageConfig;
 import tcc.com.controller.response.area.AreaResponse;
 import tcc.com.mapper.AreaMapper;
 import tcc.com.repository.AreaRepository;
@@ -16,9 +15,6 @@ public class GetAreaService {
 
     @Autowired
     private AreaRepository areaRepository;
-
-    @Autowired
-    private FileStorageConfig fileStorageConfig;
 
     public List<AreaResponse> getAreas() {
 

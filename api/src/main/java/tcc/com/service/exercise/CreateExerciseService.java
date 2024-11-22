@@ -9,7 +9,6 @@ import tcc.com.controller.request.exercise.ExerciseRequest;
 import tcc.com.domain.exercise.Exercise;
 import tcc.com.domain.lesson.Lesson;
 import tcc.com.mapper.ExerciseMapper;
-import tcc.com.repository.ExerciseCategoryRepository;
 import tcc.com.repository.ExerciseRepository;
 import tcc.com.repository.LessonRepository;
 import tcc.com.utils.ConvertImage;
@@ -22,9 +21,6 @@ public class CreateExerciseService {
 
     @Autowired
     private LessonRepository lessonRepository;
-
-    @Autowired
-    private ExerciseCategoryRepository exerciseCategoryRepository;
 
     @Autowired
     private ConvertImage convertImage;

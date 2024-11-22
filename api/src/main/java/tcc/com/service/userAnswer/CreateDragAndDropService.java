@@ -20,12 +20,10 @@ import tcc.com.mapper.UserCourseProgressMapper;
 import tcc.com.repository.*;
 import tcc.com.security.AuthenticatedUserService;
 import tcc.com.utils.AssignAchievement;
+import tcc.com.utils.CompleteChallenge;
 
 @Service
 public class CreateDragAndDropService {
-
-    @Autowired
-    private ExerciseOptionRepository exerciseOptionRepository;
 
     @Autowired
     private UserAnswerRepository userAnswerRepository;
@@ -53,6 +51,9 @@ public class CreateDragAndDropService {
 
     @Autowired
     private UserDataRepository userDataRepository;
+
+    @Autowired
+    private CompleteChallenge completeChallenge;
 
     private static final int DRAG_AND_DROP_XP = 30;
     private static final int WRONG_DRAG_AND_DROP_XP = 5;
@@ -151,6 +152,7 @@ public class CreateDragAndDropService {
         userRepository.save(user);
 
         assignAchievement.checkAndAssignAchievement(user);
+        completeChallenge.checkAndCompleteChallenge(user);
 
         if(!userAnswer.isCorrect()) {
             userAnswerRepository.save(userAnswer);

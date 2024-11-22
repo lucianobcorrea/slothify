@@ -4,8 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import tcc.com.domain.exercise.Exercise;
 import tcc.com.domain.lesson.Lesson;
 
-import java.util.Optional;
-
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     Exercise findByLesson(Lesson lesson);
 }

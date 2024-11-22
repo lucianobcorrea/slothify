@@ -1,6 +1,5 @@
 package tcc.com.repository;
 
-import tcc.com.controller.response.area.AreaResponse;
 import tcc.com.domain.area.Area;
 import org.springframework.data.jpa.repository.JpaRepository;
 import tcc.com.domain.user.User;
