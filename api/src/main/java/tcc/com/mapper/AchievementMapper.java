@@ -40,7 +40,6 @@ public class AchievementMapper {
                 .image(baseUrl + achievement.getImage())
                 .total(total)
                 .required(required)
-                .percentage(14)
                 .userHas(userHas)
                 .percentage(calculatePercentage(total, required))
                 .build();

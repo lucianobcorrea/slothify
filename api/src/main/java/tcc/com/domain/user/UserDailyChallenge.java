@@ -24,4 +24,5 @@ public class UserDailyChallenge {
     private Challenge challenge;
 
     private boolean collected;
+    private boolean completed;
 }

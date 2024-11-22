@@ -311,6 +311,7 @@ CREATE TABLE user_daily_challenge (
     user_id BIGINT NOT NULL,
     challenge_id BIGINT NOT NULL,
     collected BOOLEAN NOT NULL DEFAULT false,
+    completed BOOLEAN NOT NULL DEFAULT false,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (challenge_id) REFERENCES challenge(id)
 );
