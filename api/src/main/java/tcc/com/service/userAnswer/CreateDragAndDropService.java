@@ -12,6 +12,8 @@ import tcc.com.domain.exercise.Exercise;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
+import tcc.com.domain.user.UserDailyChallenge;
+import tcc.com.domain.user.UserDailyData;
 import tcc.com.domain.user.UserData;
 import tcc.com.domain.userAnswer.UserAnswer;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
@@ -54,6 +56,9 @@ public class CreateDragAndDropService {
 
     @Autowired
     private CompleteChallenge completeChallenge;
+
+    @Autowired
+    private UserDailyDataRepository userDailyDataRepository;
 
     private static final int DRAG_AND_DROP_XP = 30;
     private static final int WRONG_DRAG_AND_DROP_XP = 5;
@@ -102,24 +107,39 @@ public class CreateDragAndDropService {
                 userData.setCompletedDragAndDropExercises(userData.getCompletedDragAndDropExercises() + 1);
                 userDataRepository.save(userData);
 
+                UserDailyData userDailyData = userDailyDataRepository.findByUser(user);
+
+                if(userDailyData == null) {
+                    userDailyData = new UserDailyData();
+                    userDailyData.setUser(user);
+                    userDailyDataRepository.save(userDailyData);
+                }
+
+                userDailyData.setCompletedTotalExercises(userDailyData.getCompletedTotalExercises() + 1);
+                userDailyData.setCompletedDragAndDropExercises(userDailyData.getCompletedDragAndDropExercises() + 1);
+
                 switch (exercise.getLesson().getExerciseCategory().getName()) {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
                         user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
                         user.setCoins(user.getCoins() + (5 + (ADVERGAME_XP/10)));
+                        userDailyData.setTotalXp(userDailyData.getTotalXp() + ADVERGAME_XP);
                         break;
                     case BOSS:
                         ranking.setPoints(ranking.getPoints() + BOSS_XP);
                         user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
                         user.setCoins(user.getCoins() + (5 + (BOSS_XP/10)));
+                        userDailyData.setTotalXp(userDailyData.getTotalXp() + BOSS_XP);
                         break;
                     default:
                         ranking.setPoints(ranking.getPoints() + DRAG_AND_DROP_XP);
                         user.setCurrentXp(user.getCurrentXp() + DRAG_AND_DROP_XP);
                         user.setCoins(user.getCoins() + (5 + (DRAG_AND_DROP_XP/10)));
+                        userDailyData.setTotalXp(userDailyData.getTotalXp() + DRAG_AND_DROP_XP);
                         break;
                 }
 
+                userDailyDataRepository.save(userDailyData);
                 rankingRepository.save(ranking);
             }
             UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user, exercise.getLesson().getChapter().getArea());

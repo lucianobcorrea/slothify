@@ -19,13 +19,13 @@ public class ChallengeController {
     @Autowired
     private CollectChallengeService collectChallengeService;
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@Valid @RequestBody ChallengeRequest request) {
         createChallengeService.create(request);
     }
 
-    @PatchMapping("/coletar/{userDailyChallengeId}")
+    @PatchMapping("/collect/{userDailyChallengeId}")
     @ResponseStatus(HttpStatus.OK)
     public ChallengeCollectResponse collect(@PathVariable Long userDailyChallengeId) {
         return collectChallengeService.collect(userDailyChallengeId);

@@ -3,11 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
-  DialogClose,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Main } from "@/ui/layouts/main.layout";
@@ -33,7 +30,6 @@ export const Achievements = () => {
   const { achievements } = (location.state as { achievements: Achievement[] }) || {};
   const navigate = useNavigate();
 
-  const [achievementId, setAchievementId] = useState<number>(0);
   const [achievementImage, setAchievementImage] = useState<string>("");
   const [achievementName, setAchievementName] = useState<string>("");
   const [achievementDescription, setAchievementDescription] = useState<string>("");
@@ -44,7 +40,6 @@ export const Achievements = () => {
 
   function setAchievementData(achievement: Achievement) {
     setAchievementImage(achievement.image);
-    setAchievementId(achievement.id);
     setAchievementName(achievement.name);
     setAchievementDescription(achievement.description);
     setUserHasAchievement(achievement.userHas);
@@ -56,7 +51,6 @@ export const Achievements = () => {
 
   return (
     <Main>
-      {/* Achievements modal */}
       <Dialog open={openAchievements} onOpenChange={setOpenAchievements}>
         <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
           <DialogHeader>

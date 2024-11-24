@@ -100,12 +100,18 @@ module.exports = {
           "0%": { transform: "scale(1.4)" },
           "100%": { transform: "scale(1)" },
         },
+        shake: {
+          "0%, 100%": { transform: "translateX(0)" },
+          "25%": { transform: "translateX(-5px)" },
+          "75%": { transform: "translateX(5px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         sway: "sway 1.5s ease-in-out infinite",
         "image-zoom": "image-zoom 0.6s ease",
+        shake: "shake 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite",
       },
     },
   },

@@ -12,6 +12,7 @@ import tcc.com.domain.exerciseOption.ExerciseOption;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
+import tcc.com.domain.user.UserDailyData;
 import tcc.com.domain.user.UserData;
 import tcc.com.domain.userAnswer.UserAnswer;
 import tcc.com.domain.userCourseProgress.UserCourseProgress;
@@ -58,6 +59,9 @@ public class CreateMultipleChoiceService {
     @Autowired
     private CompleteChallenge completeChallenge;
 
+    @Autowired
+    private UserDailyDataRepository userDailyDataRepository;
+
     private static final int MULTIPLE_CHOICE_XP = 20;
     private static final int WRONG_MULTIPLE_CHOICE_XP = 5;
 
@@ -97,24 +101,39 @@ public class CreateMultipleChoiceService {
                 userData.setCompletedMultipleChoiceExercises(userData.getCompletedMultipleChoiceExercises() + 1);
                 userDataRepository.save(userData);
 
+                UserDailyData userDailyData = userDailyDataRepository.findByUser(user);
+
+                if(userDailyData == null) {
+                    userDailyData = new UserDailyData();
+                    userDailyData.setUser(user);
+                    userDailyDataRepository.save(userDailyData);
+                }
+
+                userDailyData.setCompletedTotalExercises(userDailyData.getCompletedTotalExercises() + 1);
+                userDailyData.setCompletedMultipleChoiceExercises(userDailyData.getCompletedMultipleChoiceExercises() + 1);
+
                 switch (exercise.getLesson().getExerciseCategory().getName()) {
                     case ADVERGAME:
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
                         user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
+                        userDailyData.setTotalXp(userDailyData.getTotalXp() + ADVERGAME_XP);
                         user.setCoins(user.getCoins() + (5 + (ADVERGAME_XP/10)));
                         break;
                     case BOSS:
                         ranking.setPoints(ranking.getPoints() + BOSS_XP);
                         user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
+                        userDailyData.setTotalXp(userDailyData.getTotalXp() + BOSS_XP);
                         user.setCoins(user.getCoins() + (5 + (BOSS_XP/10)));
                         break;
                     default:
                         ranking.setPoints(ranking.getPoints() + MULTIPLE_CHOICE_XP);
                         user.setCurrentXp(user.getCurrentXp() + MULTIPLE_CHOICE_XP);
+                        userDailyData.setTotalXp(userDailyData.getTotalXp() + MULTIPLE_CHOICE_XP);
                         user.setCoins(user.getCoins() + (5 + (MULTIPLE_CHOICE_XP/10)));
                         break;
                 }
 
+                userDailyDataRepository.save(userDailyData);
                 rankingRepository.save(ranking);
             }
             UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user, exercise.getLesson().getChapter().getArea());

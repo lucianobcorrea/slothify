@@ -5,6 +5,7 @@ import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.role.Role;
 import tcc.com.domain.user.User;
+import tcc.com.domain.user.UserDailyData;
 import tcc.com.domain.user.UserData;
 import tcc.com.domain.user.UserRoles;
 import tcc.com.mapper.UserMapper;
@@ -44,6 +45,9 @@ public class CreateUserService {
     @Autowired
     private UserDataRepository userDataRepository;
 
+    @Autowired
+    private UserDailyDataRepository userDailyDataRepository;
+
     @Transactional
     public ResponseEntity<Void> create(UserRequest data) {
 
@@ -67,6 +71,10 @@ public class CreateUserService {
         UserData userData = new UserData();
         userData.setUser(user);
         userDataRepository.save(userData);
+
+        UserDailyData userDailyData = new UserDailyData();
+        userDailyData.setUser(user);
+        userDailyDataRepository.save(userDailyData);
 
         return ResponseEntity.ok().build();
     }

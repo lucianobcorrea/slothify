@@ -9,6 +9,7 @@ import tcc.com.controller.response.area.AreaResponse;
 import tcc.com.controller.response.item.ItemResponse;
 import tcc.com.controller.response.reason.ReasonResponse;
 import tcc.com.controller.response.studySchedule.StudyScheduleResponse;
+import tcc.com.controller.response.user.UserChallengeResponse;
 import tcc.com.controller.response.user.UserDataResponse;
 import tcc.com.controller.response.user.UserRankingResponse;
 import tcc.com.controller.response.user.UserResponse;
@@ -51,6 +52,9 @@ public class UserController {
 
     @Autowired
     private GetUserTopRanking getUserTopRanking;
+
+    @Autowired
+    private GetUserChallengesService getUserChallengesService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -105,5 +109,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserRankingResponse getRanking() {
         return getUserTopRanking.getUserTopRanking();
+    }
+
+    @GetMapping("/challenges")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserChallengeResponse> getChallenges() {
+        return getUserChallengesService.getUserChallenges();
     }
 }

@@ -8,6 +8,7 @@ import tcc.com.domain.user.User;
 import tcc.com.domain.user.UserDailyChallenge;
 import tcc.com.repository.ChallengeRepository;
 import tcc.com.repository.UserDailyChallengeRepository;
+import tcc.com.repository.UserDailyDataRepository;
 import tcc.com.repository.UserRepository;
 
 import java.util.Collections;
@@ -25,10 +26,14 @@ public class DailyChallengeJob {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserDailyDataRepository userDailyDataRepository;
+
     @Scheduled(cron = "0 0 0 * * *")
     public void execute() throws InterruptedException {
 
         userDailyChallengeRepository.deleteAllInBatch();
+        userDailyDataRepository.resetAllUserDailyData();
 
         List<Challenge> challenges = challengeRepository.findAll();
         List<User> users = userRepository.findAll();

@@ -24,48 +24,54 @@ public class CompleteChallenge {
     public void checkAndCompleteChallenge(User user) {
         UserDailyData userDailyData = userDailyDataRepository.findByUser(user);
 
-        int userXp = user.getCurrentXp();
-        int completedMultipleChoice = userDailyData.getCompletedMultipleChoiceExercises();
-        int completedSorting = userDailyData.getCompletedSortingExercises();
-        int completedDragAndDrop = userDailyData.getCompletedDragAndDropExercises();
-        int completedTotalExercises = userDailyData.getCompletedTotalExercises();
+        if(userDailyData != null) {
+            int userXp = user.getCurrentXp();
+            int completedMultipleChoice = userDailyData.getCompletedMultipleChoiceExercises();
+            int completedSorting = userDailyData.getCompletedSortingExercises();
+            int completedDragAndDrop = userDailyData.getCompletedDragAndDropExercises();
+            int completedTotalExercises = userDailyData.getCompletedTotalExercises();
 
-        List<UserDailyChallenge> userDailyChallenges = userDailyChallengeRepository.findByUser(user);
-        if (userDailyChallenges.size() > 0) {
-            for (UserDailyChallenge userChallenge : userDailyChallenges) {
-                Challenge challenge = userChallenge.getChallenge();
+            List<UserDailyChallenge> userDailyChallenges = userDailyChallengeRepository.findByUser(user);
+            if (!userDailyChallenges.isEmpty()) {
+                for (UserDailyChallenge userChallenge : userDailyChallenges) {
+                    Challenge challenge = userChallenge.getChallenge();
 
-                boolean isCompleted = true;
+                    boolean isCompleted = true;
 
-                if (challenge.getRequiredXp() != null && userXp < challenge.getRequiredXp()) {
-                    isCompleted = false;
-                }
+                    if (challenge.getRequiredXp() != null && userXp < challenge.getRequiredXp()) {
+                        isCompleted = false;
+                    }
 
-                if (challenge.getRequiredMultipleChoiceExercises() != null
-                        && completedMultipleChoice < challenge.getRequiredMultipleChoiceExercises()) {
-                    isCompleted = false;
-                }
+                    if (challenge.getRequiredMultipleChoiceExercises() != null
+                            && completedMultipleChoice < challenge.getRequiredMultipleChoiceExercises()) {
+                        isCompleted = false;
+                    }
 
-                if (challenge.getRequiredSortingExercises() != null
-                        && completedSorting < challenge.getRequiredSortingExercises()) {
-                    isCompleted = false;
-                }
+                    if (challenge.getRequiredSortingExercises() != null
+                            && completedSorting < challenge.getRequiredSortingExercises()) {
+                        isCompleted = false;
+                    }
 
-                if (challenge.getRequiredDragAndDropExercises() != null
-                        && completedDragAndDrop < challenge.getRequiredDragAndDropExercises()) {
-                    isCompleted = false;
-                }
+                    if (challenge.getRequiredDragAndDropExercises() != null
+                            && completedDragAndDrop < challenge.getRequiredDragAndDropExercises()) {
+                        isCompleted = false;
+                    }
 
-                if (challenge.getRequiredExercises() != null
-                        && completedTotalExercises < challenge.getRequiredExercises()) {
-                    isCompleted = false;
-                }
+                    if (challenge.getRequiredExercises() != null
+                            && completedTotalExercises < challenge.getRequiredExercises()) {
+                        isCompleted = false;
+                    }
 
-                if (isCompleted) {
-                    userChallenge.setCompleted(true);
-                    userDailyChallengeRepository.save(userChallenge);
+                    if (isCompleted) {
+                        userChallenge.setCompleted(true);
+                        userDailyChallengeRepository.save(userChallenge);
+                    }
                 }
             }
+        }else {
+            UserDailyData userNewDailyData = new UserDailyData();
+            userNewDailyData.setUser(user);
+            userDailyDataRepository.save(userNewDailyData);
         }
     }
 }

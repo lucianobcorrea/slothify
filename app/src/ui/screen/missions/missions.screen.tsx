@@ -17,12 +17,24 @@ import { Progress } from "@/components/ui/progress";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 
+import closedChest from "@/assets/image/general/closed-chest.png";
+import openedChest from "@/assets/image/general/opened-chest.png";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useUserGetChallenges } from "@/hook/useUserGetChallenges/useUserGetChallenges.hook";
+import { useCollectChallenge } from "@/hook/useCollectChallenge/useCollectChallenge.hook";
 
 const tailwindMarginClasses = [
   // Margens à esquerda
@@ -74,6 +86,8 @@ export const Missions = () => {
 
   const { chapters, fetchChapters } = useGetChapters(areaId);
   const { fetchExplanation } = useGetExplanation();
+  const { challenges, fetchUserChallenges } = useUserGetChallenges();
+  const [changeChallenges, setChangeChallenges] = useState<boolean>(false);
 
   useEffect(() => {
     fetchChapters();
@@ -83,8 +97,95 @@ export const Missions = () => {
     fetchUserAreas();
   }, []);
 
+  useEffect(() => {
+    fetchUserChallenges();
+  }, [changeChallenges]);
+
+  const handleCloseModal = () => {
+    resetRewards(); 
+    setChallengeId(0); 
+    setChallengeName(""); 
+    setOpenChallenges(false); 
+    setChangeChallenges(false);
+  };
+
+  interface Challenge {
+    id: number;
+    name: string;
+  }
+
+  const [openChallenges, setOpenChallenges] = useState<boolean>(false);
+  const [challengeId, setChallengeId] = useState<number>(0);
+  const [challengeName, setChallengeName] = useState<string>("");
+
+  function setChallengeData(challenge: Challenge) {
+    setChallengeId(challenge.id);
+    setChallengeName(challenge.name);
+    setOpenChallenges(true);
+  }
+
+  const { rewards, fetchCollectItem, resetRewards } = useCollectChallenge();
+
   return (
     <Main>
+      <Dialog open={openChallenges} onOpenChange={handleCloseModal}>
+        <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
+          <DialogHeader>
+            <DialogTitle className="text-4xl">{challengeName}</DialogTitle>
+          </DialogHeader>
+
+          <div className="relative flex flex-col items-center">
+            {!rewards && (
+              <img
+                className={`max-w-[500px] transition-transform duration-500 hover:scale-110 cursor-pointer`}
+                src={closedChest}
+                alt={challengeName}
+                onClick={() => fetchCollectItem(challengeId, setChangeChallenges)}
+                onMouseDown={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.classList.add("animate-shake"); 
+                  const holdTimeout = setTimeout(() => {
+                    fetchCollectItem(challengeId, setChangeChallenges);
+                  }, 1000);
+                  target.dataset.holdTimeout = String(holdTimeout); 
+                }}
+                onMouseUp={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (target.dataset.holdTimeout) {
+                    clearTimeout(Number(target.dataset.holdTimeout));
+                    delete target.dataset.holdTimeout; 
+                  }
+                  target.classList.remove("animate-shake"); 
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (target.dataset.holdTimeout) {
+                    clearTimeout(Number(target.dataset.holdTimeout)); 
+                    delete target.dataset.holdTimeout; 
+                  }
+                  target.classList.remove("animate-shake");
+                }}
+              />
+            )}
+
+            {rewards && (
+              <div className="flex flex-col items-center">
+                <img
+                  className="max-w-[500px] transition-transform duration-500 scale-105"
+                  src={openedChest}
+                  alt={`${challengeName} - Baú aberto`}
+                />
+                <div className="mt-4 flex flex-col items-center animate-fade-in">
+                  <h2 className="text-2xl font-bold">Recompensas!</h2>
+                  <p className="text-lg">XP: {rewards.xpReward}</p>
+                  <p className="text-lg">Moedas: {rewards.coinsReward}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <div className="container grid grid-cols-12 gap-4">
         <div className="col-span-9">
           {chapters.map((chapter) => (
@@ -150,7 +251,11 @@ export const Missions = () => {
                                     </li>
                                   </PopoverTrigger>
                                   <PopoverContent className="text-center bg-neutral-700 border-neutral-500">
-                                  <h3 className="text-white font-thin text-sm mb-1">{mapExerciseCategoryName(lesson.exerciseCategory.name)}</h3>
+                                    <h3 className="text-white font-thin text-sm mb-1">
+                                      {mapExerciseCategoryName(
+                                        lesson.exerciseCategory.name
+                                      )}
+                                    </h3>
                                     <h2 className="text-white text-xl font-bold">
                                       {lesson.title}
                                     </h2>
@@ -196,6 +301,46 @@ export const Missions = () => {
 
         <div className="col-span-3 mt-10">
           <div className="sticky top-10">
+            {areas.length > 1 ? (
+              <div className="flex justify-end w-full text-center mb-7">
+                <div className="bg-neutral-700 p-6 rounded-xl border-[1px] border-neutral-500 w-full">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <ButtonComponent
+                        btnType="button"
+                        classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
+                      >
+                        Selecionar área
+                      </ButtonComponent>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-full p-0 bg-neutral-700 border-neutral-500 mt-3">
+                      {areas.map((area, index) => {
+                        return (
+                          <>
+                            <ButtonComponent
+                              key={index}
+                              clickEvent={() =>
+                                setUserArea(area.id ? area.id : -1)
+                              }
+                              btnType="button"
+                              classname="bg-transparent text-white border-none hover:bg-neutral-800 w-full shadow-none hover:rounded-sm !rounded-none"
+                            >
+                              <DropdownMenuItem className="cursor-pointer focus:bg-transparent focus:text-white">
+                                {area.title}
+                              </DropdownMenuItem>
+                            </ButtonComponent>
+                            {index < areas.length - 1 ? (
+                              <hr className="border-neutral-500" />
+                            ) : null}
+                          </>
+                        );
+                      })}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            ) : null}
+
             <div className="flex justify-end mb-7 w-full">
               <div className="bg-neutral-700 p-6 rounded-xl border-[1px] border-neutral-500 w-full">
                 <h2 className="text-[24px] text-white font-bold">
@@ -241,45 +386,64 @@ export const Missions = () => {
               </div>
             </div>
 
-            {areas.length > 1 ? (
-              <div className="flex justify-end w-full text-center">
+            {challenges && (
+              <div className="flex justify-end mb-7 w-full mt-7">
                 <div className="bg-neutral-700 p-6 rounded-xl border-[1px] border-neutral-500 w-full">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <ButtonComponent
-                        btnType="button"
-                        classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
-                      >
-                        Selecionar área
-                      </ButtonComponent>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-full p-0 bg-neutral-700 border-neutral-500 mt-3">
-                      {areas.map((area, index) => {
-                        return (
+                  <h2 className="text-[24px] text-white font-bold">
+                    Desafios diários
+                  </h2>
+
+                  {challenges.map((challenge) => {
+                    return (
+                      <section className="mt-4">
+                        {challenge.collected || !challenge.completed ? (
                           <>
-                            <ButtonComponent
-                              key={index}
-                              clickEvent={() =>
-                                setUserArea(area.id ? area.id : -1)
-                              }
-                              btnType="button"
-                              classname="bg-transparent text-white border-none hover:bg-neutral-800 w-full shadow-none hover:rounded-sm !rounded-none"
-                            >
-                              <DropdownMenuItem className="cursor-pointer focus:bg-transparent focus:text-white">
-                                {area.title}
-                              </DropdownMenuItem>
-                            </ButtonComponent>
-                            {index < areas.length - 1 ? (
-                              <hr className="border-neutral-500" />
-                            ) : null}
+                            <h2 className="text-white">{challenge.name}</h2>
+                            <Progress
+                              value={challenge.percentage}
+                              className="w-full bg-neutral-500 h-5 mt-2"
+                              indicatorStyle={{ backgroundColor: "#A855F7" }}
+                            />
+                            {!challenge.completed && (
+                              <div className="flex justify-between w-full mt-2">
+                                <h2 className="text-white">
+                                  {challenge.total}
+                                </h2>
+                                <h2 className="text-secondary-color font-bold">
+                                  {challenge.required}
+                                </h2>
+                              </div>
+                            )}
                           </>
-                        );
-                      })}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                        ) : (
+                          <button
+                            className="text-start w-full"
+                            onClick={() => setChallengeData(challenge)}
+                          >
+                            <h2 className="text-white">{challenge.name}</h2>
+                            <Progress
+                              value={challenge.percentage}
+                              className="w-full bg-neutral-500 h-5 mt-2"
+                              indicatorStyle={{ backgroundColor: "#A855F7" }}
+                            />
+                            {!challenge.completed && (
+                              <div className="flex justify-between w-full mt-2">
+                                <h2 className="text-white">
+                                  {challenge.total}
+                                </h2>
+                                <h2 className="text-secondary-color font-bold">
+                                  {challenge.required}
+                                </h2>
+                              </div>
+                            )}
+                          </button>
+                        )}
+                      </section>
+                    );
+                  })}
                 </div>
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       </div>
