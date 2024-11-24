@@ -2,6 +2,7 @@ package tcc.com.service.user;
 
 import tcc.com.controller.request.user.UserRequest;
 import tcc.com.domain.level.Level;
+import tcc.com.domain.offensive.Offensive;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.role.Role;
 import tcc.com.domain.user.User;
@@ -48,6 +49,9 @@ public class CreateUserService {
     @Autowired
     private UserDailyDataRepository userDailyDataRepository;
 
+    @Autowired
+    private OffensiveRepository offensiveRepository;
+
     @Transactional
     public ResponseEntity<Void> create(UserRequest data) {
 
@@ -75,6 +79,10 @@ public class CreateUserService {
         UserDailyData userDailyData = new UserDailyData();
         userDailyData.setUser(user);
         userDailyDataRepository.save(userDailyData);
+
+        Offensive offensive = new Offensive();
+        offensive.setUser(user);
+        offensiveRepository.save(offensive);
 
         return ResponseEntity.ok().build();
     }

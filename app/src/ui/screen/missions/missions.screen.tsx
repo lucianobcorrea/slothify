@@ -102,10 +102,10 @@ export const Missions = () => {
   }, [changeChallenges]);
 
   const handleCloseModal = () => {
-    resetRewards(); 
-    setChallengeId(0); 
-    setChallengeName(""); 
-    setOpenChallenges(false); 
+    resetRewards();
+    setChallengeId(0);
+    setChallengeName("");
+    setOpenChallenges(false);
     setChangeChallenges(false);
   };
 
@@ -140,28 +140,30 @@ export const Missions = () => {
                 className={`max-w-[500px] transition-transform duration-500 hover:scale-110 cursor-pointer`}
                 src={closedChest}
                 alt={challengeName}
-                onClick={() => fetchCollectItem(challengeId, setChangeChallenges)}
+                onClick={() =>
+                  fetchCollectItem(challengeId, setChangeChallenges)
+                }
                 onMouseDown={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.classList.add("animate-shake"); 
+                  target.classList.add("animate-shake");
                   const holdTimeout = setTimeout(() => {
                     fetchCollectItem(challengeId, setChangeChallenges);
                   }, 1000);
-                  target.dataset.holdTimeout = String(holdTimeout); 
+                  target.dataset.holdTimeout = String(holdTimeout);
                 }}
                 onMouseUp={(e) => {
                   const target = e.target as HTMLImageElement;
                   if (target.dataset.holdTimeout) {
                     clearTimeout(Number(target.dataset.holdTimeout));
-                    delete target.dataset.holdTimeout; 
+                    delete target.dataset.holdTimeout;
                   }
-                  target.classList.remove("animate-shake"); 
+                  target.classList.remove("animate-shake");
                 }}
                 onMouseLeave={(e) => {
                   const target = e.target as HTMLImageElement;
                   if (target.dataset.holdTimeout) {
-                    clearTimeout(Number(target.dataset.holdTimeout)); 
-                    delete target.dataset.holdTimeout; 
+                    clearTimeout(Number(target.dataset.holdTimeout));
+                    delete target.dataset.holdTimeout;
                   }
                   target.classList.remove("animate-shake");
                 }}
@@ -399,6 +401,11 @@ export const Missions = () => {
                         {challenge.collected || !challenge.completed ? (
                           <>
                             <h2 className="text-white">{challenge.name}</h2>
+                            {challenge.collected ? (
+                              <h3 className="font-light text-neutral-400 text-sm">
+                                Já coletado
+                              </h3>
+                            ) : null}
                             <Progress
                               value={challenge.percentage}
                               className="w-full bg-neutral-500 h-5 mt-2"

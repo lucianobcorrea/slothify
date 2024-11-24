@@ -1,5 +1,4 @@
-import { Main } from "@/ui/layouts/main.layout";
-import { ButtonComponent } from "@/ui/component/button/button.component";
+import { Main, ButtonComponent, InputComponent } from "@/ui/index";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +22,6 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { InputComponent } from "@/ui/component/input/input.component";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 
@@ -40,6 +38,9 @@ import { useGetUserTopRanking } from "@/hook/useGetUserTopRanking/useGetUserTopR
 import firstPlace from "@/assets/image/ranking/1-place.png";
 import secondPlace from "@/assets/image/ranking/2-place.png";
 import thirdPlace from "@/assets/image/ranking/3-place.png";
+
+import "aos/dist/aos.css";
+import AOS from "aos";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
@@ -150,7 +151,7 @@ export const Profile = () => {
     setAchievementRequired(achievement.required);
     setAchievementPercentage(achievement.percentage);
   }
-  
+
   function setItemData(item: Item) {
     setItemImage(item.image);
     setItemId(item.id);
@@ -161,18 +162,28 @@ export const Profile = () => {
     setOpenItems(true);
   }
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
   return (
     <Main>
-      <div className="relative">
+      <div className="relative" data-aos="zoom-out-up">
         <img
           className="w-full h-[600px] object-cover rounded-b-[50px]"
           src={authUser?.banner || defaultBanner}
           alt="Banner do usuário"
         />
       </div>
-      <div className="container bg-neutral-850 bottom-[-6%] left-0 right-0 rounded-3xl py-10 relative z-10 mt-[-150px] mb-10">
+      <div
+        className="container bg-neutral-850 bottom-[-6%] left-0 right-0 rounded-3xl py-10 relative z-10 mt-[-150px] mb-10"
+        data-aos="fade-up"
+      >
         <div className="grid grid-cols-[1.3fr,2fr,0.5fr] px-24">
-          <div className="relative">
+          <div className="relative" data-aos="zoom-in">
             <div
               className="rounded-3xl p-6 w-full flex justify-center relative top-[-50%]"
               style={{
@@ -221,7 +232,10 @@ export const Profile = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-start flex-col ps-10">
+          <div
+            className="flex justify-start flex-col ps-10"
+            data-aos="fade-right"
+          >
             <h1 className="font-bold text-white text-4xl">
               {authUser?.username}
             </h1>
