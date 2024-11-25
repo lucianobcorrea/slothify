@@ -94,7 +94,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "reason_id"))
     private List<Reason> reasons = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_day",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "week_day_id"))

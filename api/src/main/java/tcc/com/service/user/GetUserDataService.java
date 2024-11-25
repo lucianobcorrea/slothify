@@ -4,10 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tcc.com.controller.response.user.UserDataResponse;
 import tcc.com.domain.level.Level;
+import tcc.com.domain.offensive.Offensive;
 import tcc.com.domain.user.User;
 import tcc.com.mapper.UserDataMapper;
 import tcc.com.repository.LevelRepository;
+import tcc.com.repository.OffensiveRepository;
 import tcc.com.security.AuthenticatedUserService;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 public class GetUserDataService {
@@ -18,8 +24,14 @@ public class GetUserDataService {
     @Autowired
     private AuthenticatedUserService authenticatedUserService;
 
+    @Autowired
+    private OffensiveRepository offensiveRepository;
+
     public UserDataResponse getUserData() {
         User user = authenticatedUserService.get();
+
+        Offensive offensive = getOrCreateOffensive(user);
+        boolean completedOffensiveToday = Objects.equals(offensive.getLastOffensiveDay().toLocalDate(), LocalDate.now());
 
         Level currentLevel = user.getLevel();
         Level nextUserLevel = levelRepository.findByLevelNumber(currentLevel.getLevelNumber() + 1);
@@ -51,6 +63,21 @@ public class GetUserDataService {
             xpToNextLevel = null;
         }
 
-        return UserDataMapper.toResponse(percentageToNextLevel, maxLevel, actualXp, nextLevel, actualLevel, xpToNextLevel, levelColor, user.getCoins());
+        return UserDataMapper.toResponse(percentageToNextLevel, maxLevel, actualXp, nextLevel, actualLevel, xpToNextLevel, levelColor, user.getCoins(), completedOffensiveToday, offensive);
+    }
+
+    private Offensive getOrCreateOffensive(User user) {
+        Offensive offensive = offensiveRepository.findByUser(user);
+
+        if (offensive == null) {
+            offensive = new Offensive();
+            offensive.setUser(user);
+            offensive.setOffensive(1);
+            offensive.setLastOffensive(1);
+            offensive.setLastOffensiveDay(LocalDateTime.now());
+            offensiveRepository.save(offensive);
+        }
+
+        return offensive;
     }
 }

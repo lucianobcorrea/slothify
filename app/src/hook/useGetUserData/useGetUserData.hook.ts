@@ -12,6 +12,8 @@ interface UserData {
   xpToNextLevel: number | null;
   levelColor: string;
   coins: number;
+  completedOffensiveToday : boolean;
+  offensive: number;
 }
 
 export function useGetUserData() {

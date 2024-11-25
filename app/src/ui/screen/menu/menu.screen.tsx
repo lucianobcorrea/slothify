@@ -4,6 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import coin from "@/assets/image/general/coin.png";
 import fire from "@/assets/image/general/fire.png";
+import fireOut from "@/assets/image/general/fire-out.png";
 import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
 
 export const Menu = () => {
@@ -11,7 +12,7 @@ export const Menu = () => {
     AOS.init({ duration: 500, once: true });
   }, []);
 
-  const { userData, } = useUserDataContext();
+  const { userData } = useUserDataContext();
 
   return (
     <section className="h-screen w-full flex justify-center items-center p-6">
@@ -87,8 +88,18 @@ export const Menu = () => {
           data-aos-delay="600"
         >
           <div className="flex gap-3 items-center">
-            <img className="max-w-8 max-h-8" src={fire} alt="Chama" />
-            <p className="text-secondary-color">20 dias</p>
+            {userData?.completedOffensiveToday && userData?.offensive != 0 ? (
+              <img className="max-h-8 max-w-8" src={fire} alt="Chama" />
+            ) : (
+              <img
+                className="max-h-8 max-w-8"
+                src={fireOut}
+                alt="Chama apagada"
+              />
+            )}
+            <p className="text-secondary-color">
+              {userData?.offensive}
+            </p>
           </div>
         </div>
       </div>

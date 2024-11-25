@@ -1,5 +1,6 @@
 import coin from "@/assets/image/general/coin.png";
 import fire from "@/assets/image/general/fire.png";
+import fireOut from "@/assets/image/general/fire-out.png";
 import profile from "@/assets/image/general/profile.png";
 import shop from "@/assets/image/general/shop.png";
 import missions from "@/assets/image/general/missions.png";
@@ -10,7 +11,7 @@ import { Link } from "react-router-dom";
 import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext.hook";
 
 export const Header = () => {
-  const { userData, } = useUserDataContext();
+  const { userData } = useUserDataContext();
 
   return (
     <header className="h-32 border-b-[1px] border-neutral-700 bg-neutral-850 flex items-center">
@@ -74,14 +75,26 @@ export const Header = () => {
 
         <div className="flex items-center gap-10">
           <div className="flex items-center gap-2">
-            <img className="max-h-6 max-w-6" src={fire} alt="Chama" />
-            <p className="text-secondary-color font-bold text-xl">20 dias</p>
+            {userData?.completedOffensiveToday && userData?.offensive != 0 ? (
+              <img className="max-h-6 max-w-6" src={fire} alt="Chama" />
+            ) : (
+              <img
+                className="max-h-6 max-w-6"
+                src={fireOut}
+                alt="Chama apagada"
+              />
+            )}
+            <p className="text-secondary-color font-bold text-xl">
+              {userData?.offensive}
+            </p>
           </div>
 
           <span className="text-neutral-700 font-medium text-xl">|</span>
 
           <div className="flex items-center gap-2">
-            <p className="text-secondary-color font-bold text-xl">{userData?.coins}</p>
+            <p className="text-secondary-color font-bold text-xl">
+              {userData?.coins}
+            </p>
             <img className="max-h-6 max-w-6" src={coin} alt="Moeda dourada" />
           </div>
         </div>

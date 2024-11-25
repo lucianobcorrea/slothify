@@ -22,6 +22,7 @@ import tcc.com.mapper.UserCourseProgressMapper;
 import tcc.com.repository.*;
 import tcc.com.security.AuthenticatedUserService;
 import tcc.com.utils.AssignAchievement;
+import tcc.com.utils.AssignOffensive;
 import tcc.com.utils.CompleteChallenge;
 
 @Service
@@ -59,6 +60,9 @@ public class CreateDragAndDropService {
 
     @Autowired
     private UserDailyDataRepository userDailyDataRepository;
+
+    @Autowired
+    private AssignOffensive assignOffensive;
 
     private static final int DRAG_AND_DROP_XP = 30;
     private static final int WRONG_DRAG_AND_DROP_XP = 5;
@@ -173,6 +177,7 @@ public class CreateDragAndDropService {
 
         assignAchievement.checkAndAssignAchievement(user);
         completeChallenge.checkAndCompleteChallenge(user);
+        assignOffensive.checkOffensive(user);
 
         if(!userAnswer.isCorrect()) {
             userAnswerRepository.save(userAnswer);

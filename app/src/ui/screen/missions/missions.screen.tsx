@@ -188,7 +188,7 @@ export const Missions = () => {
         </DialogContent>
       </Dialog>
 
-      <div className="container grid grid-cols-12 gap-4">
+      <div className="container grid grid-cols-12 gap-4 p-0">
         <div className="col-span-9">
           {chapters.map((chapter) => (
             <>

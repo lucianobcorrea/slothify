@@ -16,4 +16,6 @@ public class UserDataResponse {
     int actualLevel;
     Integer xpToNextLevel;
     String levelColor;
+    boolean completedOffensiveToday;
+    int offensive;
 }
