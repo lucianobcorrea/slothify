@@ -1,5 +1,7 @@
 package tcc.com.service.userAnswer;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import tcc.com.controller.request.userAnswer.SortingList;
 import tcc.com.controller.request.userAnswer.SortingRequest;
 import tcc.com.controller.response.userAnswer.AnswerResponse;
 import tcc.com.domain.exercise.Exercise;
+import tcc.com.domain.item.Subtype;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
@@ -63,38 +66,53 @@ public class CreateSortingService {
     @Autowired
     private AssignOffensive assignOffensive;
 
-    private static final int SORTING_XP = 30;
-    private static final int WRONG_SORTING_XP = 5;
+    @Autowired
+    private UserUsedItemRepository userUsedItemRepository;
 
-    private static final int ADVERGAME_XP = 40;
-    private static final int BOSS_XP = 60;
+    private static int SORTING_XP = 30;
+    private static int WRONG_SORTING_XP = 5;
 
-    private static final int WRONG_COINS = 3;
+    private static int ADVERGAME_XP = 40;
+    private static int BOSS_XP = 60;
+
+    private static int WRONG_COINS = 3;
 
     public ResponseEntity<AnswerResponse> create(Long exerciseId, SortingRequest request) {
 
         User user = authenticatedUserService.get();
         Ranking ranking = rankingRepository.findByUser(user);
 
+        boolean isXpPotionActive = userUsedItemRepository
+                .findByUserAndItem_SubtypeAndEffectEndTimeAfter(user, Subtype.XP_POTION, LocalDateTime.now())
+                .isPresent();
+
+        if (isXpPotionActive) {
+            SORTING_XP *= 2;
+            WRONG_SORTING_XP *= 2;
+            ADVERGAME_XP *= 2;
+            BOSS_XP *= 2;
+            WRONG_COINS *= 2;
+        }
+
         Exercise exercise = exerciseRepository.findById(exerciseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Esse exercício não existe."));
 
         UserAnswer userAnswer = userAnswerRepository.findByUserAndExercise(user, exercise);
 
-        if(userAnswer == null) {
+        if (userAnswer == null) {
             userAnswer = UserAnswerMapper.toEntityGeneral(exercise, user);
         }
 
         String answer;
         int index = 1;
 
-        for(SortingList list : request.getSortingList()) {
-            if(list.correctOrder != index) {
+        for (SortingList list : request.getSortingList()) {
+            if (list.correctOrder != index) {
                 answer = list.content;
                 userAnswer.setCorrect(false);
                 userAnswer.setAnswer(answer);
                 break;
-            }else {
+            } else {
                 answer = list.content;
                 userAnswer.setCorrect(true);
                 userAnswer.setAnswer(answer);
@@ -103,8 +121,8 @@ public class CreateSortingService {
             index++;
         }
 
-        if(userAnswer.isCorrect()) {
-            if(!userAnswer.isAlreadyAnswered()) {
+        if (userAnswer.isCorrect()) {
+            if (!userAnswer.isAlreadyAnswered()) {
                 userAnswer.setAlreadyAnswered(true);
 
                 UserData userData = userDataRepository.findByUser(user);
@@ -114,7 +132,7 @@ public class CreateSortingService {
 
                 UserDailyData userDailyData = userDailyDataRepository.findByUser(user);
 
-                if(userDailyData == null) {
+                if (userDailyData == null) {
                     userDailyData = new UserDailyData();
                     userDailyData.setUser(user);
                     userDailyDataRepository.save(userDailyData);
@@ -128,28 +146,30 @@ public class CreateSortingService {
                         ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
                         user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
                         userDailyData.setTotalXp(userDailyData.getTotalXp() + ADVERGAME_XP);
-                        user.setCoins(user.getCoins() + (5 + (ADVERGAME_XP/10)));
+                        user.setCoins(user.getCoins() + (5 + (ADVERGAME_XP / 10)));
                         break;
                     case BOSS:
                         ranking.setPoints(ranking.getPoints() + BOSS_XP);
                         user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
                         userDailyData.setTotalXp(userDailyData.getTotalXp() + BOSS_XP);
-                        user.setCoins(user.getCoins() + (5 + (BOSS_XP/10)));
+                        user.setCoins(user.getCoins() + (5 + (BOSS_XP / 10)));
                         break;
                     default:
                         ranking.setPoints(ranking.getPoints() + SORTING_XP);
                         user.setCurrentXp(user.getCurrentXp() + SORTING_XP);
                         userDailyData.setTotalXp(userDailyData.getTotalXp() + SORTING_XP);
-                        user.setCoins(user.getCoins() + (5 + (SORTING_XP/10)));
+                        user.setCoins(user.getCoins() + (5 + (SORTING_XP / 10)));
                         break;
                 }
 
                 rankingRepository.save(ranking);
                 userDailyDataRepository.save(userDailyData);
             }
-            UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user, exercise.getLesson().getChapter().getArea());
+            UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user,
+                    exercise.getLesson().getChapter().getArea());
             if (userCourseProgress == null) {
-                userCourseProgress = UserCourseProgressMapper.toEntity(user, exercise.getLesson().getChapter().getArea(), exercise.getLesson());
+                userCourseProgress = UserCourseProgressMapper.toEntity(user,
+                        exercise.getLesson().getChapter().getArea(), exercise.getLesson());
             } else {
                 if (exercise.getLesson().getId() > userCourseProgress.getLastUnlockedLesson().getId()) {
                     userCourseProgress.setLastUnlockedLesson(exercise.getLesson());
@@ -157,8 +177,8 @@ public class CreateSortingService {
                 }
             }
             userCourseProgressRepository.save(userCourseProgress);
-        }else {
-            if(!userAnswer.isAlreadyAnswered()) {
+        } else {
+            if (!userAnswer.isAlreadyAnswered()) {
                 user.setCurrentXp(user.getCurrentXp() + WRONG_SORTING_XP);
                 user.setCoins(user.getCoins() + WRONG_COINS);
                 userAnswer.setAlreadyAnswered(false);
@@ -168,8 +188,8 @@ public class CreateSortingService {
         Level currentLevel = user.getLevel();
         Level nextLevel = levelRepository.findByLevelNumber(currentLevel.getLevelNumber() + 1);
 
-        if(nextLevel != null) {
-            if(user.getCurrentXp() >= nextLevel.getRequiredXp()) {
+        if (nextLevel != null) {
+            if (user.getCurrentXp() >= nextLevel.getRequiredXp()) {
                 user.setLevel(nextLevel);
             }
         }
@@ -180,10 +200,10 @@ public class CreateSortingService {
         completeChallenge.checkAndCompleteChallenge(user);
         assignOffensive.checkOffensive(user);
 
-        if(!userAnswer.isCorrect()) {
+        if (!userAnswer.isCorrect()) {
             userAnswerRepository.save(userAnswer);
             return ResponseEntity.ok(new AnswerResponse(false, "Resposta incorreta, tente novamente!"));
-        }else {
+        } else {
             userAnswerRepository.save(userAnswer);
             return ResponseEntity.ok(new AnswerResponse(true, "Resposta correta!"));
         }
