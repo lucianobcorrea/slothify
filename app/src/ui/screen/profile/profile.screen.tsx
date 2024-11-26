@@ -41,6 +41,7 @@ import thirdPlace from "@/assets/image/ranking/3-place.png";
 
 import "aos/dist/aos.css";
 import AOS from "aos";
+import { useItem } from "@/hook/useItem/useItem.hook";
 
 const schema = z.object({
   username: z.string().min(1, { message: "O nome de usuário é obrigatório!" }),
@@ -118,6 +119,8 @@ export const Profile = () => {
   const [achievementPercentage, setAchievementPercentage] = useState<number>(0);
   const [userHasAchievement, setUserHasAchievement] = useState<boolean>(false);
 
+  const { fetchUseItem, itemData } = useItem();
+
   interface Achievement {
     id: number;
     name: string;
@@ -170,7 +173,7 @@ export const Profile = () => {
   }, []);
 
   return (
-    <Main>
+    <Main itemData={itemData}>
       <div className="relative" data-aos="zoom-out-up">
         <img
           className="w-full h-[600px] object-cover rounded-b-[50px]"
@@ -485,6 +488,7 @@ export const Profile = () => {
               <DialogFooter>
                 <div className="flex mt-2">
                   <ButtonComponent
+                    clickEvent={() => fetchUseItem(itemId)}
                     btnType="button"
                     classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
                   >

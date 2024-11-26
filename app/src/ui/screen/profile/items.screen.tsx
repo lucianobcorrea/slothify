@@ -6,13 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-  } from "@/components/ui/dialog";
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { useItem } from "@/hook/useItem/useItem.hook";
 
 export const Items = () => {
   const location = useLocation();
@@ -26,6 +27,8 @@ export const Items = () => {
   const [itemSubtype, setSubtype] = useState<string>("");
   const [itemType, setType] = useState<string>("");
   const [openItems, setOpenItems] = useState<boolean>(false);
+
+  const { fetchUseItem, itemData } = useItem();
 
   function setItemData(item: Item) {
     setItemImage(item.image);
@@ -54,7 +57,7 @@ export const Items = () => {
   }
 
   return (
-    <Main>
+    <Main itemData={itemData}>
       <Dialog open={openItems} onOpenChange={setOpenItems}>
         <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
           <DialogHeader className="flex items-center">
@@ -79,6 +82,7 @@ export const Items = () => {
             <DialogFooter>
               <div className="flex mt-2">
                 <ButtonComponent
+                  clickEvent={() => fetchUseItem(itemId)}
                   btnType="button"
                   classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
                 >

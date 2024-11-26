@@ -2,6 +2,7 @@ package tcc.com.service.item;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
+import tcc.com.controller.response.item.ItemUseResponse;
 import tcc.com.domain.item.Subtype;
 import tcc.com.domain.offensive.Offensive;
 import tcc.com.domain.user.User;
@@ -37,7 +39,7 @@ public class UseItemService {
     private OffensiveRepository offensiveRepository;
 
     @Transactional
-    public void useItem(Long itemId) {
+    public ItemUseResponse useItem(Long itemId) {
         User user = authenticatedUserService.get();
         UserItem item = userItemRepository.findByItemIdAndUser(Math.toIntExact(itemId), user);
 
@@ -53,18 +55,23 @@ public class UseItemService {
 
         if (item.getItem().getSubtype().equals(Subtype.OFFENSIVE_POTION)) {
             Offensive offensive = offensiveRepository.findByUser(user);
-            if (offensive.getLostOffensiveDay().toLocalDate().equals(LocalDate.now().minusDays(1))) {
-                if (offensive.getOffensive() == 0) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Você não pode usar este item, ainda está em dia!");
-                } else {
-                    offensive.setOffensive(offensive.getLastOffensive());
-                    offensiveRepository.save(offensive);
-                }
-            } else {
+
+            if (offensive.getOffensive() != 0) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Você perdeu a ofensiva a mais de 1 dia, não pode recuperar!");
+                        "Você ainda está com ofensiva ativa e não precisa usar este item!");
             }
+
+            LocalDate lostDay = offensive.getLostOffensiveDay().toLocalDate();
+            long daysBetween = ChronoUnit.DAYS.between(lostDay, LocalDate.now());
+
+            if (daysBetween < 0 || daysBetween > 1) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Você perdeu a ofensiva há mais de 1 dia e não pode recuperar!");
+            }
+
+            offensive.setLastOffensiveDay(LocalDateTime.now());
+            offensive.setOffensive(offensive.getLastOffensive());
+            offensiveRepository.save(offensive);
         } else if (item.getItem().getSubtype().equals(Subtype.XP_POTION)) {
             Optional<UserUsedItem> activeItem = userUsedItemRepository.findByUserAndItem_SubtypeAndEffectEndTimeAfter(
                     user,
@@ -80,5 +87,7 @@ public class UseItemService {
         item.setQuantity(item.getQuantity() - 1);
         userItemRepository.save(item);
         userUsedItemRepository.save(usedItem);
+
+        return UserUsedItemMapper.toResponse(item);
     }
 }

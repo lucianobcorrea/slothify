@@ -2,6 +2,9 @@ package tcc.com.mapper;
 
 import java.time.LocalDateTime;
 
+import tcc.com.controller.response.item.ItemUseResponse;
+import tcc.com.controller.response.user.UserRankingResponse;
+import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
 import tcc.com.domain.user.UserItem;
 import tcc.com.domain.user.UserUsedItem;
@@ -15,5 +18,12 @@ public class UserUsedItemMapper {
         userUsedItem.setItem(userItem.getItem());
         userUsedItem.setUser(user);
         return userUsedItem;
+    }
+
+    public static ItemUseResponse toResponse(UserItem userItem) {
+        return ItemUseResponse.builder()
+                .duration(userItem.getItem().getDuration())
+                .subtype(userItem.getItem().getSubtype())
+                .build();
     }
 }

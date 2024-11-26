@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tcc.com.controller.request.item.ItemRequest;
+import tcc.com.controller.response.item.ItemUseResponse;
 import tcc.com.service.item.CreateItemService;
 import tcc.com.service.item.UseItemService;
 
@@ -26,7 +27,7 @@ public class ItemController {
 
     @PostMapping("/use/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public void useItem(@PathVariable Long itemId) {
-        useItemService.useItem(itemId);
+    public ItemUseResponse useItem(@PathVariable Long itemId) {
+        return useItemService.useItem(itemId);
     }
 }
