@@ -60,6 +60,7 @@ export const Profile = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [openItems, setOpenItems] = useState<boolean>(false);
   const [openAchievements, setOpenAchievements] = useState<boolean>(false);
+  const [openUsedItem, setOpenUsedItem] = useState<boolean>(false);
 
   const { areas, fetchUserAreas } = useGetUserAreas();
   const { reasons, fetchUserReasons } = useGetUserReasons();
@@ -119,7 +120,7 @@ export const Profile = () => {
   const [achievementPercentage, setAchievementPercentage] = useState<number>(0);
   const [userHasAchievement, setUserHasAchievement] = useState<boolean>(false);
 
-  const { fetchUseItem, itemData } = useItem();
+  const { fetchUseItem, itemData, canOpenItemUsedModal } = useItem();
 
   interface Achievement {
     id: number;
@@ -488,7 +489,11 @@ export const Profile = () => {
               <DialogFooter>
                 <div className="flex mt-2">
                   <ButtonComponent
-                    clickEvent={() => fetchUseItem(itemId)}
+                    clickEvent={() => {
+                      fetchUseItem(itemId);
+                      setOpenItems(false);
+                      setOpenUsedItem(true);
+                    }}
                     btnType="button"
                     classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
                   >
@@ -499,6 +504,29 @@ export const Profile = () => {
             ) : null}
           </DialogContent>
         </Dialog>
+
+        {canOpenItemUsedModal ? (
+          <Dialog open={openUsedItem} onOpenChange={setOpenUsedItem}>
+            <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
+              <DialogHeader className="flex items-center">
+                <DialogTitle className="text-5xl font-bold mb-3">
+                  Você usou o item
+                </DialogTitle>
+                <DialogTitle className="text-3xl">{itemName}</DialogTitle>
+                {itemImage && (
+                  <img
+                    className="max-w-[300px]"
+                    src={itemImage}
+                    alt={itemName}
+                  />
+                )}
+                <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
+                  {itemDescription}
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        ) : null}
 
         {/* Achievements modal */}
         <Dialog open={openAchievements} onOpenChange={setOpenAchievements}>

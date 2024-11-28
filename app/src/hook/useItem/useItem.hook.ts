@@ -6,6 +6,7 @@ import { useUserDataContext } from "../useDataUserContext/useUserDataContext.hoo
 
 export function useItem() {
   const [itemData, setItemData] = useState();
+  const [canOpenItemUsedModal, setCanOpenItemUsedModal] = useState<boolean>();
   const { refreshUserData } = useUserDataContext();
 
   async function fetchUseItem(itemId: number) {
@@ -17,9 +18,11 @@ export function useItem() {
         localStorage.setItem(key, expirationTime.toString());
       }
       refreshUserData();
+      setCanOpenItemUsedModal(true);
       toast.success("Poção utilizada! :)");
       setItemData(response);
     } catch (error) {
+      setCanOpenItemUsedModal(false);
       const message = getResponseError(error);
       toast.error(message);
     }
@@ -28,5 +31,6 @@ export function useItem() {
   return {
     fetchUseItem,
     itemData,
+    canOpenItemUsedModal
   };
 }

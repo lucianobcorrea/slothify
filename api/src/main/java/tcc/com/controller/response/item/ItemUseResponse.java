@@ -11,5 +11,4 @@ import tcc.com.domain.item.Subtype;
 public class ItemUseResponse {
     private Subtype subtype;
     private Integer duration;
-    private String image;
 }

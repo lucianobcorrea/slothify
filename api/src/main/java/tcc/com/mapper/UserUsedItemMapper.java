@@ -20,13 +20,10 @@ public class UserUsedItemMapper {
         return userUsedItem;
     }
 
-    static String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/files/";
-
     public static ItemUseResponse toResponse(UserItem userItem) {
         return ItemUseResponse.builder()
                 .duration(userItem.getItem().getDuration())
                 .subtype(userItem.getItem().getSubtype())
-                .image(baseUrl + userItem.getItem().getImage())
                 .build();
     }
 }
