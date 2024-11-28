@@ -2,9 +2,9 @@ package tcc.com.mapper;
 
 import java.time.LocalDateTime;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import tcc.com.controller.response.item.ItemUseResponse;
-import tcc.com.controller.response.user.UserRankingResponse;
-import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.user.User;
 import tcc.com.domain.user.UserItem;
 import tcc.com.domain.user.UserUsedItem;
@@ -20,10 +20,13 @@ public class UserUsedItemMapper {
         return userUsedItem;
     }
 
+    static String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/files/";
+
     public static ItemUseResponse toResponse(UserItem userItem) {
         return ItemUseResponse.builder()
                 .duration(userItem.getItem().getDuration())
                 .subtype(userItem.getItem().getSubtype())
+                .image(baseUrl + userItem.getItem().getImage())
                 .build();
     }
 }

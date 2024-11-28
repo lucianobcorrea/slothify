@@ -9,6 +9,7 @@ interface LayoutProps {
 interface UsedItem {
   subtype: string;
   duration: number | null;
+  image: string;
 }
 
 export const Main = (props: LayoutProps) => {

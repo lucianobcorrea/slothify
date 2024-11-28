@@ -17,9 +17,6 @@ public class UserStudyTimeCheck {
     private UserRepository userRepository;
 
     @Autowired
-    private StudyDurationsRepository studyDurationsRepository;
-
-    @Autowired
     private UserUsedItemRepository userUsedItemRepository;
 
     @Autowired

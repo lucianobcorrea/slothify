@@ -3,11 +3,9 @@ package tcc.com.utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tcc.com.domain.offensive.Offensive;
-import tcc.com.domain.studyDays.WeekDays;
 import tcc.com.domain.user.User;
 import tcc.com.repository.OffensiveRepository;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

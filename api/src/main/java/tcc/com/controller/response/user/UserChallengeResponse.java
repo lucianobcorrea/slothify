@@ -1,9 +1,6 @@
 package tcc.com.controller.response.user;
 
 import lombok.*;
-import tcc.com.domain.user.UserDailyChallenge;
-
-import java.util.function.Function;
 
 @Getter
 @Setter
