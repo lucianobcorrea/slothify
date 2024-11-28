@@ -23,10 +23,10 @@ public class ChallengeMapper {
         return challenge;
     }
 
-    public static ChallengeCollectResponse toResponse(UserDailyChallenge userDailyChallenge) {
+    public static ChallengeCollectResponse toResponse(UserDailyChallenge userDailyChallenge, int xpReward) {
         ChallengeCollectResponse response = new ChallengeCollectResponse();
         response.setCoinsReward(userDailyChallenge.getChallenge().getCoinsReward());
-        response.setXpReward(userDailyChallenge.getChallenge().getXpReward());
+        response.setXpReward(xpReward);
         return response;
     }
 }

@@ -23,4 +23,6 @@ public class UserDailyData {
     private int completedDragAndDropExercises;
     private int completedTotalExercises;
     private int totalXp;
+    private int studyTimeSeconds;
+    private boolean studyTimeReward;
 }

@@ -10,4 +10,6 @@ import lombok.*;
 public class AnswerResponse {
     private boolean isCorrect;
     private String message;
+    private int xpReward;
+    private int coinsReward;
 }

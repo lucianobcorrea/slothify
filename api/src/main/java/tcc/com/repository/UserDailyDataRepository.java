@@ -13,6 +13,6 @@ public interface UserDailyDataRepository extends JpaRepository<UserDailyData, Lo
 
     @Modifying
     @Transactional
-    @Query("UPDATE UserDailyData u SET u.completedMultipleChoiceExercises = 0, u.completedSortingExercises = 0, u.completedDragAndDropExercises = 0, u.completedTotalExercises = 0, u.totalXp = 0")
+    @Query("UPDATE UserDailyData u SET u.completedMultipleChoiceExercises = 0, u.completedSortingExercises = 0, u.completedDragAndDropExercises = 0, u.completedTotalExercises = 0, u.totalXp = 0, u.studyTimeSeconds = 0, u.studyTimeReward = false")
     void resetAllUserDailyData();
 }

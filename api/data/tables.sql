@@ -325,3 +325,9 @@ CREATE TABLE offensive (
     lost_offensive_day TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+ALTER TABLE user_daily_data
+ADD COLUMN study_time_seconds INTEGER DEFAULT 0;
+
+ALTER TABLE user_daily_data
+ADD COLUMN study_time_reward BOOLEAN DEFAULT false;

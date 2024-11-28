@@ -1,5 +1,6 @@
 package tcc.com.service.userAnswer;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import tcc.com.controller.request.userAnswer.AnswerRequest;
 import tcc.com.controller.response.userAnswer.AnswerResponse;
 import tcc.com.domain.exercise.Exercise;
+import tcc.com.domain.exerciseCategory.ExerciseCategoryTypes;
 import tcc.com.domain.exerciseOption.ExerciseOption;
 import tcc.com.domain.item.Subtype;
 import tcc.com.domain.level.Level;
@@ -26,6 +28,7 @@ import tcc.com.security.AuthenticatedUserService;
 import tcc.com.utils.AssignAchievement;
 import tcc.com.utils.AssignOffensive;
 import tcc.com.utils.CompleteChallenge;
+import tcc.com.utils.UserStudyTimeCheck;
 
 @Service
 public class CreateMultipleChoiceService {
@@ -72,13 +75,16 @@ public class CreateMultipleChoiceService {
     @Autowired
     private UserUsedItemRepository userUsedItemRepository;
 
-    private static int MULTIPLE_CHOICE_XP = 20;
-    private static int WRONG_MULTIPLE_CHOICE_XP = 5;
+    @Autowired
+    private UserStudyTimeCheck userStudyTimeCheck;
 
-    private static int ADVERGAME_XP = 30;
-    private static int BOSS_XP = 50;
+    private static final int MULTIPLE_CHOICE_XP = 20;
+    private static final int WRONG_MULTIPLE_CHOICE_XP = 5;
 
-    private static int WRONG_COINS = 3;
+    private static final int ADVERGAME_XP = 30;
+    private static final int BOSS_XP = 50;
+
+    private static final int WRONG_COINS = 3;
 
     public ResponseEntity<AnswerResponse> create(Long exerciseId, AnswerRequest request) {
         ExerciseOption exerciseOption = exerciseOptionRepository.findByExerciseIdAndCorrectTrue(exerciseId);
@@ -90,11 +96,16 @@ public class CreateMultipleChoiceService {
                 .findByUserAndItem_SubtypeAndEffectEndTimeAfter(user, Subtype.XP_POTION, LocalDateTime.now())
                 .isPresent();
 
+        int multipleChoiceXp = MULTIPLE_CHOICE_XP;
+        int wrongMultipleChoiceXp = WRONG_MULTIPLE_CHOICE_XP;
+        int advergameXp = ADVERGAME_XP;
+        int bossXp = BOSS_XP;
+
         if (isXpPotionActive) {
-            MULTIPLE_CHOICE_XP *= 2;
-            WRONG_MULTIPLE_CHOICE_XP *= 2;
-            ADVERGAME_XP *= 2;
-            BOSS_XP *= 2;
+            multipleChoiceXp *= 2;
+            wrongMultipleChoiceXp *= 2;
+            advergameXp *= 2;
+            bossXp *= 2;
         }
 
         Exercise exercise = exerciseRepository.findById(exerciseId)
@@ -113,6 +124,17 @@ public class CreateMultipleChoiceService {
             userAnswer.setLesson(exercise.getLesson());
         }
 
+        int xpReward = 0;
+        int coinsReward = 0;
+
+        UserDailyData userDailyData = userDailyDataRepository.findByUser(user);
+
+        if (userDailyData == null) {
+            userDailyData = new UserDailyData();
+            userDailyData.setUser(user);
+            userDailyDataRepository.save(userDailyData);
+        }
+
         if (isCorrect) {
             if (!userAnswer.isAlreadyAnswered()) {
                 userAnswer.setAlreadyAnswered(true);
@@ -122,42 +144,34 @@ public class CreateMultipleChoiceService {
                 userData.setCompletedMultipleChoiceExercises(userData.getCompletedMultipleChoiceExercises() + 1);
                 userDataRepository.save(userData);
 
-                UserDailyData userDailyData = userDailyDataRepository.findByUser(user);
-
-                if (userDailyData == null) {
-                    userDailyData = new UserDailyData();
-                    userDailyData.setUser(user);
-                    userDailyDataRepository.save(userDailyData);
-                }
-
                 userDailyData.setCompletedTotalExercises(userDailyData.getCompletedTotalExercises() + 1);
-                userDailyData
-                        .setCompletedMultipleChoiceExercises(userDailyData.getCompletedMultipleChoiceExercises() + 1);
+                userDailyData.setCompletedMultipleChoiceExercises(userDailyData.getCompletedMultipleChoiceExercises() + 1);
 
-                switch (exercise.getLesson().getExerciseCategory().getName()) {
-                    case ADVERGAME:
-                        ranking.setPoints(ranking.getPoints() + ADVERGAME_XP);
-                        user.setCurrentXp(user.getCurrentXp() + ADVERGAME_XP);
-                        userDailyData.setTotalXp(userDailyData.getTotalXp() + ADVERGAME_XP);
-                        user.setCoins(user.getCoins() + (5 + (ADVERGAME_XP / 10)));
-                        break;
-                    case BOSS:
-                        ranking.setPoints(ranking.getPoints() + BOSS_XP);
-                        user.setCurrentXp(user.getCurrentXp() + BOSS_XP);
-                        userDailyData.setTotalXp(userDailyData.getTotalXp() + BOSS_XP);
-                        user.setCoins(user.getCoins() + (5 + (BOSS_XP / 10)));
-                        break;
-                    default:
-                        ranking.setPoints(ranking.getPoints() + MULTIPLE_CHOICE_XP);
-                        user.setCurrentXp(user.getCurrentXp() + MULTIPLE_CHOICE_XP);
-                        userDailyData.setTotalXp(userDailyData.getTotalXp() + MULTIPLE_CHOICE_XP);
-                        user.setCoins(user.getCoins() + (5 + (MULTIPLE_CHOICE_XP / 10)));
-                        break;
-                }
+                ExerciseCategoryTypes exerciseCategoryType = exercise.getLesson().getExerciseCategory().getName();
 
-                userDailyDataRepository.save(userDailyData);
+                coinsReward = switch (exerciseCategoryType) {
+                    case ADVERGAME -> {
+                        xpReward = advergameXp;
+                        yield 5 + (advergameXp / 10);
+                    }
+                    case BOSS -> {
+                        xpReward = bossXp;
+                        yield 5 + (bossXp / 10);
+                    }
+                    default -> {
+                        xpReward = multipleChoiceXp;
+                        yield 5 + (multipleChoiceXp / 10);
+                    }
+                };
+
+                ranking.setPoints(ranking.getPoints() + xpReward);
+                user.setCurrentXp(user.getCurrentXp() + xpReward);
+                user.setCoins(user.getCoins() + coinsReward);
+                userDailyData.setTotalXp(userDailyData.getTotalXp() + xpReward);
+
                 rankingRepository.save(ranking);
             }
+
             UserCourseProgress userCourseProgress = userCourseProgressRepository.findByUserAndArea(user,
                     exercise.getLesson().getChapter().getArea());
             if (userCourseProgress == null) {
@@ -172,8 +186,11 @@ public class CreateMultipleChoiceService {
             userCourseProgressRepository.save(userCourseProgress);
         } else {
             if (!userAnswer.isAlreadyAnswered()) {
-                user.setCurrentXp(user.getCurrentXp() + WRONG_MULTIPLE_CHOICE_XP);
-                user.setCoins(user.getCoins() + WRONG_COINS);
+                xpReward = wrongMultipleChoiceXp;
+                coinsReward = WRONG_COINS;
+
+                user.setCurrentXp(user.getCurrentXp() + xpReward);
+                user.setCoins(user.getCoins() + coinsReward);
                 userAnswer.setAlreadyAnswered(false);
             }
         }
@@ -193,12 +210,22 @@ public class CreateMultipleChoiceService {
         completeChallenge.checkAndCompleteChallenge(user);
         assignOffensive.checkOffensive(user);
 
+        LocalDateTime startDate = request.getStartDate();
+        LocalDateTime finalDate = request.getFinalDate();
+        long durationInSeconds = Duration.between(startDate, finalDate).getSeconds();
+
+        userDailyData.setStudyTimeSeconds((int) (userDailyData.getStudyTimeSeconds() + durationInSeconds));
+
+        userDailyDataRepository.save(userDailyData);
+        userAnswerRepository.save(userAnswer);
+
+        userStudyTimeCheck.checkUserStudyTime(user, userDailyData);
+
         if (!isCorrect) {
-            userAnswerRepository.save(userAnswer);
-            return ResponseEntity.ok(new AnswerResponse(false, "Resposta incorreta, tente novamente!"));
+            return ResponseEntity.ok(new AnswerResponse(false, "Resposta incorreta, tente novamente!", xpReward, coinsReward));
         } else {
-            userAnswerRepository.save(userAnswer);
-            return ResponseEntity.ok(new AnswerResponse(true, "Resposta correta!"));
+            return ResponseEntity.ok(new AnswerResponse(true, "Resposta correta!", xpReward, coinsReward));
         }
     }
 }
+

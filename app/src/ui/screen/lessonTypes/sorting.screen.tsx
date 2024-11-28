@@ -7,7 +7,7 @@ import {
   verticalListSortingStrategy,
   arrayMove,
 } from "@dnd-kit/sortable";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponent } from "@/ui/component/button/button.component";
@@ -107,6 +107,8 @@ export const Sorting = (props: ExerciseProps) => {
   interface ResponseType {
     message: string;
     correct: boolean;
+    xpReward: number;
+    coinsReward: number;
   }
 
   interface FinalResult {
@@ -119,10 +121,34 @@ export const Sorting = (props: ExerciseProps) => {
   const [loading, setLoading] = useState(false);
   const { refreshUserData } = useUserDataContext();
 
+  const [studyTime, setStudyTime] = useState<string>("");
+
+  const startDateRef = useRef<string>(new Date().toISOString());
+
   async function onSubmit(request: FinalResult[]): Promise<boolean> {
     try {
-      const response = await sorting(exercise?.id, request);
+      const finalDate = new Date().toISOString();
+      const response = await sorting(
+        exercise?.id,
+        request,
+        startDateRef.current,
+        finalDate
+      );
       setResponse(response.data);
+
+      const startTime = new Date(startDateRef.current);
+      const endTime = new Date(finalDate);
+
+      const timeDiff = endTime.getTime() - startTime.getTime();
+
+      const totalSeconds = Math.floor(timeDiff / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      const formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+      setStudyTime(formattedTime);
+
       setLoading(true);
       refreshUserData();
       return true;
@@ -171,6 +197,23 @@ export const Sorting = (props: ExerciseProps) => {
                 depois!
               </DialogDescription>
             )}
+
+            <div className="grid grid-cols-2 gap-10 pt-5 pb-4">
+              {studyTime && (
+                <div className="flex flex-col items-center animate-fade-in">
+                  <h2 className="text-xl font-bold">Tempo de Resposta</h2>
+                  <p className="text-lg">{studyTime}</p>
+                </div>
+              )}
+
+              <div className="flex flex-col items-center animate-fade-in">
+                <h2 className="text-2xl font-bold">Recompensas!</h2>
+                <p className="text-lg">XP: {exerciseResponse?.xpReward}</p>
+                <p className="text-lg">
+                  Moedas: {exerciseResponse?.coinsReward}
+                </p>
+              </div>
+            </div>
           </DialogHeader>
 
           <DialogFooter>

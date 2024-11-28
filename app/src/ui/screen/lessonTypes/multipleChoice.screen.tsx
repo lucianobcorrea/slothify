@@ -2,7 +2,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useGetExercise } from "@/hook/useGetExercise/useGetExercise.hook";
 import { useGetExerciseOptions } from "@/hook/useGetExerciseOptions/useGetExerciseOptions";
 import { ButtonComponent } from "@/ui/component/button/button.component";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -73,15 +73,41 @@ export const MultipleChoice = (props: ExerciseProps) => {
   interface ResponseType {
     message: string;
     correct: boolean;
+    xpReward: number;
+    coinsReward: number;
   }
 
   const [exerciseResponse, setResponse] = useState<ResponseType | null>(null);
   const { refreshUserData } = useUserDataContext();
 
+  const [studyTime, setStudyTime] = useState<string>("");
+
+  const startDateRef = useRef<string>(new Date().toISOString());
+
   async function onSubmit(data: z.infer<typeof schema>) {
     try {
-      const response = await multipleChoice(exercise?.id, data.answer);
+      const finalDate = new Date().toISOString();
+      const response = await multipleChoice(
+        exercise?.id,
+        data.answer,
+        startDateRef.current,
+        finalDate
+      );
       setResponse(response.data);
+
+      const startTime = new Date(startDateRef.current);
+      const endTime = new Date(finalDate);
+
+      const timeDiff = endTime.getTime() - startTime.getTime();
+
+      const totalSeconds = Math.floor(timeDiff / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      const formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+      setStudyTime(formattedTime);
+
       refreshUserData();
     } catch (error) {
       const message = getResponseError(error);
@@ -124,17 +150,42 @@ export const MultipleChoice = (props: ExerciseProps) => {
               </DialogTitle>
               {exerciseResponse?.correct ? (
                 <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
-                  <img className="w-full max-w-[300px]" src={happySloth} alt="Preguiça feliz" />
+                  <img
+                    className="w-full max-w-[300px]"
+                    src={happySloth}
+                    alt="Preguiça feliz"
+                  />
                   Você pode jogar novamente ou continuar a sua jornada e
                   retornar quando quiser!
                 </DialogDescription>
               ) : (
                 <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
-                  <img className="w-full max-w-[300px]" src={sadSloth} alt="Preguiça triste" />
+                  <img
+                    className="w-full max-w-[300px]"
+                    src={sadSloth}
+                    alt="Preguiça triste"
+                  />
                   Você pode tentar novamente ou continuar a sua jornada e
                   retornar depois!
                 </DialogDescription>
               )}
+
+              <div className="grid grid-cols-2 gap-10 pt-5 pb-4">
+                {studyTime && (
+                  <div className="flex flex-col items-center animate-fade-in">
+                    <h2 className="text-xl font-bold">Tempo de Resposta</h2>
+                    <p className="text-lg">{studyTime}</p>
+                  </div>
+                )}
+
+                <div className="flex flex-col items-center animate-fade-in">
+                  <h2 className="text-2xl font-bold">Recompensas!</h2>
+                  <p className="text-lg">XP: {exerciseResponse?.xpReward}</p>
+                  <p className="text-lg">
+                    Moedas: {exerciseResponse?.coinsReward}
+                  </p>
+                </div>
+              </div>
             </DialogHeader>
 
             <DialogFooter>
