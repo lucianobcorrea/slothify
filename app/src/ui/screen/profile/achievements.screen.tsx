@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -13,6 +13,9 @@ import { Progress } from "@/components/ui/progress";
 import { ButtonComponent } from "@/ui/component/button/button.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 export const Achievements = () => {
   interface Achievement {
     id: number;
@@ -25,14 +28,20 @@ export const Achievements = () => {
     percentage: number;
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [openAchievements, setOpenAchievements] = useState<boolean>(false);
   const location = useLocation();
-  const { achievements } = (location.state as { achievements: Achievement[] }) || {};
+  const { achievements } =
+    (location.state as { achievements: Achievement[] }) || {};
   const navigate = useNavigate();
 
   const [achievementImage, setAchievementImage] = useState<string>("");
   const [achievementName, setAchievementName] = useState<string>("");
-  const [achievementDescription, setAchievementDescription] = useState<string>("");
+  const [achievementDescription, setAchievementDescription] =
+    useState<string>("");
   const [achievementTotal, setAchievementTotal] = useState<number>(0);
   const [achievementRequired, setAchievementRequired] = useState<number>(0);
   const [achievementPercentage, setAchievementPercentage] = useState<number>(0);
@@ -49,21 +58,32 @@ export const Achievements = () => {
     setAchievementPercentage(achievement.percentage);
   }
 
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+
   return (
     <Main>
       <Dialog open={openAchievements} onOpenChange={setOpenAchievements}>
-        <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
+        <DialogContent
+          className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center"
+        >
           <DialogHeader>
             <DialogTitle className="text-4xl">{achievementName}</DialogTitle>
           </DialogHeader>
           {achievementImage && (
             <img
-              className={`${!userHasAchievement ? "grayscale" : ""} max-w-[300px]`}
+              className={`${
+                !userHasAchievement ? "grayscale" : ""
+              } max-w-[300px]`}
               src={achievementImage}
               alt={achievementName}
+              data-aos="zoom-in"
             />
           )}
-          <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
+          <DialogDescription
+            className="text-white text-lg text-center flex flex-col items-center"
+          >
             {achievementDescription}
             {userHasAchievement ? (
               <Progress
@@ -75,7 +95,9 @@ export const Achievements = () => {
               <>
                 <div className="flex justify-between w-full mt-6">
                   <h2>{achievementTotal}</h2>
-                  <h2 className="text-secondary-color font-bold">{achievementRequired}</h2>
+                  <h2 className="text-secondary-color font-bold">
+                    {achievementRequired}
+                  </h2>
                 </div>
                 <Progress
                   value={achievementPercentage}
@@ -92,6 +114,7 @@ export const Achievements = () => {
           clickEvent={() => navigate(-1)}
           btnType="button"
           classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color mt-14"
+          data-aos="fade-right"
         >
           <div className="flex items-center gap-4">
             <FontAwesomeIcon icon={faAngleLeft} />
@@ -102,10 +125,12 @@ export const Achievements = () => {
         <div className="mt-10 mb-20">
           <div className="grid grid-cols-4 gap-5">
             {achievements && achievements.length > 0 ? (
-              achievements.map((achievement) => (
+              achievements.map((achievement, index) => (
                 <button
                   key={achievement.id}
                   onClick={() => setAchievementData(achievement)}
+                  data-aos="zoom-in"
+                  data-aos-delay={index * 100}
                 >
                   <div className="bg-neutral-800 p-4 rounded-xl h-full flex justify-center items-center">
                     <img

@@ -4,7 +4,7 @@ import { Main } from "@/ui/layouts/main.layout";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,11 +14,17 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useItem } from "@/hook/useItem/useItem.hook";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export const Items = () => {
   const location = useLocation();
   const { items } = (location.state as { items: Items }) || {};
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const [itemId, setItemId] = useState<number>(0);
   const [itemImage, setItemImage] = useState<string>("");
@@ -57,20 +63,33 @@ export const Items = () => {
     [key: string]: Item[];
   }
 
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+
   return (
     <Main itemData={itemData}>
       {canOpenItemUsedModal ? (
         <Dialog open={openUsedItem} onOpenChange={setOpenUsedItem}>
-          <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
+          <DialogContent
+            className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center"
+          >
             <DialogHeader className="flex items-center">
               <DialogTitle className="text-5xl font-bold mb-3">
                 Você usou o item
               </DialogTitle>
               <DialogTitle className="text-3xl">{itemName}</DialogTitle>
               {itemImage && (
-                <img className="max-w-[300px]" src={itemImage} alt={itemName} />
+                <img
+                  className="max-w-[300px]"
+                  src={itemImage}
+                  alt={itemName}
+                  data-aos="zoom-in"
+                />
               )}
-              <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
+              <DialogDescription
+                className="text-white text-lg text-center flex flex-col items-center"
+              >
                 {itemDescription}
               </DialogDescription>
             </DialogHeader>
@@ -79,7 +98,9 @@ export const Items = () => {
       ) : null}
 
       <Dialog open={openItems} onOpenChange={setOpenItems}>
-        <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
+        <DialogContent
+          className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center"
+        >
           <DialogHeader className="flex items-center">
             <DialogTitle className="text-4xl">{itemName}</DialogTitle>
             {itemImage && (
@@ -91,9 +112,12 @@ export const Items = () => {
                 }`}
                 src={itemImage}
                 alt={itemName}
+                data-aos="zoom-in"
               />
             )}
-            <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
+            <DialogDescription
+              className="text-white text-lg text-center flex flex-col items-center"
+            >
               {itemDescription}
             </DialogDescription>
           </DialogHeader>
@@ -123,6 +147,7 @@ export const Items = () => {
           clickEvent={() => navigate(-1)}
           btnType="button"
           classname="bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color mt-14"
+          data-aos="fade-right"
         >
           <div className="flex items-center gap-4">
             <FontAwesomeIcon icon={faAngleLeft} />
@@ -130,7 +155,10 @@ export const Items = () => {
           </div>
         </ButtonComponent>
         <div className="mt-10 mb-10">
-          <h2 className="text-white font-bold mb-5 text-2xl">
+          <h2
+            className="text-white font-bold mb-5 text-2xl"
+            data-aos="fade-right"
+          >
             Itens Utilitários
           </h2>
           <div className="grid grid-cols-4 gap-5">
@@ -138,8 +166,13 @@ export const Items = () => {
               Object.entries(items).map(([, itemArray]) =>
                 itemArray
                   .filter((item) => item.itemType === "UTILITY")
-                  .map((item) => (
-                    <button key={item.id} onClick={() => setItemData(item)}>
+                  .map((item, index) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setItemData(item)}
+                      data-aos="zoom-in"
+                      data-aos-delay={index * 100}
+                    >
                       <ItemCard
                         name={item.name}
                         image={item.image}
@@ -161,14 +194,24 @@ export const Items = () => {
         </div>
 
         <div className="mt-10 mb-20">
-          <h2 className="text-white font-bold mb-5 text-2xl">Outros Itens</h2>
+          <h2
+            className="text-white font-bold mb-5 text-2xl"
+            data-aos="fade-right"
+          >
+            Outros Itens
+          </h2>
           <div className="grid grid-cols-4 gap-5">
             {items && Object.keys(items).length > 0 ? (
               Object.entries(items).map(([, itemArray]) =>
                 itemArray
                   .filter((item) => item.itemType !== "UTILITY")
-                  .map((item) => (
-                    <button key={item.id} onClick={() => setItemData(item)}>
+                  .map((item, index) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setItemData(item)}
+                      data-aos="zoom-in"
+                      data-aos-delay={index * 100}
+                    >
                       <ItemCard
                         name={item.name}
                         image={item.image}

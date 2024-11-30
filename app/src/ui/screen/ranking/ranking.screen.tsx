@@ -7,6 +7,9 @@ import { useEffect, useRef, useCallback } from "react";
 import { LoadingSpinner } from "@/ui/component/spinner/spinner.component";
 import defaultAvatar from "@/assets/image/profile/default.png";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 export const Ranking = () => {
   const { ranking, fetchRanking, hasMore, isLoading } = useGetRanking(0);
 
@@ -28,16 +31,24 @@ export const Ranking = () => {
 
   useEffect(() => {
     fetchRanking();
+    AOS.init({ duration: 1000 });
   }, []);
 
   return (
     <Main>
       <section className="container px-64">
-        <h1 className="text-white text-4xl font-bold mt-14">
+        <h1
+          className="text-white text-4xl font-bold mt-14"
+          data-aos="fade-right"
+        >
           Ranking de Jogadores
         </h1>
 
-        <div className="bg-neutral-800 border-[1px] border-neutral-700 mt-12 p-8 rounded-xl mb-12">
+        <div
+          className="bg-neutral-800 border-[1px] border-neutral-700 mt-12 p-8 rounded-xl mb-12"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
           <div className="overflow-y-auto pe-10 max-h-[700px] custom-scroll">
             {ranking.map((user, index) => (
               <div
@@ -45,6 +56,7 @@ export const Ranking = () => {
                 ref={
                   index === ranking.length - 1 ? lastRankingElementRef : null
                 }
+                data-aos-delay={index * 100}
               >
                 <div className="grid grid-cols-[50px_1fr_300px_50px] items-center gap-20">
                   <div className="flex-shrink-0 text-center">

@@ -17,6 +17,9 @@ import {
 import { ButtonComponent } from "@/ui/component/button/button.component";
 import { useBuyItem } from "@/hook/useBuyItem/useBuyItem.hook";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 export const Shop = () => {
   const { items, fetchShopItems } = useGetShopItems();
   const [open, setOpen] = useState<boolean>(false);
@@ -29,7 +32,12 @@ export const Shop = () => {
   const [itemAlreadyHas, setAlreadyHas] = useState<boolean>();
   const [itemSubtype, setSubtype] = useState<string>("");
 
-  const { fetchBuyItem } = useBuyItem(itemImage, itemName, itemDescription, itemSubtype);
+  const { fetchBuyItem } = useBuyItem(
+    itemImage,
+    itemName,
+    itemDescription,
+    itemSubtype
+  );
 
   interface Item {
     id: number;
@@ -46,6 +54,7 @@ export const Shop = () => {
 
   useEffect(() => {
     fetchShopItems();
+    AOS.init({ duration: 1000 });
   }, []);
 
   function setItemData(item: Item) {
@@ -72,6 +81,43 @@ export const Shop = () => {
     }
   };
 
+  const phrases = [
+    "Bem-vindo à loja, aproveite!",
+    "Veja só o que tenho no meu inventário, só coisa boa!",
+    "Com esses itens, seus desafios vão ficar mais fáceis (ou estilosos)!",
+    "Dê uma olhada! Pode ser que você encontre algo lendário.",
+    "Seus esforços merecem recompensas, escolha com sabedoria!",
+    "Volte sempre! Novidades estão a caminho."
+  ];
+
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    setDisplayedText("");
+
+    let currentCharIndex = 1;
+    const currentPhrase = phrases[currentPhraseIndex];
+
+    const typingInterval = setInterval(() => {
+      if (currentCharIndex <= currentPhrase.length) {
+        setDisplayedText(currentPhrase.substring(0, currentCharIndex));
+        currentCharIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 100);
+
+    return () => clearInterval(typingInterval);
+  }, [currentPhraseIndex]);
+
   return (
     <Main>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -95,8 +141,11 @@ export const Shop = () => {
             <DialogTitle className="text-4xl">{itemName}</DialogTitle>
             {itemImage && (
               <img
+                data-aos="zoom-in"
                 className={`${
-                  itemSubtype == "BANNER" ? "py-10 max-w-[500px]" : "max-w-[300px]"
+                  itemSubtype === "BANNER"
+                    ? "py-10 max-w-[500px]"
+                    : "max-w-[300px]"
                 }`}
                 src={itemImage}
                 alt={itemName}
@@ -130,18 +179,32 @@ export const Shop = () => {
       </Dialog>
 
       <section className="container h-[100vh]">
-        <h1 className="text-white text-4xl font-bold mt-14">Loja</h1>
-
+        <h1
+          data-aos="fade-down"
+          className="text-white text-4xl font-bold mt-14"
+        >
+          Loja
+        </h1>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-96">
-          <div className="relative">
-            <img
-              className="max-w-xl animate-sway fixed bottom-[-60px] left-20"
-              src={shopSloth}
-              alt="Preguiça vendedora"
-            />
+          <div className="relative z-50">
+            <div className="fixed bottom-[-60px] left-0">
+              <div className="relative">
+                <img
+                  className="max-w-xl animate-sway"
+                  src={shopSloth}
+                  alt="Preguiça vendedora"
+                />
+                <div
+                  className="border-[1px] border-neutral-500 animate-swaySlow absolute bottom-96 left-[410px] transform -translate-x-1/2 mb-4 bg-neutral-700 text-white p-4 rounded-lg shadow-lg"
+                  style={{ width: "220px" }}
+                >
+                  {displayedText}
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="lg:col-span-3 relative">
+          <div className="lg:col-span-3 relative" data-aos="fade-right">
             {items && Object.keys(items).length > 0 ? (
               Object.entries(items).map(([key, itemList]) => (
                 <SwiperWithNavigation

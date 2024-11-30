@@ -28,20 +28,25 @@ type ChaptersResponse = Chapter[];
 export function useGetChapters(areaId: number) {
   const { refreshUserData } = useUserDataContext();
   const [chapters, setChapters] = useState<ChaptersResponse>([]);
+  const [loadingChapters, setLoadingChapters] = useState<boolean>(false);
 
   async function fetchChapters() {
     try {
       const response = await getChapters(areaId);
       setChapters(response);
+      setLoadingChapters(true);
       refreshUserData();
     } catch (error) {
       const message = getResponseError(error);
       toast.error(message);
+    } finally {
+      setLoadingChapters(false);
     }
   }
 
   return {
     chapters,
     fetchChapters,
+    loadingChapters
   };
 }

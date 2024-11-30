@@ -110,6 +110,7 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         sway: "sway 1.5s ease-in-out infinite",
+        swaySlow: "sway 2.5s ease-in-out infinite",
         "image-zoom": "image-zoom 0.6s ease",
         shake: "shake 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite",
       },

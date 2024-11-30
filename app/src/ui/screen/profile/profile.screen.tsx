@@ -478,6 +478,7 @@ export const Profile = () => {
                   }`}
                   src={itemImage}
                   alt={itemName}
+                  data-aos="zoom-in"
                 />
               )}
               <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
@@ -518,6 +519,7 @@ export const Profile = () => {
                     className="max-w-[300px]"
                     src={itemImage}
                     alt={itemName}
+                    data-aos="zoom-in"
                   />
                 )}
                 <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
@@ -540,6 +542,7 @@ export const Profile = () => {
                   } max-w-[300px]`}
                   src={achievementImage}
                   alt={achievementName}
+                  data-aos="zoom-in"
                 />
               )}
               <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
