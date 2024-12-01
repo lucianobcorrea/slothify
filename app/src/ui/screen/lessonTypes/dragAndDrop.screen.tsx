@@ -259,7 +259,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
       }
     }
   };
-  console.log(exerciseResponse);
+
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>

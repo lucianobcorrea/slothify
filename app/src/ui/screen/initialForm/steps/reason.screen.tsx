@@ -4,6 +4,9 @@ import { useGetReason } from "@/hook/useGetReason/useGetReason";
 import { useEffect } from "react";
 import { MessageBoxSelect } from "@/ui/component/messageBoxSelect/messageBoxSelect.component";
 import { FormTemplate } from "@/ui/component/initialForm/form.component";
+import { LoadingSpinner } from "@/ui/component/spinner/spinner.component";
+import "aos/dist/aos.css";
+import AOS from "aos";
 
 interface ReasonProps {
   progress: number;
@@ -13,42 +16,47 @@ interface ReasonProps {
 }
 
 export const Reason = (props: ReasonProps) => {
-  const { reasons, fetchReasons } = useGetReason();
+  const { reasons, fetchReasons, loading } = useGetReason();
 
   useEffect(() => {
     fetchReasons();
+    AOS.init({
+      duration: 1000,
+    });
   }, []);
 
   return (
     <FormTemplate
-      clickEventNext={() => props.clickEventNext()}
-      clickEventBack={() => props.clickEventBack()}
+      clickEventNext={props.clickEventNext}
+      clickEventBack={props.clickEventBack}
       progress={props.progress}
       buttonTxt="Avançar"
       message="Você quer aprender essas áreas para..."
     >
-      <div className="grid grid-cols-2 gap-10 mt-20">
-        {reasons.map((reasons, index) => {
-          return (
-            <div key={index}>
+      {loading ? (
+        <LoadingSpinner className="text-primary-color" size={46} />
+      ) : (
+        <div className="grid grid-cols-2 gap-10 mt-20">
+          {reasons.map((reason, index) => (
+            <div key={index} data-aos="fade-up">
               <MessageBoxSelect
                 classname="pt-2 pb-2"
-                value={reasons.slug}
+                value={reason.slug}
                 register={props.register("reasons")}
               >
                 <div className="flex items-center gap-5 font-medium text-xl">
                   <img
-                    src={reasons.image}
+                    src={reason.image}
                     alt="image"
                     className="max-w-[90px]"
                   />
-                  <h2>{reasons.title}</h2>
+                  <h2>{reason.title}</h2>
                 </div>
               </MessageBoxSelect>
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </FormTemplate>
   );
 };

@@ -6,6 +6,10 @@ import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLogin } from "@/hook/useLogin/useLogin.hook";
 
+import "aos/dist/aos.css";
+import Aos from "aos";
+import { useEffect } from "react";
+
 const schema = z.object({
   email: z
     .string()
@@ -28,8 +32,15 @@ export function Login() {
 
   const onSubmit = useLogin();
 
+  useEffect(() => {
+    Aos.init({ duration: 1000 });
+  });
+
   return (
-    <section className="px-8 lg:px-24 min-h-screen flex justify-center items-center">
+    <section
+      className="px-8 lg:px-24 min-h-screen flex justify-center items-center"
+      data-aos="fade-left"
+    >
       <div className="shadow-custom-shadow bg-neutral-800 rounded-3xl h-full w-[50%]">
         <div className="flex flex-col md:flex-row h-full p-8">
           <div className="flex-1 px-4 md:px-14 py-3 flex flex-col justify-center">

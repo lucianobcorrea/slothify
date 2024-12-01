@@ -12,19 +12,24 @@ interface Reason {
 
 export function useGetReason() {
   const [reasons, setReasons] = useState<Reason[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function fetchReasons() {
     try {
       const response = await getReason();
       setReasons(response);
+      setLoading(true);
     } catch (error) {
       const message = getResponseError(error);
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   }
 
   return {
     reasons,
     fetchReasons,
+    loading,
   };
 }

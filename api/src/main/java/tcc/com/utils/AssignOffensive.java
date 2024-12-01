@@ -21,9 +21,9 @@ public class AssignOffensive {
         if(offensive == null) {
             Offensive newOffensive = new Offensive();
             newOffensive.setUser(user);
-            newOffensive.setOffensive(1);
-            newOffensive.setLastOffensive(1);
-            newOffensive.setLastOffensiveDay(LocalDateTime.now());
+            newOffensive.setOffensive(0);
+            newOffensive.setLastOffensive(0);
+            newOffensive.setLastOffensiveDay(LocalDateTime.now().minusDays(1));
             offensiveRepository.save(newOffensive);
         }else {
             if (offensive.getLastOffensiveDay() == null) {

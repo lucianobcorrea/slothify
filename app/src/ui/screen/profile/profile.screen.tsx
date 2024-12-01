@@ -62,6 +62,8 @@ export const Profile = () => {
   const [openAchievements, setOpenAchievements] = useState<boolean>(false);
   const [openUsedItem, setOpenUsedItem] = useState<boolean>(false);
 
+  const [changeItems, setChangeItems] = useState<boolean>(false);
+
   const { areas, fetchUserAreas } = useGetUserAreas();
   const { reasons, fetchUserReasons } = useGetUserReasons();
   const { schedules, fetchUserSchedule } = useGetUserSchedule();
@@ -99,10 +101,13 @@ export const Profile = () => {
     fetchUserAreas();
     fetchUserReasons();
     fetchUserSchedule();
-    fetchUserItems();
     fetchUserAchievements();
     fetchUserRanking();
   }, []);
+
+  useEffect(() => {
+    fetchUserItems();
+  }, [changeItems]);
 
   const [itemId, setItemId] = useState<number>(0);
   const [itemImage, setItemImage] = useState<string>("");
@@ -165,6 +170,11 @@ export const Profile = () => {
     setType(item.itemType);
     setOpenItems(true);
   }
+
+  const handleCloseModal = () => {
+    setOpenItems(false);
+    setChangeItems(false);
+  };
 
   useEffect(() => {
     AOS.init({
@@ -465,7 +475,7 @@ export const Profile = () => {
         </div>
 
         {/* Items modal */}
-        <Dialog open={openItems} onOpenChange={setOpenItems}>
+        <Dialog open={openItems} onOpenChange={handleCloseModal}>
           <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
             <DialogHeader className="flex items-center">
               <DialogTitle className="text-4xl">{itemName}</DialogTitle>
@@ -491,7 +501,7 @@ export const Profile = () => {
                 <div className="flex mt-2">
                   <ButtonComponent
                     clickEvent={() => {
-                      fetchUseItem(itemId);
+                      fetchUseItem(itemId, setChangeItems);
                       setOpenItems(false);
                       setOpenUsedItem(true);
                     }}
@@ -581,11 +591,7 @@ export const Profile = () => {
                 <h2 className="text-white">Meus itens</h2>
                 <button
                   className="text-secondary-color"
-                  onClick={() =>
-                    navigate("/perfil/items", {
-                      state: { items },
-                    })
-                  }
+                  onClick={() => navigate("/perfil/items")}
                 >
                   Ver mais
                 </button>

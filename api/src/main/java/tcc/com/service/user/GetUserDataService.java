@@ -72,9 +72,9 @@ public class GetUserDataService {
         if (offensive == null) {
             offensive = new Offensive();
             offensive.setUser(user);
-            offensive.setOffensive(1);
-            offensive.setLastOffensive(1);
-            offensive.setLastOffensiveDay(LocalDateTime.now());
+            offensive.setOffensive(0);
+            offensive.setLastOffensive(0);
+            offensive.setLastOffensiveDay(LocalDateTime.now().minusDays(1));
             offensiveRepository.save(offensive);
         }
 

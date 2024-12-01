@@ -31,7 +31,7 @@ export const FormTemplate = (props: FormProps) => {
         {props.message && (
           <div className="mt-16 flex items-center gap-10">
             <img
-              className="w-full max-w-36"
+              className="w-full max-w-36 animate-swaySlow"
               src={writingSloth}
               alt="Preguiça com o pelo roxo, segurando uma caneta e um papel, olhando para o usuário enquanto escreve"
             />

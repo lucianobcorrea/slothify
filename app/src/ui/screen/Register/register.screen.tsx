@@ -7,6 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import "aos/dist/aos.css";
+import Aos from "aos";
+import { useEffect } from "react";
+
 const schema = z
   .object({
     email: z
@@ -38,8 +42,15 @@ export function Register() {
 
   const onSubmit = useRegister();
 
+  useEffect(() => {
+    Aos.init({ duration: 1000 });
+  });
+
   return (
-    <section className="px-8 lg:px-24 min-h-screen flex justify-center items-center">
+    <section
+      className="px-8 lg:px-24 min-h-screen flex justify-center items-center"
+      data-aos="fade-left"
+    >
       <div className="shadow-custom-shadow bg-neutral-800 rounded-3xl h-full w-full">
         <div className="flex flex-col md:flex-row h-full p-8">
           <div className="relative md:w-[50%] rounded-3xl overflow-hidden">

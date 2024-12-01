@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class CreateUserService {
 
@@ -61,6 +63,7 @@ public class CreateUserService {
         Level level = levelRepository.findByLevelNumber(1);
         User user = UserMapper.toEntity(data, level);
         user.setPassword(passwordEncoder.encode(data.getPassword()));
+        user.setCoins(0);
         user.setActive(true);
 
         Role role = roleRepository.findByRole(UserRoles.USER);
@@ -81,6 +84,9 @@ public class CreateUserService {
         userDailyDataRepository.save(userDailyData);
 
         Offensive offensive = new Offensive();
+        offensive.setOffensive(0);
+        offensive.setLastOffensive(0);
+        offensive.setLastOffensiveDay(LocalDateTime.now().minusDays(1));
         offensive.setUser(user);
         offensiveRepository.save(offensive);
 

@@ -6,6 +6,9 @@ import { MessageBoxRadio } from "@/ui/component/messageBoxRadio/messageBoxRadio.
 import everyDay from "@/assets/image/initialForm/every-day.png";
 import week from "@/assets/image/initialForm/week.png";
 import weekend from "@/assets/image/initialForm/weekend.png";
+import { useEffect } from "react";
+import "aos/dist/aos.css";
+import AOS from "aos";
 
 interface StudyDaysProps {
   progress: number;
@@ -15,6 +18,12 @@ interface StudyDaysProps {
 }
 
 export const StudyDay = (props: StudyDaysProps) => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
+  }, []);
+
   return (
     <FormTemplate
       clickEventNext={() => props.clickEventNext()}
@@ -23,7 +32,7 @@ export const StudyDay = (props: StudyDaysProps) => {
       buttonTxt="Avançar"
       message="Como você vai querer completar sua missão?"
     >
-      <div className="grid grid-cols-2 gap-10 mt-20">
+      <div className="grid grid-cols-2 gap-10 mt-20" data-aos="fade-up">
         <MessageBoxRadio
           classname="pt-2 pb-2"
           value="EVERY_DAY"

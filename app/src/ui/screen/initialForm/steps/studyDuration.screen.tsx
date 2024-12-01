@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { UseFormRegister } from "react-hook-form";
 import { FormFields } from "./step.screen";
 import { MessageBoxRadio } from "@/ui/component/messageBoxRadio/messageBoxRadio.component";
+import "aos/dist/aos.css";
+import AOS from "aos";
 
 interface StudyDurationProps {
   progress: number;
@@ -30,6 +32,9 @@ export const StudyDuration = (props: StudyDurationProps) => {
 
   useEffect(() => {
     fetchStudyDurations();
+    AOS.init({
+      duration: 1000,
+    });
   }, []);
 
   const durationDisplayMap: Duration = {
@@ -47,7 +52,7 @@ export const StudyDuration = (props: StudyDurationProps) => {
       buttonTxt="Finalizar"
       message="Quanto tempo do seu dia você quer dedicar para completar a sua missão com sucesso?"
     >
-      <div className="grid grid-cols-2 gap-10 mt-20">
+      <div className="grid grid-cols-2 gap-10 mt-20" data-aos="fade-up">
         {durations.map((studyDuration, index) => {
           return (
             <div key={index}>

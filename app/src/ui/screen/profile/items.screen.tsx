@@ -1,7 +1,7 @@
 import { ButtonComponent } from "@/ui/component/button/button.component";
 import { ItemCard } from "@/ui/component/itemCard/ItemCard.component";
 import { Main } from "@/ui/layouts/main.layout";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
@@ -16,10 +16,9 @@ import {
 import { useItem } from "@/hook/useItem/useItem.hook";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useGetUserItems } from "@/hook/useGetUserItems/useGetUserItems.hook";
 
 export const Items = () => {
-  const location = useLocation();
-  const { items } = (location.state as { items: Items }) || {};
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +35,12 @@ export const Items = () => {
   const [openUsedItem, setOpenUsedItem] = useState<boolean>(false);
 
   const { fetchUseItem, itemData, canOpenItemUsedModal } = useItem();
+  const { items, fetchUserItems } = useGetUserItems();
+  const [changeItems, setChangeItems] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchUserItems();
+  }, [changeItems]);
 
   function setItemData(item: Item) {
     setItemImage(item.image);
@@ -59,9 +64,10 @@ export const Items = () => {
     subtype: string;
   }
 
-  interface Items {
-    [key: string]: Item[];
-  }
+  const handleCloseModal = () => {
+    setOpenItems(false);
+    setChangeItems(false);
+  };
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -71,9 +77,7 @@ export const Items = () => {
     <Main itemData={itemData}>
       {canOpenItemUsedModal ? (
         <Dialog open={openUsedItem} onOpenChange={setOpenUsedItem}>
-          <DialogContent
-            className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center"
-          >
+          <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
             <DialogHeader className="flex items-center">
               <DialogTitle className="text-5xl font-bold mb-3">
                 Você usou o item
@@ -87,9 +91,7 @@ export const Items = () => {
                   data-aos="zoom-in"
                 />
               )}
-              <DialogDescription
-                className="text-white text-lg text-center flex flex-col items-center"
-              >
+              <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
                 {itemDescription}
               </DialogDescription>
             </DialogHeader>
@@ -97,10 +99,8 @@ export const Items = () => {
         </Dialog>
       ) : null}
 
-      <Dialog open={openItems} onOpenChange={setOpenItems}>
-        <DialogContent
-          className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center"
-        >
+      <Dialog open={openItems} onOpenChange={handleCloseModal}>
+        <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
           <DialogHeader className="flex items-center">
             <DialogTitle className="text-4xl">{itemName}</DialogTitle>
             {itemImage && (
@@ -115,9 +115,7 @@ export const Items = () => {
                 data-aos="zoom-in"
               />
             )}
-            <DialogDescription
-              className="text-white text-lg text-center flex flex-col items-center"
-            >
+            <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
               {itemDescription}
             </DialogDescription>
           </DialogHeader>
@@ -127,7 +125,7 @@ export const Items = () => {
               <div className="flex mt-2">
                 <ButtonComponent
                   clickEvent={() => {
-                    fetchUseItem(itemId);
+                    fetchUseItem(itemId, setChangeItems);
                     setOpenItems(false);
                     setOpenUsedItem(true);
                   }}
@@ -155,12 +153,14 @@ export const Items = () => {
           </div>
         </ButtonComponent>
         <div className="mt-10 mb-10">
-          <h2
-            className="text-white font-bold mb-5 text-2xl"
-            data-aos="fade-right"
-          >
-            Itens Utilitários
-          </h2>
+          {items && items.UTILITY && items.UTILITY.length > 0 ? (
+            <h2
+              className="text-white font-bold mb-5 text-2xl"
+              data-aos="fade-right"
+            >
+              Itens Utilitários
+            </h2>
+          ) : null}
           <div className="grid grid-cols-4 gap-5">
             {items && Object.keys(items).length > 0 ? (
               Object.entries(items).map(([, itemArray]) =>

@@ -13,7 +13,7 @@ export function Home() {
   const { authUser } = useAuthContext();
 
   useEffect(() => {
-    Aos.init();
+    Aos.init({ duration: 1000 });
   });
 
   const navigate = useNavigate();

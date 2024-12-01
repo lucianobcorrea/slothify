@@ -21,7 +21,8 @@ public class GetUserItemsService {
         User user = authenticatedUserService.get();
 
         return user.getUserItems().stream()
-                .map((userItem -> ItemMapper.toResponse(userItem.getItem())))
+                .filter(userItem -> userItem.getQuantity() > 0) 
+                .map(userItem -> ItemMapper.toResponse(userItem.getItem()))
                 .collect(Collectors.groupingBy(itemResponse ->
                         "UTILITY".equalsIgnoreCase(itemResponse.getItemType())
                                 ? "UTILITY"

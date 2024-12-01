@@ -9,7 +9,10 @@ export function useItem() {
   const [canOpenItemUsedModal, setCanOpenItemUsedModal] = useState<boolean>();
   const { refreshUserData } = useUserDataContext();
 
-  async function fetchUseItem(itemId: number) {
+  async function fetchUseItem(
+    itemId: number,
+    setChangeItems: (isChanged: boolean) => void
+  ) {
     try {
       const response = await utilizeItem(itemId);
       if (response.duration && response.duration > 0) {
@@ -18,10 +21,12 @@ export function useItem() {
         localStorage.setItem(key, expirationTime.toString());
       }
       refreshUserData();
+      setChangeItems(true);
       setCanOpenItemUsedModal(true);
       toast.success("Poção utilizada! :)");
       setItemData(response);
     } catch (error) {
+      setChangeItems(false);
       setCanOpenItemUsedModal(false);
       const message = getResponseError(error);
       toast.error(message);
@@ -31,6 +36,6 @@ export function useItem() {
   return {
     fetchUseItem,
     itemData,
-    canOpenItemUsedModal
+    canOpenItemUsedModal,
   };
 }

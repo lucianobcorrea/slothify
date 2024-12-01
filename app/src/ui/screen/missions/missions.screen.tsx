@@ -142,7 +142,6 @@ export const Missions = () => {
         <>
           <Dialog open={openChallenges} onOpenChange={handleCloseModal}>
             <DialogContent
-              data-aos="fade-in"
               className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center"
             >
               <DialogHeader>
@@ -213,7 +212,7 @@ export const Missions = () => {
                   key={chapter.title}
                   data-aos="fade-up"
                   data-aos-delay={index * 100}
-                  className="grid grid-cols-9 mb-8"
+                  className="grid grid-cols-9"
                 >
                   <div className="col-span-4 relative">
                     <div className="absolute inset-0 flex justify-center">
