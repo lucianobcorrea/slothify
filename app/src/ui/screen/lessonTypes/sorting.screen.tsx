@@ -12,6 +12,9 @@ import { CSS } from "@dnd-kit/utilities";
 import { useNavigate } from "react-router-dom";
 import { ButtonComponent } from "@/ui/component/button/button.component";
 
+import "aos/dist/aos.css";
+import AOS from "aos";
+
 import { Loader2 } from "lucide-react";
 import happySloth from "@/assets/image/exercise/happy.png";
 import sadSloth from "@/assets/image/exercise/sad.png";
@@ -79,6 +82,11 @@ export const Sorting = (props: ExerciseProps) => {
     if (exerciseContextLoaded) {
       fetchExerciseOptions();
     }
+
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
   }, [exerciseContextLoaded]);
 
   useEffect(() => {
@@ -238,7 +246,7 @@ export const Sorting = (props: ExerciseProps) => {
         </DialogContent>
       </Dialog>
 
-      <section className="container">
+      <section className="container" data-aos="fade-down" data-aos-delay="300">
         <img
           className="w-full max-h-[450px] object-cover"
           src={exercise?.image}
@@ -246,12 +254,13 @@ export const Sorting = (props: ExerciseProps) => {
         />
 
         <h2
+          data-aos="fade-down"
           className="text-white text-lg mt-10 leading-7"
           dangerouslySetInnerHTML={{ __html: exercise?.statement || "" }}
         />
       </section>
 
-      <section className="container mt-10 mb-10">
+      <section className="container mt-10 mb-10" data-aos="fade-right">
         <h2 className="text-white text-2xl mb-12 italic underline">
           O seu objetivo agora é decidir a ordem correta:
         </h2>

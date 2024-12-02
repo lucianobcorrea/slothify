@@ -11,6 +11,9 @@ import { getResponseError } from "@/api/error/error.api";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 
+import "aos/dist/aos.css";
+import AOS from "aos";
+
 import happySloth from "@/assets/image/exercise/happy.png";
 import sadSloth from "@/assets/image/exercise/sad.png";
 
@@ -68,6 +71,11 @@ export const MultipleChoice = (props: ExerciseProps) => {
     if (exerciseContextLoaded) {
       fetchExerciseOptions();
     }
+
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
   }, [exerciseContextLoaded]);
 
   interface ResponseType {
@@ -117,7 +125,7 @@ export const MultipleChoice = (props: ExerciseProps) => {
 
   return (
     <>
-      <section className="container">
+      <section className="container" data-aos="fade-down" data-aos-delay="300">
         <img
           className="w-full max-h-[450px] object-cover"
           src={exercise?.image}
@@ -125,12 +133,13 @@ export const MultipleChoice = (props: ExerciseProps) => {
         />
 
         <h2
+          data-aos="fade-down"
           className="text-white text-lg mt-10 leading-7"
           dangerouslySetInnerHTML={{ __html: exercise?.statement || "" }}
         />
       </section>
 
-      <section className="container mt-10">
+      <section className="container mt-10" data-aos="fade-right">
         <h2 className="text-white text-2xl mb-5 italic underline">
           O seu objetivo agora é decidir qual é a opção correta:
         </h2>
