@@ -35,7 +35,7 @@ export const Form = (props: FormProps) => {
       </div>
 
       <hr className="border-neutral-500 mt-24" />
-      <div className="flex justify-center items-center mt-11">
+      <div className="flex justify-center items-center mt-11 2xl:mb-0 mb-10">
         <ButtonComponent
           clickEvent={props.clickEvent}
           btnType="button"

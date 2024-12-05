@@ -131,7 +131,7 @@ export const Missions = () => {
   const { rewards, fetchCollectItem, resetRewards } = useCollectChallenge();
 
   useEffect(() => {
-    AOS.init({ duration: 1000 });
+    AOS.init({ duration: 1000, once: true });
   }, []);
 
   return (
@@ -141,9 +141,7 @@ export const Missions = () => {
       ) : (
         <>
           <Dialog open={openChallenges} onOpenChange={handleCloseModal}>
-            <DialogContent
-              className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center"
-            >
+            <DialogContent className="sm:max-w-[900px] bg-neutral-850 border-0 focus-visible:outline-none text-white flex flex-col items-center">
               <DialogHeader>
                 <DialogTitle className="text-4xl">{challengeName}</DialogTitle>
               </DialogHeader>
@@ -205,7 +203,7 @@ export const Missions = () => {
               </div>
             </DialogContent>
           </Dialog>
-          <div className="container grid grid-cols-12 gap-4 p-0">
+          <div className="container grid grid-cols-12 gap-4">
             <div className="col-span-9">
               {chapters.map((chapter, index) => (
                 <div

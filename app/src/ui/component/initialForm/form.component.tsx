@@ -44,7 +44,7 @@ export const FormTemplate = (props: FormProps) => {
       </div>
 
       <div>
-        <hr className="border-neutral-500" />
+        <hr className="border-neutral-500 2xl:mt-0 mt-14" />
         <div className="flex justify-center items-center mt-11 mb-11">
           <ButtonComponent
             clickEvent={props.clickEventNext}

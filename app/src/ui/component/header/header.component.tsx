@@ -15,7 +15,7 @@ export const Header = () => {
 
   return (
     <header className="h-32 border-b-[1px] border-neutral-700 bg-neutral-850 flex items-center">
-      <div className="container flex justify-between items-center p-0">
+      <div className="container flex justify-between items-center">
         <div className="flex items-center gap-9">
           <Link to="/menu">
             <div className="flex items-center gap-3 bg-neutral-700 w-fit px-6 py-2 rounded-lg hover:bg-neutral-600  transition ease-in-out">

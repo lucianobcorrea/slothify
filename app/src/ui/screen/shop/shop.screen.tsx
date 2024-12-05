@@ -187,15 +187,15 @@ export const Shop = () => {
         </h1>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-96">
           <div className="relative z-50">
-            <div className="fixed bottom-[-60px] left-0">
+            <div className="fixed bottom-[-60px] 2xl:left-0 left-[-80px]">
               <div className="relative">
                 <img
-                  className="max-w-xl animate-sway"
+                  className="2xl:max-w-xl max-w-[26rem] animate-sway"
                   src={shopSloth}
                   alt="Preguiça vendedora"
                 />
                 <div
-                  className="border-[1px] border-neutral-500 animate-swaySlow absolute bottom-96 left-[410px] transform -translate-x-1/2 mb-4 bg-neutral-700 text-white p-4 rounded-lg shadow-lg"
+                  className="border-[1px] border-neutral-500 animate-swaySlow absolute 2xl:bottom-96 bottom-[16rem] 2xl:left-[410px] left-[300px] transform -translate-x-1/2 mb-4 bg-neutral-700 text-white p-4 rounded-lg shadow-lg"
                   style={{ width: "220px" }}
                 >
                   {displayedText}

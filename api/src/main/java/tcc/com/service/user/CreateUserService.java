@@ -1,14 +1,12 @@
 package tcc.com.service.user;
 
 import tcc.com.controller.request.user.UserRequest;
+import tcc.com.domain.challenge.Challenge;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.offensive.Offensive;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.role.Role;
-import tcc.com.domain.user.User;
-import tcc.com.domain.user.UserDailyData;
-import tcc.com.domain.user.UserData;
-import tcc.com.domain.user.UserRoles;
+import tcc.com.domain.user.*;
 import tcc.com.mapper.UserMapper;
 import tcc.com.repository.*;
 import tcc.com.validator.user.PasswordValidator;
@@ -20,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class CreateUserService {
@@ -53,6 +53,12 @@ public class CreateUserService {
 
     @Autowired
     private OffensiveRepository offensiveRepository;
+
+    @Autowired
+    private ChallengeRepository challengeRepository;
+
+    @Autowired
+    private UserDailyChallengeRepository userDailyChallengeRepository;
 
     @Transactional
     public ResponseEntity<Void> create(UserRequest data) {
@@ -89,6 +95,20 @@ public class CreateUserService {
         offensive.setLastOffensiveDay(LocalDateTime.now().minusDays(1));
         offensive.setUser(user);
         offensiveRepository.save(offensive);
+
+        List<Challenge> challenges = challengeRepository.findAll();
+
+        Collections.shuffle(challenges);
+        List<Challenge> shuffledElements = challenges.subList(0, 3);
+
+        for (Challenge challenge : shuffledElements) {
+            UserDailyChallenge userDailyChallenge = new UserDailyChallenge();
+            userDailyChallenge.setUser(user);
+            userDailyChallenge.setChallenge(challenge);
+            userDailyChallenge.setCollected(false);
+            userDailyChallenge.setCompleted(false);
+            userDailyChallengeRepository.save(userDailyChallenge);
+        }
 
         return ResponseEntity.ok().build();
     }
