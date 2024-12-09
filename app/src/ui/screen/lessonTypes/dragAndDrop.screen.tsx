@@ -286,7 +286,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
             {exerciseResponse?.correct ? (
               <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
                 <img
-                  className="w-full max-w-[300px]"
+                  className="w-full 2xl:max-w-[300px] max-w-[220px]" 
                   src={happySloth}
                   alt="Preguiça feliz"
                 />
@@ -296,7 +296,7 @@ export const DragAndDrop = (props: ExerciseProps) => {
             ) : (
               <DialogDescription className="text-white text-lg text-center flex flex-col items-center">
                 <img
-                  className="w-full max-w-[300px]"
+                  className="w-full 2xl:max-w-[300px] max-w-[220px]"
                   src={sadSloth}
                   alt="Preguiça triste"
                 />

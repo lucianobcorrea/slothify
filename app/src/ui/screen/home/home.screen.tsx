@@ -76,7 +76,6 @@ export function Home() {
             className="text-white flex flex-col justify-center"
             data-aos="fade-left"
             data-aos-once="true"
-            data-aos-offset="600"
           >
             <h2 className="text-[42px] font-bold mb-2">
               Transforme seu Aprendizado em uma Jornada Épica
@@ -87,7 +86,7 @@ export function Home() {
             </h3>
           </div>
 
-          <div data-aos="fade-right" data-aos-once="true" data-aos-offset="600">
+          <div data-aos="fade-right" data-aos-once="true">
             <img
               className="max-w-xl w-full"
               src={journey}
@@ -104,7 +103,6 @@ export function Home() {
           <div
             data-aos="fade-right"
             data-aos-once="true"
-            data-aos-offset="1100"
           >
             <img
               className="max-w-xl w-full"
@@ -117,7 +115,6 @@ export function Home() {
             className="text-white flex flex-col justify-center"
             data-aos="fade-left"
             data-aos-once="true"
-            data-aos-offset="1100"
           >
             <h2 className="font-medium text-[42px] mb-2">
               O que é o {""}
@@ -147,7 +144,6 @@ export function Home() {
           className="grid grid-cols-2 gap-12"
           data-aos="zoom-in-down"
           data-aos-once="true"
-          data-aos-offset="1000"
         >
           <div className="flex flex-col justify-center text-white">
             <div className="mb-8">
@@ -187,7 +183,6 @@ export function Home() {
           className="text-white font-medium text-[42px] mb-2"
           data-aos="fade-left"
           data-aos-once="true"
-          data-aos-offset="1100"
         >
           Principais recursos
         </h2>
@@ -195,7 +190,6 @@ export function Home() {
           className="text-white text-2xl font-medium"
           data-aos="fade-left"
           data-aos-once="true"
-          data-aos-offset="1100"
         >
           Aprender nunca foi tão divertido.
         </h3>
@@ -206,7 +200,6 @@ export function Home() {
               className="mb-10"
               data-aos="fade-left"
               data-aos-once="true"
-              data-aos-offset="1100"
             >
               <span className="font-bold text-primary-color-dark">
                 Gamificação Personalizada:
@@ -218,7 +211,6 @@ export function Home() {
             <li
               data-aos="fade-left"
               data-aos-once="true"
-              data-aos-offset="1100"
             >
               <span className="font-bold text-primary-color-dark">
                 Loja de Itens e Personalizações:
@@ -235,7 +227,6 @@ export function Home() {
               className="mb-10"
               data-aos="fade-right"
               data-aos-once="true"
-              data-aos-offset="1100"
             >
               <span className="font-bold text-primary-color-dark">
                 Storytelling Imersivo:
@@ -247,7 +238,6 @@ export function Home() {
             <li
               data-aos="fade-right"
               data-aos-once="true"
-              data-aos-offset="1100"
             >
               <span className="font-bold text-primary-color-dark">
                 Feedback imediato:
