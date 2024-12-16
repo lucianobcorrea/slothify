@@ -150,7 +150,7 @@ export const Missions = () => {
                 {!rewards && (
                   <img
                     data-aos="zoom-in"
-                    className={`max-w-[500px] transition-transform duration-500 hover:scale-110 cursor-pointer`}
+                    className={`max-w-[400px] 2xl:max-w-[500px] transition-transform duration-500 hover:scale-110 cursor-pointer`}
                     src={closedChest}
                     alt={challengeName}
                     onClick={() =>
@@ -189,7 +189,7 @@ export const Missions = () => {
                     className="flex flex-col items-center"
                   >
                     <img
-                      className="max-w-[500px] transition-transform duration-500 scale-105"
+                      className="max-w-[340px] 2xl:max-w-[500px] transition-transform duration-500 scale-105"
                       src={openedChest}
                       alt={`${challengeName} - Baú aberto`}
                     />
