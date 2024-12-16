@@ -12,7 +12,7 @@ import { useUserDataContext } from "@/hook/useDataUserContext/useUserDataContext
 
 export const Header = () => {
   const { userData } = useUserDataContext();
-
+  console.log(userData);
   return (
     <header className="h-32 border-b-[1px] border-neutral-700 bg-neutral-850 flex items-center">
       <div className="container flex justify-between items-center">

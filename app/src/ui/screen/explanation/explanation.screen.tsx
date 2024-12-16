@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { ButtonComponent } from "@/ui/component/button/button.component";
 import { useLocation, useNavigate } from "react-router-dom";
 import Aos from "aos";
@@ -11,48 +11,27 @@ interface KeyPoint {
 
 export const Explanation = () => {
   const location = useLocation();
-  const [animationStage, setAnimationStage] = useState("initial");
   const navigate = useNavigate();
 
   useEffect(() => {
-    Aos.init({ duration: 1000 });
-
-    const timer = setTimeout(() => {
-      setAnimationStage("final");
-    }, 500);
-
-    return () => clearTimeout(timer);
+    Aos.init({ duration: 1000, once: true });
   }, []);
 
   return (
     <section className="relative container p-12 bg-neutral-850 text-white rounded-lg shadow-lg flex flex-col mt-12 mb-12 border border-neutral-700">
-      <div
-        className="absolute top-0 left-0 transition-transform duration-1000 ease-in-out"
-        style={{
-          transform:
-            animationStage === "initial"
-              ? "translate(calc(45vw - 100%), calc(50vh - 55%)) scale(1)"
-              : "translate(10px, calc(100vh - 92%)) translateX(-90px) scale(0.333)",
-          width: animationStage === "initial" ? "24rem" : "24rem",
-        }}
-      >
+      <div className="absolute bottom-0 left-10 z-10">
         <img
           src={writingSloth}
           alt="Preguiça Escrevendo"
-          className={`w-full h-full ${
-            animationStage === "initial" ? "animate-image-zoom" : "animate-sway"
-          }`}
+          className="w-full h-full max-w-32 animate-sway"
         />
       </div>
 
-      <div
-        className={`${
-          animationStage === "initial" ? "opacity-0" : "opacity-100"
-        } transition-opacity duration-1000 delay-500`}
-      >
+      <div className="transition-opacity duration-1000 delay-500">
         <h1
           className="text-4xl font-bold text-primary-color mb-4"
           data-aos="fade-up"
+          data-aos-offset="0"
         >
           {location.state.explanation.title}
         </h1>
@@ -60,6 +39,7 @@ export const Explanation = () => {
           className="text-2xl font-semibold text-primary-color-dark mb-6"
           data-aos="fade-up"
           data-aos-delay="100"
+          data-aos-offset="0"
         >
           {location.state.explanation.objective}
         </h2>
@@ -75,6 +55,7 @@ export const Explanation = () => {
                   key={index}
                   className="text-lg"
                   data-aos="fade-up"
+                  data-aos-offset="0"
                   data-aos-delay={`${300 + index * 100}`}
                 >
                   {keyPoint.content}
@@ -87,6 +68,7 @@ export const Explanation = () => {
         <div
           className="bg-neutral-750 p-4 rounded-lg mb-6"
           data-aos="fade-up"
+          data-aos-offset="0"
           data-aos-delay="500"
         >
           <h3 className="text-lg font-semibold text-white mb-3">Exemplo</h3>
@@ -101,15 +83,24 @@ export const Explanation = () => {
         <div
           className="p-4 bg-neutral-750 rounded-lg"
           data-aos="fade-up"
+          data-aos-offset="0"
           data-aos-delay="600"
         >
           <h3 className="text-lg font-semibold text-white mb-3">Dica</h3>
-          <p className="text-base text-white">
-            {location.state.explanation.tip}
-          </p>
+          <p
+            className="text-base text-white"
+            dangerouslySetInnerHTML={{
+              __html: location.state.explanation.tip,
+            }}
+          ></p>
         </div>
 
-        <div className="text-center" data-aos="fade-up" data-aos-delay="700">
+        <div
+          className="text-center"
+          data-aos="fade-up"
+          data-aos-delay="700"
+          data-aos-offset="0"
+        >
           <ButtonComponent
             clickEvent={() => navigate("/missoes")}
             btnType="button"

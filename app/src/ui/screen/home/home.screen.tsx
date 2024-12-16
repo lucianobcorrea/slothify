@@ -33,13 +33,9 @@ export function Home() {
   return (
     <>
       <section className="container">
-        <div
-          className="grid grid-cols-2 gap-12 mt-44"
-          data-aos="fade-up"
-          data-aos-once="true"
-        >
+        <div className="grid grid-cols-2 gap-12 mt-44" data-aos="fade-up">
           <img
-            className="max-w-xl w-full"
+            className="max-w-xl w-full animate-sway"
             src={shopSloth}
             alt="Uma preguiça ao lado de um baú segurando uma saco de dinheiro"
           />
@@ -75,19 +71,17 @@ export function Home() {
           <div
             className="text-white flex flex-col justify-center"
             data-aos="fade-left"
-            data-aos-once="true"
-            data-aos-offset="600"
           >
             <h2 className="text-[42px] font-bold mb-2">
               Transforme seu Aprendizado em uma Jornada Épica
             </h2>
-            <h3 className="text-2xl font-medium">
+            <h3 className="text-2xl font-light">
               Deixe a procrastinação para trás e embarque em uma aventura de
               aprendizado envolvente e divertida.
             </h3>
           </div>
 
-          <div data-aos="fade-right" data-aos-once="true" data-aos-offset="600">
+          <div data-aos="fade-right">
             <img
               className="max-w-xl w-full"
               src={journey}
@@ -101,11 +95,7 @@ export function Home() {
 
       <section className="container">
         <div className="grid grid-cols-2 gap-12">
-          <div
-            data-aos="fade-right"
-            data-aos-once="true"
-            data-aos-offset="1100"
-          >
+          <div data-aos="fade-right">
             <img
               className="max-w-xl w-full"
               src={slothify}
@@ -116,8 +106,6 @@ export function Home() {
           <div
             className="text-white flex flex-col justify-center"
             data-aos="fade-left"
-            data-aos-once="true"
-            data-aos-offset="1100"
           >
             <h2 className="font-medium text-[42px] mb-2">
               O que é o {""}
@@ -127,12 +115,12 @@ export function Home() {
               ?
             </h2>
 
-            <h3 className="mb-8 text-2xl font-medium">
+            <h3 className="mb-8 text-2xl font-light">
               Uma plataforma inovadora que combina aprendizado ativo com o
               storytelling para combater a procrastinação.
             </h3>
 
-            <h3 className="text-2xl font-medium">
+            <h3 className="text-2xl font-light">
               Combinamos técnicas de gamificação comprovadas com uma narrativa
               envolvente para tornar seu aprendizado mais agradável.
             </h3>
@@ -143,16 +131,11 @@ export function Home() {
       <hr className="border-neutral-800 mt-20 mb-20" />
 
       <section className="container">
-        <div
-          className="grid grid-cols-2 gap-12"
-          data-aos="zoom-in-down"
-          data-aos-once="true"
-          data-aos-offset="1000"
-        >
+        <div className="grid grid-cols-2 gap-12" data-aos="zoom-in-down">
           <div className="flex flex-col justify-center text-white">
             <div className="mb-8">
               <h2 className="font-medium text-[42px] mb-2">Como funciona?</h2>
-              <h3 className="text-2xl font-medium">
+              <h3 className="text-2xl font-light">
                 Nossa plataforma utiliza elementos de storytelling para
                 transformar seu aprendizado em uma aventura. Cada lição é um
                 novo capítulo, repleto de desafios e recompensas até chegar na
@@ -164,7 +147,7 @@ export function Home() {
               <h2 className="font-medium text-[42px] mb-2">
                 O Poder da Gamificação
               </h2>
-              <h3 className="text-2xl font-medium">
+              <h3 className="text-2xl font-light">
                 A gamificação torna cada etapa do seu aprendizado
                 recompensadora. Progredir se torna mais do que uma obrigação,
                 vira uma experiência divertida.
@@ -186,28 +169,16 @@ export function Home() {
         <h2
           className="text-white font-medium text-[42px] mb-2"
           data-aos="fade-left"
-          data-aos-once="true"
-          data-aos-offset="1100"
         >
           Principais recursos
         </h2>
-        <h3
-          className="text-white text-2xl font-medium"
-          data-aos="fade-left"
-          data-aos-once="true"
-          data-aos-offset="1100"
-        >
+        <h3 className="text-white text-2xl font-light" data-aos="fade-left">
           Aprender nunca foi tão divertido.
         </h3>
 
-        <ul className="leading-9 pl-5 grid grid-cols-2 text-white text-2xl font-medium mt-12 gap-16 list-disc marker:text-primary-color-dark">
+        <ul className="leading-9 pl-5 grid grid-cols-2 text-white text-2xl font-light mt-12 gap-16 list-disc marker:text-primary-color-dark">
           <div>
-            <li
-              className="mb-10"
-              data-aos="fade-left"
-              data-aos-once="true"
-              data-aos-offset="1100"
-            >
+            <li className="mb-10" data-aos="fade-left">
               <span className="font-bold text-primary-color-dark">
                 Gamificação Personalizada:
               </span>{" "}
@@ -215,11 +186,7 @@ export function Home() {
               ritmo e estilo de aprendizado, tornando cada progresso único e
               recompensador.
             </li>
-            <li
-              data-aos="fade-left"
-              data-aos-once="true"
-              data-aos-offset="1100"
-            >
+            <li data-aos="fade-left">
               <span className="font-bold text-primary-color-dark">
                 Loja de Itens e Personalizações:
               </span>{" "}
@@ -231,12 +198,7 @@ export function Home() {
           </div>
 
           <div>
-            <li
-              className="mb-10"
-              data-aos="fade-right"
-              data-aos-once="true"
-              data-aos-offset="1100"
-            >
+            <li className="mb-10" data-aos="fade-right">
               <span className="font-bold text-primary-color-dark">
                 Storytelling Imersivo:
               </span>{" "}
@@ -244,11 +206,7 @@ export function Home() {
               torna um capítulo empolgante da sua história rumo à superação da
               procrastinação e ao sucesso.
             </li>
-            <li
-              data-aos="fade-right"
-              data-aos-once="true"
-              data-aos-offset="1100"
-            >
+            <li data-aos="fade-right">
               <span className="font-bold text-primary-color-dark">
                 Feedback imediato:
               </span>{" "}
