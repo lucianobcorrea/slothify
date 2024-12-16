@@ -331,3 +331,9 @@ ADD COLUMN study_time_seconds INTEGER DEFAULT 0;
 
 ALTER TABLE user_daily_data
 ADD COLUMN study_time_reward BOOLEAN DEFAULT false;
+
+ALTER TABLE explanation
+ALTER COLUMN example TYPE TEXT;
+
+ALTER TABLE explanation
+ALTER COLUMN tip TYPE TEXT;
