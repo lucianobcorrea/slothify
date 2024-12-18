@@ -14,6 +14,8 @@ import {
   AfterBuying,
   Items,
   Achievements,
+  SendEmail,
+  ChangePassword,
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 
@@ -21,6 +23,14 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/esqueci-minha-senha",
+    element: <SendEmail />,
+  },
+  {
+    path: "/alterar-senha/:userId/:token",
+    element: <ChangePassword />,
   },
   {
     path: "/registrar",

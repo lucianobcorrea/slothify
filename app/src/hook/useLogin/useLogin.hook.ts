@@ -30,7 +30,7 @@ export function useLogin() {
       }
     } catch (error) {
       const message = getResponseError(error);
-      toast.error(message);
+      toast.error(message + ": Invalid email or password!");
       setIsLoggedIn(false);
     }
   };

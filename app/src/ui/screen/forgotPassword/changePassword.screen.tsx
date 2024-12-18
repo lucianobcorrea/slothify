@@ -10,18 +10,24 @@ import "aos/dist/aos.css";
 import Aos from "aos";
 import { useEffect } from "react";
 
-const schema = z.object({
-  email: z
-    .string()
-    .email({ message: "Precisa ser um endereço de email válido." }),
-  password: z
-    .string()
-    .min(8, { message: "A senha precisa ter pelo menos 8 caracteres" }),
-});
+const schema = z
+  .object({
+    email: z
+      .string()
+      .email({ message: "Precisa ser um endereço de email válido." }),
+    password: z
+      .string()
+      .min(8, { message: "A senha precisa ter pelo menos 8 caracteres" }),
+    rePassword: z.string().min(8),
+  })
+  .refine((data) => data.password === data.rePassword, {
+    message: "As senhas precisam ser iguais.",
+    path: ["rePassword"],
+  });
 
 export type FormFields = z.infer<typeof schema>;
 
-export function Login() {
+export function ChangePassword() {
   const {
     register,
     handleSubmit,
@@ -45,7 +51,7 @@ export function Login() {
         <div className="flex flex-col md:flex-row h-full p-8">
           <div className="flex-1 px-4 md:px-14 py-3 flex flex-col justify-center">
             <h2 className="text-5xl font-bold text-white mb-8">
-              Continuar Jornada.
+              Alterar Senha
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               <InputComponent
@@ -55,7 +61,7 @@ export function Login() {
                 type="email"
                 id="email"
               >
-                Endereço de email
+                Confirme o seu email
               </InputComponent>
               {errors.email && (
                 <div className="text-red-500 text-sm mb-4">
@@ -63,46 +69,54 @@ export function Login() {
                 </div>
               )}
               <InputComponent
-                register={{ ...register("password") }}
-                classname={errors.password ? "mb-3" : "mb-2"}
+                register={register("password")}
+                classname={errors.password ? "mb-3" : "mb-6"}
                 placeholder="••••••••"
                 type="password"
                 id="password"
               >
-                Senha
+                Nova senha
               </InputComponent>
-              <Link
-                className="text-white text-sm font-light hover:underline w-fit"
-                to={"/esqueci-minha-senha"}
-              >
-                Esqueci minha senha
-              </Link>
               {errors.password && (
-                <div className="text-red-500 text-sm">
+                <div className="text-red-500 text-sm mb-4">
                   {errors.password.message}
+                </div>
+              )}
+              <InputComponent
+                register={register("rePassword")}
+                classname={errors.rePassword ? "mb-3" : "mb-10"}
+                placeholder="••••••••"
+                type="password"
+                id="rePassword"
+              >
+                Repetir senha
+              </InputComponent>
+              {errors.rePassword && (
+                <div className="text-red-500 text-sm mt-4 mb-10">
+                  {errors.rePassword.message}
                 </div>
               )}
               <ButtonComponent
                 btnType="submit"
                 disabled={isSubmitting}
-                classname="w-full mb-2 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color mt-10"
+                classname="w-full mb-2 bg-primary-color hover:bg-primary-color-dark hover:border-primary-color border-secondary-color"
               >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Entrando...
+                    Alterando...
                   </>
                 ) : (
-                  "Entrar"
+                  "Alterar senha"
                 )}
               </ButtonComponent>
             </form>
             <div className="text-center mt-2">
               <Link
                 className="text-white font-light hover:underline w-fit"
-                to={"/registrar"}
+                to={"/login"}
               >
-                Não possui conta? Criar conta
+                Lembrou sua senha? Entre aqui
               </Link>
             </div>
           </div>

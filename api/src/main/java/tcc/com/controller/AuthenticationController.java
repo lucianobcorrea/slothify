@@ -1,6 +1,7 @@
 package tcc.com.controller;
 
 import jakarta.mail.MessagingException;
+import tcc.com.controller.request.ChangePasswordRequest;
 import tcc.com.controller.request.authentication.LoginRequest;
 import tcc.com.controller.request.authentication.TokenRequest;
 import tcc.com.controller.request.user.UserRequest;
@@ -8,6 +9,7 @@ import tcc.com.controller.response.authentication.LoginResponse;
 import tcc.com.domain.user.User;
 import tcc.com.mapper.LoginMapper;
 import tcc.com.security.ResetPasswordService;
+import tcc.com.security.SendResetPasswordEmailService;
 import tcc.com.security.TokenService;
 import tcc.com.service.user.CreateUserService;
 import jakarta.validation.Valid;
@@ -30,6 +32,9 @@ public class AuthenticationController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private SendResetPasswordEmailService sendResetPasswordEmailService;
 
     @Autowired
     private ResetPasswordService resetPasswordService;
@@ -59,7 +64,13 @@ public class AuthenticationController {
 
     @PostMapping("/reset-password/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void resetPassword(@PathVariable String email) throws MessagingException {
-        resetPasswordService.resetPassword(email);
+    public void sendResetPasswordEmail(@PathVariable String email) throws MessagingException {
+        sendResetPasswordEmailService.sendResetPasswordEmail(email);
+    }
+
+    @PatchMapping("/reset-password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void resetPassword(@RequestBody @Valid ChangePasswordRequest request) {
+        resetPasswordService.resetPassword(request);
     }
 }
