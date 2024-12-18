@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class TccApplication {
+public class Slothify {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TccApplication.class, args);
+		SpringApplication.run(Slothify.class, args);
 	}
 
 }

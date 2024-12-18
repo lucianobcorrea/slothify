@@ -3,6 +3,7 @@ package tcc.com.domain.user;
 import tcc.com.domain.area.Area;
 import tcc.com.domain.level.Level;
 import tcc.com.domain.offensive.Offensive;
+import tcc.com.domain.passwordResetToken.PasswordResetToken;
 import tcc.com.domain.ranking.Ranking;
 import tcc.com.domain.reason.Reason;
 import tcc.com.domain.role.Role;
@@ -81,6 +82,9 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "user")
     private UserData userData;
+
+    @OneToMany(mappedBy = "user")
+    private List<PasswordResetToken> passwordResetTokens;
 
     @ManyToMany
     @JoinTable(name = "user_area",

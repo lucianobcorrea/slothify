@@ -1,11 +1,13 @@
 package tcc.com.controller;
 
+import jakarta.mail.MessagingException;
 import tcc.com.controller.request.authentication.LoginRequest;
 import tcc.com.controller.request.authentication.TokenRequest;
 import tcc.com.controller.request.user.UserRequest;
 import tcc.com.controller.response.authentication.LoginResponse;
 import tcc.com.domain.user.User;
 import tcc.com.mapper.LoginMapper;
+import tcc.com.security.ResetPasswordService;
 import tcc.com.security.TokenService;
 import tcc.com.service.user.CreateUserService;
 import jakarta.validation.Valid;
@@ -29,6 +31,9 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private ResetPasswordService resetPasswordService;
+
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse login(@RequestBody @Valid LoginRequest data) {
@@ -50,5 +55,11 @@ public class AuthenticationController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout(@RequestBody @Valid TokenRequest request) {
         tokenService.invalidateToken(request);
+    }
+
+    @PostMapping("/reset-password/{email}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void resetPassword(@PathVariable String email) throws MessagingException {
+        resetPasswordService.resetPassword(email);
     }
 }

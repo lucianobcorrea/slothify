@@ -8,5 +8,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //Metodo utilizado pelo Spring Security para consultar os users
     UserDetails findByEmail(String email);
 
+    User findUserByEmail(String email);
     boolean existsByEmail(String email);
 }
