@@ -39,6 +39,10 @@ public class ResetPasswordService {
 
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByUserAndToken(user, request.getToken());
 
+        if(passwordResetToken == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please, verify the email you entered!");
+        }
+
         if(passwordResetToken.getExpiration().isBefore(LocalDateTime.now())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Your token has expired, please, try again.");
         }

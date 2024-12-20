@@ -3,12 +3,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useLogin } from "@/hook/useLogin/useLogin.hook";
+import { Link, useParams } from "react-router-dom";
 
 import "aos/dist/aos.css";
 import Aos from "aos";
 import { useEffect } from "react";
+import { useResetPassword } from "@/hook/useResetPassword/useResetPassword.hook";
 
 const schema = z
   .object({
@@ -36,7 +36,9 @@ export function ChangePassword() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = useLogin();
+  const { userId, token } = useParams();
+
+  const onSubmit = useResetPassword(Number(userId), token!);
 
   useEffect(() => {
     Aos.init({ duration: 1000 });
