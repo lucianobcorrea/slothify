@@ -21,6 +21,10 @@ export { Achievements } from "@/ui/screen/profile/achievements.screen";
 export { SendEmail } from "@/ui/screen/forgotPassword/sendEmail.screen";
 export { ChangePassword } from "@/ui/screen/forgotPassword/changePassword.screen";
 
+// Admin
+export { Login as AdminLogin } from "@/ui/screen/admin/login/login.screen";
+export { Dashboard } from "@/ui/screen/admin/dashboard/dashboard.screen";
+
 export { ProgressComponent } from "@/ui/component/progress/progress.component";
 export { MessageBox } from "@/ui/component/messageBox/messageBox.component";
 export { ButtonComponent } from "@/ui/component/button/button.component";

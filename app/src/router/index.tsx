@@ -16,8 +16,11 @@ import {
   Achievements,
   SendEmail,
   ChangePassword,
+  AdminLogin,
+  Dashboard,
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
+import AdminProtectedRoute from "./adminProtectedRoute.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -126,6 +129,20 @@ export const router = createBrowserRouter([
       <ProtectedRoute>
         <AfterBuying />
       </ProtectedRoute>
+    ),
+  },
+
+  // Admin
+  {
+    path: "/admin",
+    element: <AdminLogin />,
+  },
+  {
+    path: "/admin/dashboard",
+    element: (
+      <AdminProtectedRoute>
+        <Dashboard />
+      </AdminProtectedRoute>
     ),
   },
 ]);

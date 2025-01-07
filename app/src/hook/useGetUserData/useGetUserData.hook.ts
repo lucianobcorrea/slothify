@@ -12,7 +12,7 @@ interface UserData {
   xpToNextLevel: number | null;
   levelColor: string;
   coins: number;
-  completedOffensiveToday : boolean;
+  completedOffensiveToday: boolean;
   offensive: number;
 }
 
@@ -25,7 +25,9 @@ export function useGetUserData() {
       setUserData(response);
     } catch (error) {
       const message = getResponseError(error);
-      toast.error(message);
+      if (userData != undefined) {
+        toast.error(message);
+      }
     }
   }
 

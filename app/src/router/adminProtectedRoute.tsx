@@ -5,20 +5,28 @@ import { toast } from "react-toastify";
 
 type ProtectedRouteProps = PropsWithChildren;
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function AdminProtectedRoute({ children }: ProtectedRouteProps) {
   const { authUser, isLoggedIn, loading } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading) {
+      let error = false;
+
       if (!isLoggedIn || authUser === null) {
-        toast.error("Por favor, entre na sua conta.");
+        toast.error("Please, login into your account.");
         localStorage.removeItem("token");
-        navigate("/login", { replace: true });
+        error = true;
       }
 
-      if(authUser?.role == "admin") {
-        navigate("/admin/dashboard", { replace: true });
+      if (authUser?.role != "admin") {
+        toast.error("You need to be an admin to access this area!");
+        localStorage.removeItem("token");
+        error = true;
+      }
+
+      if(error) {
+        navigate("/", { replace: true });
       }
     }
   }, [navigate, authUser, isLoggedIn, loading]);

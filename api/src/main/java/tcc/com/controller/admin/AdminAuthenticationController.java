@@ -1,9 +1,8 @@
-package tcc.com.controller;
+package tcc.com.controller.admin;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +37,8 @@ public class AdminAuthenticationController {
         if (!isAdmin) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You're not an admin!");
         }
+
+        System.out.println(auth);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
 

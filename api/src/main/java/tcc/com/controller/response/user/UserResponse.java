@@ -16,4 +16,5 @@ public class UserResponse {
     private String color;
     private Integer rankingPoint;
     private boolean initialForm;
+    private String role;
 }

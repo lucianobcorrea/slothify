@@ -25,6 +25,7 @@ public class UserMapper {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .role(user.getRole().getRole().getRole())
                 .color(user.getColor())
                 .avatar(user.getAvatar() != null ? baseUrl + user.getAvatar() : null)
                 .banner(user.getBanner() != null ? baseUrl + user.getBanner() : null)

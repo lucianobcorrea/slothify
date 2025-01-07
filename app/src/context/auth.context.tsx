@@ -20,6 +20,7 @@ interface AuthUser {
   color: string;
   rankingPoint: number;
   initialForm?: boolean;
+  role: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
