@@ -38,8 +38,6 @@ public class AdminAuthenticationController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You're not an admin!");
         }
 
-        System.out.println(auth);
-
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
         return LoginMapper.toResponse(token);
