@@ -18,6 +18,7 @@ interface AuthUser {
   avatar: string;
   banner: string;
   color: string;
+  email: string;
   rankingPoint: number;
   initialForm?: boolean;
   role: string;

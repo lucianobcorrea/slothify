@@ -18,6 +18,8 @@ import {
   ChangePassword,
   AdminLogin,
   Dashboard,
+  CreateChallenge,
+  IndexChallenge,
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 import AdminProtectedRoute from "./adminProtectedRoute.tsx";
@@ -142,6 +144,22 @@ export const router = createBrowserRouter([
     element: (
       <AdminProtectedRoute>
         <Dashboard />
+      </AdminProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/challenges",
+    element: (
+      <AdminProtectedRoute>
+        <IndexChallenge />
+      </AdminProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/challenge/create",
+    element: (
+      <AdminProtectedRoute>
+        <CreateChallenge />
       </AdminProtectedRoute>
     ),
   },

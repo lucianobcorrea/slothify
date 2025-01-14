@@ -37,18 +37,20 @@ export function Login() {
 
   return (
     <section
-      className="px-8 lg:px-24 min-h-screen flex justify-center items-center"
+      className="px-8 lg:px-24 min-h-screen flex justify-center items-center bg-zinc-100"
       data-aos="fade-left"
     >
-      <div className="shadow-custom-shadow bg-neutral-800 rounded-3xl h-full w-[50%]">
+      <div className="shadow-custom-shadow bg-white rounded-3xl h-full w-[50%]">
         <div className="flex flex-col md:flex-row h-full p-8">
           <div className="flex-1 px-4 md:px-14 py-3 flex flex-col justify-center">
-            <h2 className="text-3xl font-bold text-white mb-8">
+            <h2 className="text-3xl font-bold text-zinc-800 mb-8">
               Bem vindo! Faça login na sua conta.
             </h2>
             <form onSubmit={handleSubmit(onSubmit)}>
               <InputComponent
                 register={{ ...register("email") }}
+                labelClassName="text-zinc-800"
+                inputClassName="text-black"
                 classname={errors.email ? "mb-3" : "mb-6"}
                 placeholder="Ex.: joao@feevale.com.br"
                 type="email"
@@ -63,6 +65,8 @@ export function Login() {
               )}
               <InputComponent
                 register={{ ...register("password") }}
+                labelClassName="text-zinc-800"
+                inputClassName="text-black"
                 classname={errors.password ? "mb-3" : "mb-2"}
                 placeholder="••••••••"
                 type="password"
