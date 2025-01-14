@@ -156,7 +156,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: "/admin/challenge/create",
+    path: "/admin/challenges/create",
     element: (
       <AdminProtectedRoute>
         <CreateChallenge />

@@ -20,8 +20,69 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+
+const schema = z.object({
+  name: z.string().trim().min(1, { message: "Name is required!" }),
+  xpReward: z.number().gt(0, "Must be greater than 0"),
+  coinsReward: z.number().gt(0, "Must be greater than 0"),
+  requiredExercises: z.number().gt(0, "Must be greater than 0").optional(),
+  requiredMultipleChoiceExercises: z
+    .number()
+    .gt(0, "Must be greater than 0")
+    .optional(),
+  requiredSortingExercises: z
+    .number()
+    .gt(0, "Must be greater than 0")
+    .optional(),
+  requiredDragAndDropExercises: z
+    .number()
+    .gt(0, "Must be greater than 0")
+    .optional(),
+  requiredXp: z.number().gt(0, "Must be greater than 0").optional(),
+});
+
+export type FormFields = z.infer<typeof schema>;
 
 export function CreateChallenge() {
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      xpReward: 1,
+      coinsReward: 1,
+      requiredExercises: 1,
+      requiredMultipleChoiceExercises: 1,
+      requiredSortingExercises: 1,
+      requiredDragAndDropExercises: 1,
+      requiredXp: 1,
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof schema>) {
+    const filteredValues = {
+      ["name"]: values["name"],
+      ["coinsReward"]: values["coinsReward"],
+      ["xpReward"]: values["xpReward"],
+    };
+
+    const dataToSend = {
+      ...filteredValues,
+      [challengeType]: values[challengeType as keyof FormFields],
+    };
+    console.log("Sending", dataToSend);
+  }
+
   const [challengeType, setChallengeType] = useState("");
   const [challengeTypeLabel, setChallengeTypeLabel] = useState("");
   const [challengeTypeSelected, setChallengeTypeSelected] = useState(false);
@@ -81,62 +142,85 @@ export function CreateChallenge() {
       </header>
 
       <div className="p-4 pt-0">
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input type="text" id="name" placeholder="Name" />
-          </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="grid grid-cols-3 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Name" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-          <div>
-            <Label htmlFor="xpReward">XP Reward</Label>
-            <Input
-              type="number"
-              min={0}
-              id="xpReward"
-              placeholder="XP Reward"
-            />
-          </div>
+              <FormField
+                control={form.control}
+                name="xpReward"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>XP Reward</FormLabel>
+                    <FormControl>
+                      <Input type="number" placeholder="XP Reward" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-          <div>
-            <Label htmlFor="coinsReward">Coins Reward</Label>
-            <Input
-              type="number"
-              min={0}
-              id="coinsReward"
-              placeholder="Coins Reward"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 mt-6">
-          <div>
-            <Label htmlFor="challengeType">Challenge Type</Label>
-            <Select onValueChange={changeChallengeType}>
-              <SelectTrigger id="challengeType">
-                <SelectValue placeholder="Select The Challenge Type" />
-              </SelectTrigger>
-              <SelectContent>
-                {challengeTypeOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {challengeTypeSelected ? (
-            <div>
-              <Label htmlFor={challengeType}>{challengeTypeLabel}</Label>
-              <Input
-                type="number"
-                min={0}
-                id={challengeType}
-                placeholder={challengeTypeLabel}
+              <FormField
+                control={form.control}
+                name="coinsReward"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Coins Reward</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Coins Reward" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
               />
             </div>
-          ) : null}
-        </div>
+
+            <div className="grid grid-cols-2 gap-4 mt-6">
+              <div>
+                <Label htmlFor="challengeType">Challenge Type</Label>
+                <Select onValueChange={changeChallengeType}>
+                  <SelectTrigger className="mt-2" id="challengeType">
+                    <SelectValue placeholder="Select The Challenge Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {challengeTypeOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {challengeTypeSelected ? (
+                <FormField
+                  control={form.control}
+                  name={challengeType as keyof FormFields}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{challengeTypeLabel}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={challengeTypeLabel} {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              ) : null}
+            </div>
+
+            <Button type="submit">Save</Button>
+          </form>
+        </Form>
       </div>
     </AdminLayout>
   );
