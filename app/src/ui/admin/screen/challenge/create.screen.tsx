@@ -29,27 +29,33 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { useCreateChallenge } from "@/hook/admin/challenge/useCreateChallenge/useCreateChallenge.hook";
 
 const schema = z.object({
   name: z.string().trim().min(1, { message: "Name is required!" }),
-  xpReward: z.number().gt(0, "Must be greater than 0"),
-  coinsReward: z.number().gt(0, "Must be greater than 0"),
-  requiredExercises: z.number().gt(0, "Must be greater than 0").optional(),
-  requiredMultipleChoiceExercises: z
+  xpReward: z.coerce.number().gt(0, "Must be greater than 0"),
+  coinsReward: z.coerce.number().gt(0, "Must be greater than 0"),
+  requiredExercises: z.coerce
     .number()
     .gt(0, "Must be greater than 0")
     .optional(),
-  requiredSortingExercises: z
+  requiredMultipleChoiceExercises: z.coerce
     .number()
     .gt(0, "Must be greater than 0")
     .optional(),
-  requiredDragAndDropExercises: z
+  requiredSortingExercises: z.coerce
     .number()
     .gt(0, "Must be greater than 0")
     .optional(),
-  requiredXp: z.number().gt(0, "Must be greater than 0").optional(),
+  requiredDragAndDropExercises: z.coerce
+    .number()
+    .gt(0, "Must be greater than 0")
+    .optional(),
+  requiredXp: z.coerce.number().gt(0, "Must be greater than 0").optional(),
+  challengeTypeSelect: z.string().min(1, "Select one Challenge"),
 });
 
 export type FormFields = z.infer<typeof schema>;
@@ -69,23 +75,11 @@ export function CreateChallenge() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof schema>) {
-    const filteredValues = {
-      ["name"]: values["name"],
-      ["coinsReward"]: values["coinsReward"],
-      ["xpReward"]: values["xpReward"],
-    };
-
-    const dataToSend = {
-      ...filteredValues,
-      [challengeType]: values[challengeType as keyof FormFields],
-    };
-    console.log("Sending", dataToSend);
-  }
-
   const [challengeType, setChallengeType] = useState("");
   const [challengeTypeLabel, setChallengeTypeLabel] = useState("");
   const [challengeTypeSelected, setChallengeTypeSelected] = useState(false);
+
+  const onSubmit = useCreateChallenge(challengeType);
 
   const challengeTypeOptions = [
     { value: "requiredExercises", label: "Required Exercises" },
@@ -154,6 +148,7 @@ export function CreateChallenge() {
                     <FormControl>
                       <Input placeholder="Name" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -167,6 +162,7 @@ export function CreateChallenge() {
                     <FormControl>
                       <Input type="number" placeholder="XP Reward" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -180,6 +176,7 @@ export function CreateChallenge() {
                     <FormControl>
                       <Input placeholder="Coins Reward" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -187,19 +184,34 @@ export function CreateChallenge() {
 
             <div className="grid grid-cols-2 gap-4 mt-6">
               <div>
-                <Label htmlFor="challengeType">Challenge Type</Label>
-                <Select onValueChange={changeChallengeType}>
-                  <SelectTrigger className="mt-2" id="challengeType">
-                    <SelectValue placeholder="Select The Challenge Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {challengeTypeOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormField
+                  control={form.control}
+                  name="challengeTypeSelect"
+                  render={({ field }) => (
+                    <>
+                      <Label htmlFor="challengeType">Challenge Type</Label>
+                      <Select
+                        required
+                        value={field.value}
+                        onValueChange={(value) => {
+                          changeChallengeType(value);
+                          field.onChange(value);
+                        }}
+                      >
+                        <SelectTrigger className="mt-2" id="challengeType">
+                          <SelectValue placeholder="Select The Challenge Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {challengeTypeOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </>
+                  )}
+                />
               </div>
 
               {challengeTypeSelected ? (
@@ -212,6 +224,7 @@ export function CreateChallenge() {
                       <FormControl>
                         <Input placeholder={challengeTypeLabel} {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />

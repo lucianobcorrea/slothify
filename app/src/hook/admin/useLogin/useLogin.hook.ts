@@ -1,6 +1,6 @@
 import { SubmitHandler } from "react-hook-form";
 import { FormFields } from "@/ui/screen/login/login.screen";
-import { login } from "@/api/admin/auth/login";
+import { login } from "@/api/admin/auth/login.api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { user } from "@/api/auth/user.api";
