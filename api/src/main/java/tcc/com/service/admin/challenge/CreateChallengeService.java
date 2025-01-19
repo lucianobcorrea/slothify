@@ -1,4 +1,4 @@
-package tcc.com.service.challenge;
+package tcc.com.service.admin.challenge;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/api/_base/axiosInstance";
 
-const CREATE_CHALLENGE = "/challenge/create";
+const CREATE_CHALLENGE = "admin/challenge/create";
 
 interface ChallengeData {
   name: string;
