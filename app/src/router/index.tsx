@@ -20,6 +20,7 @@ import {
   Dashboard,
   CreateChallenge,
   IndexChallenge,
+  EditChallenge,
 } from "../ui/index.ts";
 import ProtectedRoute from "./protectedRoute.tsx";
 import AdminProtectedRoute from "./adminProtectedRoute.tsx";
@@ -160,6 +161,14 @@ export const router = createBrowserRouter([
     element: (
       <AdminProtectedRoute>
         <CreateChallenge />
+      </AdminProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/challenges/edit/:id",
+    element: (
+      <AdminProtectedRoute>
+        <EditChallenge />
       </AdminProtectedRoute>
     ),
   },

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import tcc.com.controller.request.challenge.ChallengeRequest;
 import tcc.com.controller.response.challenge.ChallengeResponse;
 import tcc.com.service.admin.challenge.CreateChallengeService;
+import tcc.com.service.admin.challenge.GetChallengeService;
 import tcc.com.service.admin.challenge.GetChallengesService;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class AdminChallengeController {
     @Autowired
     private GetChallengesService getChallengesService;
 
+    @Autowired
+    private GetChallengeService getChallengeService;
+
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@Valid @RequestBody ChallengeRequest request) {
@@ -31,5 +35,11 @@ public class AdminChallengeController {
     @ResponseStatus(HttpStatus.OK)
     public List<ChallengeResponse> getChallenges() {
         return getChallengesService.getChallenges();
+    }
+
+    @GetMapping("/edit/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ChallengeResponse getChallenge(@PathVariable Long id) {
+        return getChallengeService.getChallenge(id);
     }
 }

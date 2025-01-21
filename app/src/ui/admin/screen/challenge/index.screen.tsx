@@ -11,8 +11,9 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useEffect } from "react";
 import { useGetChallenges } from "@/hook/admin/challenge/useGetChallenges/useGetChallenges.hook";
-import { Challenge, columns } from "./table/columns.component";
+import { columns } from "./table/columns.component";
 import { DataTable } from "./table/data-table.component";
+import { LoadingSpinner } from "@/ui/index";
 
 export function IndexChallenge() {
   const { challenges, fetchChallenges, loadingChallenges } = useGetChallenges();
@@ -43,7 +44,11 @@ export function IndexChallenge() {
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <DataTable columns={columns} data={challenges} />
+        {!loadingChallenges ? (
+          <DataTable columns={columns} data={challenges} />
+        ) : (
+          <LoadingSpinner className="text-primary-color" size={46} />
+        )}
       </div>
     </AdminLayout>
   );

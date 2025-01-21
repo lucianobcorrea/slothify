@@ -72,7 +72,7 @@ export function DataTable<TValue>({
                           cell.column.columnDef.cell,
                           cell.getContext()
                         )}
-                        <Link to={"test/" + cell.row.original.id}>
+                        <Link to={"/admin/challenges/edit/" + cell.row.original.id}>
                           <FontAwesomeIcon
                             className="text-xl"
                             icon={faPencil}

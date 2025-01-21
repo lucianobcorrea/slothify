@@ -26,6 +26,7 @@ export { Login as AdminLogin } from "@/ui/admin/screen/login/login.screen";
 export { Dashboard } from "@/ui/admin/screen/dashboard/dashboard.screen";
 export { CreateChallenge } from "@/ui/admin/screen/challenge/create.screen";
 export { IndexChallenge } from "@/ui/admin/screen/challenge/index.screen";
+export { EditChallenge } from "@/ui/admin/screen/challenge/edit.screen";
 
 export { ProgressComponent } from "@/ui/component/progress/progress.component";
 export { MessageBox } from "@/ui/component/messageBox/messageBox.component";
