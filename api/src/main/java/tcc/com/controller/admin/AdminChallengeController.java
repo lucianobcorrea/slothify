@@ -9,6 +9,7 @@ import tcc.com.controller.response.challenge.ChallengeResponse;
 import tcc.com.service.admin.challenge.CreateChallengeService;
 import tcc.com.service.admin.challenge.GetChallengeService;
 import tcc.com.service.admin.challenge.GetChallengesService;
+import tcc.com.service.admin.challenge.UpdateChallengeService;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class AdminChallengeController {
 
     @Autowired
     private GetChallengeService getChallengeService;
+
+    @Autowired
+    private UpdateChallengeService updateChallengeService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,5 +45,11 @@ public class AdminChallengeController {
     @ResponseStatus(HttpStatus.OK)
     public ChallengeResponse getChallenge(@PathVariable Long id) {
         return getChallengeService.getChallenge(id);
+    }
+
+    @PatchMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateChallenge(@PathVariable Long id, @RequestBody ChallengeRequest request) {
+        updateChallengeService.update(id, request);
     }
 }

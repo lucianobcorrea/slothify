@@ -24,6 +24,21 @@ public class ChallengeMapper {
         return challenge;
     }
 
+    public static Challenge toEntityUpdate(ChallengeRequest request, Challenge challenge) {
+        challenge.setName(request.getName());
+
+        challenge.setXpReward(request.getXpReward());
+        challenge.setCoinsReward(request.getCoinsReward());
+
+        challenge.setRequiredExercises(request.getRequiredExercises());
+        challenge.setRequiredMultipleChoiceExercises(request.getRequiredMultipleChoiceExercises());
+        challenge.setRequiredSortingExercises(request.getRequiredSortingExercises());
+        challenge.setRequiredDragAndDropExercises(request.getRequiredDragAndDropExercises());
+        challenge.setRequiredXp(request.getRequiredXp());
+
+        return challenge;
+    }
+
     public static ChallengeCollectResponse toResponse(UserDailyChallenge userDailyChallenge, int xpReward) {
         ChallengeCollectResponse response = new ChallengeCollectResponse();
         response.setCoinsReward(userDailyChallenge.getChallenge().getCoinsReward());

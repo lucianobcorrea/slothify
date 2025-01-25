@@ -32,9 +32,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useCreateChallenge } from "@/hook/admin/challenge/useCreateChallenge/useCreateChallenge.hook";
 import { useGetChallenge } from "@/hook/admin/challenge/useGetChallenge/useGetChallenge.hook";
 import { useParams } from "react-router-dom";
+import { useUpdateChallenge } from "@/hook/admin/challenge/useUpdateChallenge/useUpdateChallenge.hook";
 
 const schema = z.object({
   name: z.string().trim().min(1, { message: "Name is required!" }),
@@ -110,7 +110,7 @@ export function EditChallenge() {
   const [challengeTypeLabel, setChallengeTypeLabel] = useState("");
   const [challengeTypeSelected, setChallengeTypeSelected] = useState(false);
 
-  const onSubmit = useCreateChallenge(challengeType);
+  const onSubmit = useUpdateChallenge(challengeType, Number(id));
 
   const challengeTypeOptions = [
     { value: "requiredExercises", label: "Required Exercises" },
@@ -131,6 +131,7 @@ export function EditChallenge() {
       if (challenge?.[type.value as keyof typeof FormField] != null) {
         setChallengeTypeRender(type.value);
         setChallengeLabelRender(type.label);
+        changeChallengeType(type.value);
       }
     });
 
@@ -275,7 +276,7 @@ export function EditChallenge() {
                       <FormItem>
                         <FormLabel>{challengeTypeLabel}</FormLabel>
                         <FormControl>
-                          <Input placeholder={challengeTypeLabel} {...field} />
+                          <Input required placeholder={challengeTypeLabel} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
